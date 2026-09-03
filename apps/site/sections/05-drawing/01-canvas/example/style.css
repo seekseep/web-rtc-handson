@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  padding: 16px;
+  font-family: sans-serif;
+  background: #222;
+  color: #fff;
+}
+
+header,
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+input,
+button {
+  font-size: 16px;
+  padding: 6px 10px;
+}
+
+/* いま選んでいる道具・色が分かるようにする */
+.selected {
+  outline: 3px solid #ffd60a;
+}
+
+canvas {
+  background: #fff;
+  border-radius: 8px;
+  /* 実際の解像度は 800x600 のまま、表示だけ画面幅に合わせて縮める。
+     こうすると、どの端末でも同じ座標で絵を共有できる。 */
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+}

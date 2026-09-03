@@ -1,0 +1,9 @@
+node_modules
+dist
+src/content/docs
+apps/site/src/content/docs
+apps/site/public/preview
+apps/site/public/downloads
+**/*.png
+**/*.wav
+**/*.txt

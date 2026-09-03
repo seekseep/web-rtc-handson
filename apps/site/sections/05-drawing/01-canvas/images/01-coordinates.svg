@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="400" fill="#ffffff"/>
+<text x="450" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">見た目の大きさと、中の解像度は別もの</text>
+<rect x="60" y="88" width="360" height="270" rx="10" fill="#ffffff" stroke="#3b82f6" stroke-width="3"/>
+<text x="240" y="118" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="400">パソコン（見た目 800px）</text>
+<circle cx="380" cy="200" r="9" fill="#e5484d"/>
+<text x="340" y="240" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">右端をクリック</text>
+<text x="240" y="300" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">event.clientX = 780</text>
+<text x="240" y="330" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">→ 中の座標 780</text>
+<rect x="520" y="88" width="180" height="270" rx="10" fill="#ffffff" stroke="#17c964" stroke-width="3"/>
+<text x="610" y="118" text-anchor="middle" font-size="13" fill="#15803d" font-weight="400">スマホ（見た目 350px）</text>
+<circle cx="676" cy="200" r="9" fill="#e5484d"/>
+<text x="610" y="240" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">同じ右端</text>
+<text x="610" y="300" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">event.clientX = 340</text>
+<text x="610" y="330" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">→ そのままだと真ん中</text>
+<rect x="730" y="150" width="150" height="110" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="805" y="190" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400">見た目の割合</text>
+<text x="805" y="216" text-anchor="middle" font-size="17" fill="#b45309" font-weight="600" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">× 800</text>
+<text x="805" y="242" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">で割り戻す</text>
+<line x1="706" y1="205" x2="726" y2="205" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+</svg>

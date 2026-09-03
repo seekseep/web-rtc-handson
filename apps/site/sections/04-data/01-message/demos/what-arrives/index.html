@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>何を送ると何が届くか</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: sans-serif;
+        background: #222;
+        color: #fff;
+      }
+      button {
+        font-size: 16px;
+        padding: 10px 18px;
+      }
+      table {
+        margin-top: 16px;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 13px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 6px 8px;
+        border-bottom: 1px solid #444;
+        vertical-align: top;
+      }
+      th {
+        color: #aaa;
+        font-weight: normal;
+      }
+      td.code {
+        font-family: monospace;
+        word-break: break-all;
+      }
+      .same {
+        color: #17c964;
+      }
+      .diff {
+        color: #f5a524;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.5/peerjs.min.js"></script>
+  </head>
+  <body>
+    <button id="run">送ってみる</button>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 32%">送ったもの</th>
+          <th style="width: 32%">届いたもの</th>
+          <th style="width: 36%">結果</th>
+        </tr>
+      </thead>
+      <tbody id="log"></tbody>
+    </table>
+
+    <script>
+      const log = document.querySelector('#log');
+      const runButton = document.querySelector('#run');
+
+      // 送ってみる値と、その説明
+      const CASES = [
+        { label: "'こんにちは'", value: 'こんにちは' },
+        { label: '{ type: "line", x: 10 }', value: { type: 'line', x: 10 } },
+        { label: '[1, 2, 3]', value: [1, 2, 3] },
+        {
+          label: '{ n: 0.5, ok: true, none: null }',
+          value: { n: 0.5, ok: true, none: null },
+        },
+        { label: '{ d: new Date(0) }', value: { d: new Date(0) } },
+        { label: '{ u: undefined }', value: { u: undefined } },
+        { label: 'new Uint8Array([1,2,3])', value: new Uint8Array([1, 2, 3]) },
+        { label: '{ f: function(){} }', value: { f: function () {} } },
+      ];
+
+      function show(v) {
+        if (v instanceof Uint8Array)
+          return 'Uint8Array [' + Array.from(v) + ']';
+        if (v instanceof ArrayBuffer)
+          return 'ArrayBuffer(' + v.byteLength + ')';
+        if (v instanceof Blob) return 'Blob(' + v.size + ')';
+        if (v instanceof Date) return 'Date(' + v.toISOString() + ')';
+        if (typeof v === 'object' && v !== null) {
+          const parts = Object.keys(v).map((k) => k + ': ' + show(v[k]));
+          if (Array.isArray(v)) return '[' + v.map(show).join(', ') + ']';
+          return '{ ' + parts.join(', ') + ' }';
+        }
+        if (typeof v === 'string') return "'" + v + "'";
+        return String(v);
+      }
+
+      function put(sent, got, ok, note) {
+        const tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td class="code">' +
+          sent +
+          '</td>' +
+          '<td class="code">' +
+          got +
+          '</td>' +
+          '<td class="' +
+          (ok ? 'same' : 'diff') +
+          '">' +
+          note +
+          '</td>';
+        log.appendChild(tr);
+      }
+
+      runButton.addEventListener('click', function () {
+        log.textContent = '';
+        runButton.disabled = true;
+
+        const name =
+          'webrtc-handson-demo-' + Math.random().toString(36).slice(2, 10);
+        const host = new Peer(name);
+
+        host.on('open', function () {
+          const guest = new Peer();
+
+          // 実際に送れたものだけを順に並べておき、届いた順に突き合わせる
+          const sent = [];
+
+          host.on('connection', function (c) {
+            let i = 0;
+            c.on('data', function (got) {
+              const cur = sent[i];
+              const sentText = show(cur.value);
+              const gotText = show(got);
+              const same = sentText === gotText;
+              put(
+                cur.label,
+                gotText,
+                same,
+                same ? 'そのまま届いた' : '形が変わった',
+              );
+              i++;
+              if (i === sent.length) {
+                host.destroy();
+                guest.destroy();
+                runButton.disabled = false;
+              }
+            });
+          });
+
+          guest.on('open', function () {
+            const conn = guest.connect(name);
+            conn.on('open', function () {
+              const failed = [];
+              CASES.forEach(function (c) {
+                try {
+                  conn.send(c.value);
+                  sent.push(c);
+                } catch (e) {
+                  failed.push([c, e]);
+                }
+              });
+              // 送れなかったものは、届くものを全部並べたあとに出す
+              conn.on('close', function () {});
+              setTimeout(function () {
+                failed.forEach(function (pair) {
+                  put(
+                    pair[0].label,
+                    '—',
+                    false,
+                    '送れなかった: ' + pair[1].message,
+                  );
+                });
+              }, 1200);
+            });
+          });
+        });
+
+        host.on('error', function (err) {
+          put('—', '—', false, 'エラー: ' + err.type);
+          runButton.disabled = false;
+        });
+      });
+    </script>
+  </body>
+</html>

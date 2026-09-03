@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: sans-serif;
+  background: #222;
+  color: #fff;
+  text-align: center;
+}
+
+input,
+button {
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin: 48px 0;
+}
+
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #555;
+  /* 色が切り替わるときに、ぱっと変わらず少しなめらかに見えるようにする */
+  transition: background 0.2s;
+}
+
+#light {
+  font-size: 20px;
+  padding: 16px 32px;
+}

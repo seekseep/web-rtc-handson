@@ -1,0 +1,17 @@
+{
+  "name": "web-rtc-handson",
+  "version": "1.0.0",
+  "description": "PeerJS でブラウザ同士を直接つなぐリアルタイムお絵かきハンズオン（WebRTC / PeerJS Cloud / Netlify）",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev": "pnpm --filter site dev",
+    "build": "pnpm --filter site build",
+    "preview": "pnpm --filter site preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
+  }
+}

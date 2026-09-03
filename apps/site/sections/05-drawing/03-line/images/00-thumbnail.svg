@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="290" viewBox="0 0 900 290" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="290" fill="#ffffff"/>
+<text x="450" y="52" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">線は、短い直線の集まり</text>
+<line x1="180" y1="210" x2="250" y2="150" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+<line x1="250" y1="150" x2="330" y2="190" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+<line x1="330" y1="190" x2="410" y2="120" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+<line x1="410" y1="120" x2="500" y2="170" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+<line x1="500" y1="170" x2="590" y2="110" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+<line x1="590" y1="110" x2="690" y2="160" stroke="#3b82f6" stroke-width="7" stroke-linecap="round"/>
+<circle cx="180" cy="210" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="250" cy="150" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="330" cy="190" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="410" cy="120" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="500" cy="170" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="590" cy="110" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="690" cy="160" r="7" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<text x="450" y="262" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">点と点をつなぐ直線を、動くたびに 1 本ずつ送る</text>
+</svg>

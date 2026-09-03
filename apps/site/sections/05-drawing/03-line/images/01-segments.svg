@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="360" fill="#ffffff"/>
+<text x="450" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">指が動くたびに、前の点から今の点まで 1 本引く</text>
+<line x1="120" y1="250" x2="200" y2="180" stroke="#3b82f6" stroke-width="8" stroke-linecap="round"/>
+<line x1="200" y1="180" x2="290" y2="220" stroke="#3b82f6" stroke-width="8" stroke-linecap="round"/>
+<line x1="290" y1="220" x2="380" y2="150" stroke="#3b82f6" stroke-width="8" stroke-linecap="round"/>
+<circle cx="120" cy="250" r="8" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="200" cy="180" r="8" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="290" cy="220" r="8" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<circle cx="380" cy="150" r="8" fill="#fff" stroke="#1d4ed8" stroke-width="3"/>
+<text x="200" y="300" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">last</text>
+<text x="290" y="300" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">いまの点</text>
+<rect x="480" y="130" width="380" height="130" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="670" y="168" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">{ type: 'line',</text>
+<text x="670" y="194" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">  x1, y1, x2, y2,</text>
+<text x="670" y="220" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">  color, width }</text>
+<line x1="400" y1="195" x2="472" y2="195" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="436.0" y="185.0" text-anchor="middle" font-size="13" fill="#0f172a" font-weight="400">1 本ぶん</text>
+<text x="450" y="330" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">ストローク全体ではなく、線 1 本ずつ送る</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="290" viewBox="0 0 900 290" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="290" fill="#ffffff"/>
+<text x="450" y="52" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">まずは、つなぐ前の画面をつくる</text>
+<ellipse cx="300" cy="150" rx="56" ry="56" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="300" y="232" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">じぶん</text>
+<ellipse cx="600" cy="150" rx="56" ry="56" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="600" y="232" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">あいて</text>
+<line x1="360" y1="150" x2="540" y2="150" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#aRsub)"/>
+<text x="450.0" y="140.0" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">まだ届かない</text>
+<text x="450" y="272" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">ボタンを押すと、じぶんの丸だけが光る</text>
+</svg>

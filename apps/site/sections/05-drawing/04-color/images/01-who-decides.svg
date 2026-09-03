@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="380" viewBox="0 0 900 380" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="380" fill="#ffffff"/>
+<text x="450" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">色を指示に入れるかどうかで、結果が変わる</text>
+<rect x="50" y="84" width="380" height="250" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="240" y="116" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">色を送る（正しい）</text>
+<text x="240" y="150" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">{ ..., color: '#e5484d' }</text>
+<rect x="80" y="176" width="140" height="90" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<path d="M100 250 Q 150 190 200 210" fill="none" stroke="#e5484d" stroke-width="7" stroke-linecap="round"/>
+<rect x="260" y="176" width="140" height="90" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<path d="M280 250 Q 330 190 380 210" fill="none" stroke="#e5484d" stroke-width="7" stroke-linecap="round"/>
+<text x="240" y="300" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">両方の画面が同じ絵になる</text>
+<rect x="470" y="84" width="380" height="250" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3.5"/>
+<text x="660" y="116" text-anchor="middle" font-size="21" fill="#b91c1c" font-weight="700">色を送らない（ズレる）</text>
+<text x="660" y="150" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">{ ... }  ← 受け取った側の色を使う</text>
+<rect x="500" y="176" width="140" height="90" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<path d="M520 250 Q 570 190 620 210" fill="none" stroke="#e5484d" stroke-width="7" stroke-linecap="round"/>
+<rect x="680" y="176" width="140" height="90" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<path d="M700 250 Q 750 190 800 210" fill="none" stroke="#006fee" stroke-width="7" stroke-linecap="round"/>
+<text x="660" y="300" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">同じ絵を見ているつもりで、違うものを見ている</text>
+<text x="450" y="366" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">絵に残るものは指示に入れる。手元の状態（選択中の道具）は送らない</text>
+</svg>
