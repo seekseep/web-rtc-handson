@@ -3,7 +3,6 @@ const wordInput = document.querySelector('#word');
 const hostButton = document.querySelector('#host');
 const guestButton = document.querySelector('#guest');
 const statusText = document.querySelector('#status');
-const clearButton = document.querySelector('#clear');
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
 
@@ -85,9 +84,6 @@ function apply(data) {
   if (data.type === 'stamp') {
     drawStamp(data.x, data.y, data.emoji);
   }
-  if (data.type === 'clear') {
-    clearCanvas();
-  }
 }
 
 // 自分のキャンバスに描いてから、同じ指示を相手にも送る。
@@ -122,7 +118,7 @@ function clearCanvas() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-// canvas は 800x600 のまま、画面幅に合わせて縮めて表示している。
+// canvas は 800x600 のまま、空いている場所に合わせて縮めて表示している。
 // クリックされた位置は「画面上の px」なので、縮めた比率で割って
 // 800x600 の中での座標に戻す。これをやらないと 2 台で線がズレる。
 function positionOf(event) {
@@ -198,10 +194,6 @@ document.querySelectorAll('.color').forEach(function (button) {
     color = button.dataset.color;
     select(button, '.color');
   });
-});
-
-clearButton.addEventListener('click', function () {
-  draw({ type: 'clear' });
 });
 
 // 同じ仲間のボタンから選択の印を外して、押されたものだけに付ける

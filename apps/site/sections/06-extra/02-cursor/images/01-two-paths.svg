@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="360" fill="#ffffff"/>
+<text x="450" y="50" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">残るものと、残らないもの</text>
+<rect x="50" y="84" width="380" height="232" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="240" y="124" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">線・スタンプ・ぜんぶ消す</text>
+<text x="86" y="172" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• draw() を通す</text>
+<text x="86" y="204" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• キャンバスに描く</text>
+<text x="86" y="236" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• history に貯める</text>
+<text x="86" y="268" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• つながっていれば送る</text>
+<rect x="470" y="84" width="380" height="232" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="660" y="124" text-anchor="middle" font-size="21" fill="#b45309" font-weight="700">カーソル</text>
+<text x="506" y="172" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• draw() を通さない</text>
+<text x="506" y="204" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• キャンバスに描かない</text>
+<text x="506" y="236" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• history に貯めない</text>
+<text x="506" y="268" text-anchor="start" font-size="15" fill="#475569" font-weight="400">• conn.send で直接送る</text>
+<text x="450" y="344" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">残らないものを history に入れると、あとから来た人に古い位置が流れる</text>
+</svg>

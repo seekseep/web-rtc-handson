@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="320" fill="#ffffff"/>
+<text x="450" y="50" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">ひと声の取り次ぎを、自分のサーバーに移す</text>
+<g transform="translate(70,108) scale(2.5,1.7142857142857142)"><path d="M25,60 a20,20 0 0 1 -4,-39 a23,23 0 0 1 44,-7 a17,17 0 0 1 16,13 a16,16 0 0 1 -5,33 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/></g>
+<text x="195" y="176" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">PeerJS Cloud</text>
+<text x="195" y="254" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">世界中の人と共有</text>
+<line x1="346" y1="168" x2="508" y2="168" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="427.0" y="150.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">移す</text>
+<svg x="678" y="112" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
+  <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
+  <line x1="6" x2="6.01" y1="6" y2="6" />
+  <line x1="6" x2="6.01" y1="18" y2="18" />
+</svg>
+<text x="710" y="200" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">自分の PeerServer</text>
+<text x="710" y="254" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">名前がぶつかるのは自分のユーザーだけ</text>
+</svg>

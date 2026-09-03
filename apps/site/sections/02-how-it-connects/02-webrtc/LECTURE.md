@@ -114,7 +114,3 @@ conn.send(new Uint8Array([1, 2, 3])); // バイト列
 - `conn.send()` には文字列しか渡せない [x]
 
 :::
-
-## 次の節へ
-
-[03 最初のひと声だけ、誰かに頼む](../03-signaling/LECTURE.md)

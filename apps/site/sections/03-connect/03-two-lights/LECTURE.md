@@ -1,154 +1,113 @@
 ---
 docs: true
-title: 2 つの丸を並べる
+title: ライトをもう 1 つ増やす
 ---
 
-# 01 2 つの丸を並べる
+# 03 ライトをもう 1 つ増やす
 
-![2 つの丸を並べる](./images/00-thumbnail.svg)
+![ライトをもう 1 つ増やす](./images/00-thumbnail.svg)
 
-ここから手を動かします。まずは**つなぐ前**の画面を作ります。
-「じぶん」と「あいて」の丸を並べて、ボタンを押すと**じぶんの丸だけ**が光るところまでです。
+ライトを **2 つ**に増やします。左が「じぶん」、右が「あいて」です。
+それぞれに専用のボタンを付けて、押した方の丸が光るようにします。
 
-つなぐのは次の節です。この節では PeerJS はまだ出てきません。
+右の丸は、これから作る「**あいての画面で起きたこと**」を映す場所です。
+でも相手はまだいないので、この節では**練習用のボタン**で自分で光らせてみます。
+つなぐのは次の節からです。
 
-> **今回さわる `app/`:** `index.html`・`style.css`・`main.js` を新しく作る
+> **今回さわる `app/`:** `index.html` に丸とボタンを追加、`main.js` に処理を追加
 
-## ファイルを 3 つ作る
+## 丸を 2 つに増やす
 
-[02 エディタを用意する](../../01-introduction/02-editor/LECTURE.md) で開いた `app/` フォルダの中に、
-次の 3 つのファイルを作ります。
+丸をそれぞれ `<div>` で包んで、下に名前を付けます。ボタンも 1 つ足します。
 
-```text
-app/
-├── index.html   画面の骨組み
-├── style.css    見た目
-└── main.js      動き
-```
+:::code[`index.html` の `<body>` の中]{filepath=index.html offset=11 newOffset=11}
 
-## index.html — 画面の骨組み
+```diff
+  <main>
+-   <div class="circle" id="my-circle"></div>
++   <div>
++     <div class="circle" id="my-circle"></div>
++     <p>じぶん</p>
++   </div>
++   <div>
++     <div class="circle" id="peer-circle"></div>
++     <p>あいて</p>
++   </div>
+  </main>
 
-:::code[`app/index.html`（全文）]{filepath=index.html offset=1}
-
-```html
-<!doctype html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ボタンで光る</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="main.js" defer></script>
-  </head>
-  <body>
-    <main>
-      <div>
-        <div class="circle" id="my-circle"></div>
-        <p>じぶん</p>
-      </div>
-      <div>
-        <div class="circle" id="peer-circle"></div>
-        <p>あいて</p>
-      </div>
-    </main>
-
-    <button id="light">ひからせる</button>
-  </body>
-</html>
+  <button id="light">ひからせる</button>
++ <button id="peer-light">あいてをひからせる</button>
 ```
 
 :::
 
-- `id="my-circle"` / `id="peer-circle"` … あとから JavaScript でつかむための名札です。
-  `id` はページの中で 1 つだけ付けられる名前で、`document.querySelector('#my-circle')` で取り出せます
-- `class="circle"` … 見た目をまとめて当てるための分類名です。`id` と違って何個あっても構いません
-- `defer` … 「HTML を全部読み終わってから `main.js` を動かして」という指定です。
-  これが無いと、`main.js` が動く時点でまだ丸が存在せず、`querySelector` が `null` を返します
+- `class="circle"` は**両方に付けます**。`.circle` に書いた見た目（大きさ・丸さ・灰色）が
+  そのまま 2 つ目にも当たります。CSS は 1 行も足しません
+- `id` は `my-circle` / `peer-circle` と**別々**にします。`id` はページに 1 つだけの名札なので、
+  同じ名前を 2 回使うことはできません
+- `<div>` で包んだのは、丸と名前をひとかたまりにして横に並べるためです。
+  `main` に書いた `display: flex` と `gap: 48px` が、このかたまりを 48px 空けて並べます
 
-## style.css — 見た目
+## それぞれのボタンで光らせる
 
-:::code[`app/style.css`（全文）]{filepath=style.css offset=1}
+`main.js` の部品を 2 つ足します。
 
-```css
-body {
-  margin: 0;
-  padding: 24px;
-  font-family: sans-serif;
-  background: #222;
-  color: #fff;
-  text-align: center;
-}
+:::code[`main.js` の先頭]{filepath=main.js offset=1 newOffset=1}
 
-main {
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  margin: 48px 0;
-}
-
-.circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: #555;
-  /* 色が切り替わるときに、ぱっと変わらず少しなめらかに見えるようにする */
-  transition: background 0.2s;
-}
-
-#light {
-  font-size: 20px;
-  padding: 16px 32px;
-}
+```diff
+  // 画面の部品を取っておく
+  const myCircle = document.querySelector('#my-circle');
++ const peerCircle = document.querySelector('#peer-circle');
+  const lightButton = document.querySelector('#light');
++ const peerLightButton = document.querySelector('#peer-light');
 ```
 
 :::
 
-- `border-radius: 50%` … 正方形の角を半分まで丸めると、円になります
-- `transition: background 0.2s` … 色が変わるとき、0.2 秒かけてじわっと変わります。
-  無くても動きますが、あると「光った」感じが出ます
+そして、ファイルのいちばん下に、2 つ目のボタンの処理を足します。
 
-## main.js — 動き
-
-:::code[`app/main.js`（全文）]{filepath=main.js offset=1}
+:::code[`main.js` の末尾]{filepath=main.js offset=14}
 
 ```js
-// 画面の部品を取っておく
-const myCircle = document.querySelector('#my-circle');
-const peerCircle = document.querySelector('#peer-circle');
-const lightButton = document.querySelector('#light');
-
-lightButton.addEventListener('click', function () {
-  // 0〜359 のどれかの色相。押すたびに違う色になる。
+// 「あいて」の丸を光らせる練習用のボタン。次の節で、この係は相手にゆずる。
+peerLightButton.addEventListener('click', function () {
   const color = 'hsl(' + Math.floor(Math.random() * 360) + ', 90%, 60%)';
 
-  myCircle.style.background = color;
+  peerCircle.style.background = color;
 });
 ```
 
 :::
 
-- `document.querySelector('#my-circle')` … `id` が `my-circle` の要素を 1 つ取ってきます。
-  毎回書くと長いので、最初に変数に入れておきます
-- `addEventListener('click', ...)` … 「クリックされたら、この関数を呼んでください」という**予約**です。
-  書いた瞬間には何も起きません
-- `hsl(色相, 彩度, 明度)` … 色の指定のしかたの 1 つです。色相を 0〜359 の乱数にすると、
-  押すたびに違う色になります。`#ff0000` のような書き方だと「ランダムだけど鮮やか」が作りにくいので、
-  ここでは `hsl` を使っています
+前の節で書いた処理と、**丸の変数が違うだけ**です。
+`myCircle` を `peerCircle` に、`lightButton` を `peerLightButton` に置き換えただけで、
+形はまったく同じです。
+
+:::notice[同じ行が 2 か所に出てくるけれど]
+`const color = 'hsl(...` の行は、いま 2 か所に同じものが並んでいます。
+ふつうなら関数にまとめたくなるところですが、
+**次の節でこの練習用ボタンごと消える**ので、ここではそのままにしておきます。
+:::
 
 ## 動かす
 
-`index.html` をブラウザで開きます。エディタで右クリック →「Open with Live Server」でも、
-ファイルをダブルクリックでも構いません。
+`index.html` を開くと、灰色の丸が 2 つ並んでいます。
 
-「ひからせる」を押すと、**左の丸だけ**が毎回違う色に変わります。
-右の「あいて」の丸は灰色のままです。**まだ相手がいない**ので当然です。
+- 「ひからせる」 → **左（じぶん）**だけが光る
+- 「あいてをひからせる」 → **右（あいて）**だけが光る
 
-::preview[このステップの完成イメージ（実際に触って動かせます）]{height="360"}
+::preview[このステップの完成イメージ（2 つのボタンを押し分けてみてください）]{height="380"}
 
-次の節で、この「あいて」の丸に色を届けます。
+## 「あいて」の丸を、誰が光らせるのか
+
+ここまでのコードには、**相手も通信も出てきません**。
+やっているのは「ボタンが押されたら、指定した丸を塗る」だけです。
+
+このあとやるのは、じつは 1 つだけです。
+**右の丸を光らせる合図を、自分のボタンではなく、相手のブラウザから受け取る**。
+それだけで、これは 2 人で遊べるアプリになります。
+
+だから練習用のボタンは、次の節でお役御免になります。
+押す係が、あなたから相手に移るからです。
 
 ::codeview{defaultFile="index.html"}
-
-## 次の節へ
-
-[02 PeerJS でつなぐ](../02-peer/LECTURE.md)

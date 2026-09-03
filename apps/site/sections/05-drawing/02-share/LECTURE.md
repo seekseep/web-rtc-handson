@@ -133,7 +133,3 @@ conn.on('data', apply);
 **2 つの画面で違う絵になります**。「画面に必要な情報は、全部指示に入れる」のが基本です。
 
 ::codeview{defaultFile="main.js"}
-
-## 次の節へ
-
-[03 線を引く](../03-line/LECTURE.md)

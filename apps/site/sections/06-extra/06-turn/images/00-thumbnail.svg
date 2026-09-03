@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="348" viewBox="0 0 900 348" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="348" fill="#ffffff"/>
+<text x="450" y="50" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">TURN だけ、通信がまるごと通る</text>
+<rect x="50" y="96" width="800" height="60" rx="12" fill="#ccfbf1" stroke="#14b8a6" stroke-width="3.5"/>
+<text x="84" y="134" text-anchor="start" font-size="21" fill="#0f766e" font-weight="700" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">PeerServer</text>
+<line x1="330" y1="126" x2="620" y2="126" stroke="#14b8a6" stroke-width="3" stroke-linecap="round"/>
+<text x="836" y="134" text-anchor="end" font-size="13" fill="#475569" font-weight="400">最初のひと声だけ</text>
+<rect x="50" y="168" width="800" height="60" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="84" y="206" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">STUN</text>
+<line x1="330" y1="198" x2="620" y2="198" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<text x="836" y="206" text-anchor="end" font-size="13" fill="#475569" font-weight="400">住所を教えるだけ</text>
+<rect x="50" y="240" width="800" height="60" rx="12" fill="#ffedd5" stroke="#f97316" stroke-width="3.5"/>
+<text x="84" y="278" text-anchor="start" font-size="21" fill="#c2410c" font-weight="700" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">TURN</text>
+<line x1="330" y1="270" x2="620" y2="270" stroke="#f97316" stroke-width="26" stroke-linecap="round"/>
+<text x="836" y="278" text-anchor="end" font-size="13" fill="#475569" font-weight="400">描いた線が全部</text>
+<text x="450" y="334" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">中継した通信量が、そのまま費用になる</text>
+</svg>

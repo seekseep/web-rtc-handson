@@ -3,7 +3,7 @@ docs: true
 title: Netlify に公開して 2 台で動かす
 ---
 
-# 04 Netlify に公開して 2 台で動かす
+# 06 Netlify に公開して 2 台で動かす
 
 ![Netlify に公開して 2 台で動かす](./images/00-thumbnail.svg)
 
@@ -98,9 +98,10 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 
 ## Netlify に公開する
 
-いよいよ公開します。ターミナルは使いません。
+いよいよ公開します。手順は [01 章](../../01-introduction/04-netlify/LECTURE.md) でおためししたときと
+まったく同じです。ターミナルは使いません。
 
-1. https://app.netlify.com/drop を開きます（[01 章](../../01-introduction/04-netlify/LECTURE.md) で作ったアカウントでログインしておく）
+1. https://app.netlify.com/drop を開きます（おためしのときと同じページです。ログインは要りません）
 2. 点線の四角に、**`app` フォルダをまるごと**ドラッグ&ドロップします
 3. 数秒で `https://<でたらめな名前>.netlify.app` が出てきます
 
@@ -150,14 +151,8 @@ _図: 落とすのはフォルダそのもの。中の `index.html` を選ぶの
 同じ URL のまま差し替える方法もありますが、ダッシュボードからプロジェクトを探す手順が増えます。
 このハンズオンでは「落とす → 新しい URL」だけで通します。
 
-::preview[こちらで「へやをつくる」]{height="380"}
+::preview[こちらで「へやをつくる」]{height="420"}
 
-::preview[こちらで「へやにはいる」]{height="380"}
+::preview[こちらで「へやにはいる」]{height="420"}
 
 ::codeview{defaultFile="main.js"}
-
-## 次の章へ
-
-つなぐ部分はこれで完成です。次の章では、いま起きていることをもう少し詳しく見ます。
-
-[01 送ったデータはどう届くのか](../../04-data/01-message/LECTURE.md)

@@ -150,6 +150,10 @@ export default defineConfig({
           label: '05. 実装2 — お絵かき',
           items: [{ autogenerate: { directory: '05-drawing' } }],
         },
+        {
+          label: '06. おまけ — もっと遊ぶ',
+          items: [{ autogenerate: { directory: '06-extra' } }],
+        },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

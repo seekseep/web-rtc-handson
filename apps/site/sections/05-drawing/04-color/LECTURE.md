@@ -35,7 +35,7 @@ CSS に `.color-red { background: ... }` のような定義を増やす必要が
 
 ## 色ボタンの形を整える
 
-:::code[`style.css`（`input, button { ... }` の下）]{filepath=style.css offset=24}
+:::code[`style.css`（`input, button { ... }` の下）]{filepath=style.css offset=29}
 
 ```css
 .color {
@@ -134,7 +134,3 @@ _図: 「見た目に必要な情報は、すべて指示に入れる」。_
 ::preview[こちらで「へやにはいる」]{height="560"}
 
 ::codeview{defaultFile="main.js"}
-
-## 次の節へ
-
-[05 けしごむと「ぜんぶ消す」](../05-eraser/LECTURE.md)

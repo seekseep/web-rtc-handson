@@ -1,4 +1,9 @@
 body {
+  box-sizing: border-box;
+  /* 画面（iframe やスマホ）の高さぴったりに収めて、ページごと縦スクロールしないようにする */
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 16px;
   font-family: sans-serif;
@@ -26,12 +31,19 @@ button {
   outline: 3px solid #ffd60a;
 }
 
+/* キャンバスを置く場所。ヘッダーと道具バーの残りの高さを、ここが全部使う */
+.stage {
+  flex: 1;
+  /* flex の中身は既定では縮まないので、縮んでよいことを伝える */
+  min-height: 0;
+}
+
 canvas {
+  display: block;
   background: #fff;
   border-radius: 8px;
-  /* 実際の解像度は 800x600 のまま、表示だけ画面幅に合わせて縮める。
-     こうすると、どの端末でも同じ座標で絵を共有できる。 */
-  width: 100%;
-  max-width: 800px;
-  height: auto;
+  /* 実際の解像度は 800x600 のまま、あいている場所に収まる大きさで表示する。
+     こうすると、どの端末でも同じ座標で絵を共有できて、画面もスクロールしない。 */
+  max-width: 100%;
+  max-height: 100%;
 }

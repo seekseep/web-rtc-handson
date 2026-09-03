@@ -1,0 +1,54 @@
+:root {
+  /* このページの色。ここを書き換えて、もう一度公開してみるところまでが練習です */
+  --accent: #ffd60a;
+}
+
+body {
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  font-family: sans-serif;
+  background: #222;
+  color: #fff;
+  text-align: center;
+}
+
+main {
+  max-width: 480px;
+}
+
+.lamp {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 48px var(--accent);
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 24px;
+}
+
+p {
+  margin: 0;
+  color: #ddd;
+  line-height: 1.8;
+}
+
+code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #333;
+  font-size: 90%;
+}
+
+.hint {
+  margin-top: 24px;
+  color: #888;
+  font-size: 14px;
+}

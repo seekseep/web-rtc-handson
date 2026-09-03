@@ -165,7 +165,7 @@ async function buildAssetsBlock({ exampleAbs, sec, lec, base, label }) {
     `<span class="download-button__label">${label || '素材をダウンロード'}</span>` +
     `</a>` +
     `<p class="assets-download__files">中身（${files.length} ファイル）: ${list}` +
-    `<br />解凍してできる <code>assets/</code> を <code>game/</code> の中に置いてください。</p>` +
+    `<br />解凍してできる <code>assets/</code> を <code>app/</code> の中に置いてください。</p>` +
     `</div>`
   );
 }

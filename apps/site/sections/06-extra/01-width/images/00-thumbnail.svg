@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="300" fill="#ffffff"/>
+<text x="450" y="50" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">太さは、もう指示の中に入っていた</text>
+<rect x="50" y="88" width="360" height="156" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="230" y="118" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">自分の画面</text>
+<line x1="96" y1="152" x2="364" y2="152" stroke="#333333" stroke-width="4" stroke-linecap="round"/>
+<line x1="96" y1="184" x2="364" y2="184" stroke="#333333" stroke-width="12" stroke-linecap="round"/>
+<line x1="96" y1="222" x2="364" y2="222" stroke="#333333" stroke-width="28" stroke-linecap="round"/>
+<line x1="424" y1="164" x2="486" y2="164" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="455.0" y="148.0" text-anchor="middle" font-size="13" fill="#0f172a" font-weight="400">width</text>
+<rect x="500" y="88" width="350" height="156" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="675" y="118" text-anchor="middle" font-size="17" fill="#15803d" font-weight="600">相手の画面</text>
+<line x1="546" y1="152" x2="804" y2="152" stroke="#333333" stroke-width="4" stroke-linecap="round"/>
+<line x1="546" y1="184" x2="804" y2="184" stroke="#333333" stroke-width="12" stroke-linecap="round"/>
+<line x1="546" y1="222" x2="804" y2="222" stroke="#333333" stroke-width="28" stroke-linecap="round"/>
+<text x="450" y="282" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">受け取る側のコードは 1 行も直らない</text>
+</svg>

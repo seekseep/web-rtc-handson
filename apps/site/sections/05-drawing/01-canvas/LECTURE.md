@@ -33,7 +33,9 @@ title: キャンバスにスタンプを置く
   <button class="stamp" data-stamp="⭐">⭐</button>
 </div>
 
-<canvas id="canvas" width="800" height="600"></canvas>
+<div class="stage">
+  <canvas id="canvas" width="800" height="600"></canvas>
+</div>
 ```
 
 :::
@@ -54,6 +56,8 @@ title: キャンバスにスタンプを置く
   ボタンごとに「このボタンはどのスタンプか」を持たせています
 - `width="800" height="600"` … キャンバスの**中の解像度**です。CSS の大きさとは別物で、
   ここがズレの原因になります（後述）
+- `<div class="stage">` … キャンバスを置く場所です。
+  「ヘッダーと道具バーを引いた残りの高さ」をこの枠が受け持ち、キャンバスはその中に収まります
 
 ## style.css を書き直す
 
@@ -63,6 +67,11 @@ title: キャンバスにスタンプを置く
 
 ```css
 body {
+  box-sizing: border-box;
+  /* 画面（iframe やスマホ）の高さぴったりに収めて、ページごと縦スクロールしないようにする */
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 16px;
   font-family: sans-serif;
@@ -90,18 +99,32 @@ button {
   outline: 3px solid #ffd60a;
 }
 
+/* キャンバスを置く場所。ヘッダーと道具バーの残りの高さを、ここが全部使う */
+.stage {
+  flex: 1;
+  /* flex の中身は既定では縮まないので、縮んでよいことを伝える */
+  min-height: 0;
+}
+
 canvas {
+  display: block;
   background: #fff;
   border-radius: 8px;
-  /* 実際の解像度は 800x600 のまま、表示だけ画面幅に合わせて縮める。
-     こうすると、どの端末でも同じ座標で絵を共有できる。 */
-  width: 100%;
-  max-width: 800px;
-  height: auto;
+  /* 実際の解像度は 800x600 のまま、あいている場所に収まる大きさで表示する。
+     こうすると、どの端末でも同じ座標で絵を共有できて、画面もスクロールしない。 */
+  max-width: 100%;
+  max-height: 100%;
 }
 ```
 
 :::
+
+- `body` の `height: 100dvh` と `display: flex` … 画面の高さぴったりの縦並びにします
+  （`dvh` はスマホのアドレスバーを除いた実際の高さです）
+- `.stage` の `flex: 1` … ヘッダーと道具バーを置いた**残りの高さを全部**もらいます。
+  `min-height: 0` は「必要なら縮んでよい」という意味で、これが無いと縮まずにはみ出します
+- キャンバスの `max-width` / `max-height` … 縦横の比（`800 x 600`）を保ったまま、
+  `.stage` に収まる大きさまで縮んで表示されます。**画面がどんな大きさでもスクロールしません**
 
 ## main.js の部品を入れ替える
 
@@ -197,7 +220,7 @@ function clearCanvas() {
 
 ここがこの節でいちばん大事なところです。
 
-キャンバスの中の解像度は `800 x 600` です。でも CSS で `width: 100%` にしているので、
+キャンバスの中の解像度は `800 x 600` です。でも CSS で「空いている場所に収まるまで縮める」ようにしたので、
 **画面上の見た目の大きさは端末によって違います**。スマホなら 350px くらいかもしれません。
 
 クリックされた位置（`event.clientX`）は**画面上の px** で届きます。
@@ -211,7 +234,7 @@ _図: 見た目 350px のキャンバスの右端は、中の座標では 800。
 :::code[`main.js`（`clearCanvas` の下）]{filepath=main.js offset=85}
 
 ```js
-// canvas は 800x600 のまま、画面幅に合わせて縮めて表示している。
+// canvas は 800x600 のまま、空いている場所に合わせて縮めて表示している。
 // クリックされた位置は「画面上の px」なので、縮めた比率で割って
 // 800x600 の中での座標に戻す。これをやらないと 2 台で線がズレる。
 function positionOf(event) {
@@ -277,7 +300,3 @@ clearCanvas();
 ::preview[このステップの完成イメージ（実際に触って動かせます）]{height="560"}
 
 ::codeview{defaultFile="main.js"}
-
-## 次の節へ
-
-[02 スタンプを送り合う](../02-share/LECTURE.md)

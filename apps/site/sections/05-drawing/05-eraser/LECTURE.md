@@ -1,18 +1,18 @@
 ---
 docs: true
-title: けしごむと「ぜんぶ消す」
+title: けしごむ
 ---
 
-# 05 けしごむと「ぜんぶ消す」
+# 05 けしごむ
 
-![けしごむと「ぜんぶ消す」](./images/00-thumbnail.svg)
+![けしごむ](./images/00-thumbnail.svg)
 
-最後の道具です。**けしごむ**と、**ぜんぶ消す**ボタンを足します。
+道具の最後は **けしごむ**です。
 
 けしごむは、実は新しい仕組みをほとんど使いません。
 「白くて太いペン」として作れてしまいます。
 
-> **今回さわる `app/`:** `index.html` にボタン 2 つ、`main.js` に少しずつ
+> **今回さわる `app/`:** `index.html` にボタン 1 つ、`main.js` に 2 行
 
 ## けしごむは「白い太いペン」
 
@@ -33,9 +33,9 @@ _図: 実際には「消して」いない。白で上塗りしている。_
 今回は背景が白一色なので、単純なほうを選びました。
 :::
 
-## ボタンを 2 つ足す
+## ボタンを足す
 
-:::code[`index.html` の `.tools` の中]{filepath=index.html offset=21}
+:::code[`index.html` の `.tools` の中（ペンの下）]{filepath=index.html offset=21}
 
 ```html
 <button class="tool" data-tool="eraser">🧽 けしごむ</button>
@@ -43,31 +43,29 @@ _図: 実際には「消して」いない。白で上塗りしている。_
 
 :::
 
-:::code[`index.html` の `.tools` の最後（スタンプの下）]{filepath=index.html offset=32}
+書き足すのはこれだけです。**JavaScript 側にボタンの処理は要りません。**
 
-```html
-<button id="clear">ぜんぶ消す</button>
+けしごむのボタンには `class="tool"` を付けたので、
+[03 節](../03-line/LECTURE.md) で書いた `.tool` のループがそのまま拾ってくれます。
+
+```js
+// 03 節で書いたこれが、けしごむのボタンも面倒を見てくれる
+document.querySelectorAll('.tool').forEach(function (button) {
+  button.addEventListener('click', function () {
+    tool = button.dataset.tool;
+    select(button, '.tool, .stamp');
+  });
+});
 ```
 
-:::
-
-## ボタンを取り出す
-
-:::code[`main.js` の先頭]{filepath=main.js offset=5 newOffset=5}
-
-```diff
-  const statusText = document.querySelector('#status');
-+ const clearButton = document.querySelector('#clear');
-  const canvas = document.querySelector('#canvas');
-```
-
-:::
+`data-tool="eraser"` と書いておけば、押されたときに `tool` が `'eraser'` になります。
+**道具を増やすたびに JavaScript を書き足さなくていい**形になっているわけです。
 
 ## けしごむで描く
 
-`pointermove` の中の `color` と `width` を、道具によって切り替えます。
+あとは、線を引くときの色と太さを道具によって切り替えるだけです。
 
-:::code[`main.js` の `pointermove` の中]{filepath=main.js offset=158 newOffset=162}
+:::code[`main.js` の `pointermove` の中]{filepath=main.js offset=158 newOffset=158}
 
 ```diff
 -   color: color,
@@ -94,60 +92,31 @@ if (tool === 'eraser') {
 けしごむのときだけ太さを `40` にしているのは、
 細いけしごむだと消すのが大変だからです。
 
-けしごむのボタンには `class="tool"` を付けたので、
-[03 節](../03-line/LECTURE.md) で書いた `.tool` のループがそのまま拾ってくれます。
-ボタンの処理を書き足す必要はありません。
+## 送っているものは、やっぱり線
 
-## 「ぜんぶ消す」を足す
-
-新しい種類の指示 `clear` を作ります。
-
-:::code[`main.js` の `apply` の中（最後）]{filepath=main.js offset=88}
+けしごむでなぞったときに飛んでいく指示を見てみます。
 
 ```js
-if (data.type === 'clear') {
-  clearCanvas();
-}
+{ type: 'line', x1: ..., y1: ..., x2: ..., y2: ..., color: '#ffffff', width: 40 }
 ```
 
-:::
+`type` は `line` のままです。受け取った側は「白くて太い線を引け」としか読みません。
+それでも画面は同じになります。
 
-:::code[`main.js`（`.color` のループの下、`select` の上）]{filepath=main.js offset=203}
-
-```js
-clearButton.addEventListener('click', function () {
-  draw({ type: 'clear' });
-});
-```
-
-:::
-
-`draw({ type: 'clear' })` を呼ぶだけで、自分のキャンバスが白くなり、
-**同じ指示が相手にも飛んで**相手の画面も白くなります。
-`apply` と `draw` を分けた土台が、ここでもそのまま効いています。
-
-送っている指示は `{ type: 'clear' }` だけです。座標も色もありません。
-「全部消して」という命令に、それ以上の情報は要らないからです。
-
-:::warning
-「ぜんぶ消す」は相手の絵も消します。確認は出しません。
-相手が一生懸命描いている最中に押すと、当然もめます。
-本物のサービスなら「本当に消しますか？」を出すところです。
-:::
+[04 節](../04-color/LECTURE.md) で書いた「見た目に必要な情報は、すべて指示に入れる」を
+守っているので、**新しい種類の指示を作らなくても済んでいる**わけです。
 
 ## 動かす
 
-- けしごむを選んでなぞると、線が消えます。**相手の画面でも消えます**
-- 「ぜんぶ消す」を押すと、両方の画面が白紙になります
+けしごむを選んでなぞると、線が消えます。**相手の画面でも消えます**。
 
 ::preview[こちらで「へやをつくる」]{height="560"}
 
 ::preview[こちらで「へやにはいる」]{height="560"}
 
-これでお絵かきツールとしては完成です。次の節で最後の仕上げをして、公開します。
+けしごむで消したあと、もう一度ペンに戻して描けることも確かめてください。
+`tool` を切り替えているだけなので、行ったり来たりできます。
+
+次の節で、「ぜんぶ消す」ボタンを足します。
 
 ::codeview{defaultFile="main.js"}
-
-## 次の節へ
-
-[06 あとから来た人にも見せて、公開する](../06-deploy/LECTURE.md)

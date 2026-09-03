@@ -3,11 +3,12 @@ docs: true
 title: PeerJS でつなぐ
 ---
 
-# 02 PeerJS でつなぐ
+# 04 PeerJS でつなぐ
 
 ![PeerJS でつなぐ](./images/00-thumbnail.svg)
 
-前の節で画面ができました。この節では、**2 つのブラウザをつなぎます**。
+ライトが 2 つ並びました。ここからが**通信**です。
+この節で、**2 つのブラウザをつなぎます**。
 まだデータは送りません。「つながりました」と表示されるところまでです。
 
 つなぐ役は 2 つに分かれます。
@@ -15,7 +16,8 @@ title: PeerJS でつなぐ
 - **ホスト**（へやをつくる）… あいことばを**名乗って**、誰かが来るのを待つ
 - **ゲスト**（へやにはいる）… 名乗らずに、そのあいことばを**呼び出す**
 
-> **今回さわる `app/`:** `index.html` にボタンを追加、`style.css` を少し追加、`main.js` を書き足し
+> **今回さわる `app/`:** `index.html` にボタンを追加、`style.css` を少し追加、`main.js` を書き足し、
+> 練習用のボタンを 2 つのファイルから削除
 
 ## PeerJS を読み込む
 
@@ -51,7 +53,7 @@ title: PeerJS でつなぐ
 
 `style.css` にも、ボタンを少し大きくする指定を足しておきます。
 
-:::code[`style.css`（`body { ... }` の下）]{filepath=style.css offset=10}
+:::code[`style.css`（`body { ... }` の下）]{filepath=style.css offset=20}
 
 ```css
 input,
@@ -59,15 +61,22 @@ button {
   font-size: 16px;
   padding: 8px 12px;
 }
+
+/* 状態表示の上下の余白を消して、せまい画面でもはみ出さないようにする */
+#status {
+  margin: 0;
+}
 ```
 
 :::
 
-`input` は次の節ではまだ出てきませんが、[04 節](../04-deploy/LECTURE.md) で足すので先に書いておきます。
+`input` は次の節ではまだ出てきませんが、[06 節](../06-deploy/LECTURE.md) で足すので先に書いておきます。
+`#status` は `<p>` なので上下に余白が付きます。これを消しておくと、せまい画面でも画面に収まります。
 
 ## 部品を取り出す
 
 `main.js` のいちばん上、部品をつかんでいるところに 3 つ足します。
+練習用のボタンはこのあと消すので、`peerLightButton` もここで外しておきます。
 
 :::code[`main.js` の先頭]{filepath=main.js offset=1 newOffset=1}
 
@@ -79,6 +88,7 @@ button {
   const myCircle = document.querySelector('#my-circle');
   const peerCircle = document.querySelector('#peer-circle');
   const lightButton = document.querySelector('#light');
+- const peerLightButton = document.querySelector('#peer-light');
 ```
 
 :::
@@ -159,6 +169,47 @@ function ready() {
 そのままだと、同じ会場の他の人や世界中の誰かとぶつかって `unavailable-id` になります。
 :::
 
+## 練習用のボタンを外す
+
+つなぐ準備ができました。前の節の**練習用のボタン**は、ここでお役御免です。
+「あいて」の丸を光らせる係は、次の節から**相手のブラウザ**が引き継ぎます。
+
+まず `index.html` からボタンを消します。
+
+:::code[`index.html` の `<body>` の中（`<button id="light">` の下）]{filepath=index.html offset=22 newOffset=29}
+
+```diff
+  <button id="light">ひからせる</button>
+- <button id="peer-light">あいてをひからせる</button>
+```
+
+:::
+
+`main.js` の方も、いちばん下の練習用の処理をまるごと消します。
+
+:::code[`main.js` の末尾]{filepath=main.js offset=7 newOffset=68}
+
+```diff
+  lightButton.addEventListener('click', function () {
+    // 0〜359 のどれかの色相。押すたびに違う色になる。
+    const color = 'hsl(' + Math.floor(Math.random() * 360) + ', 90%, 60%)';
+
+    myCircle.style.background = color;
+  });
+-
+- // 「あいて」の丸を光らせる練習用のボタン。次の節で、この係は相手にゆずる。
+- peerLightButton.addEventListener('click', function () {
+-   const color = 'hsl(' + Math.floor(Math.random() * 360) + ', 90%, 60%)';
+-
+-   peerCircle.style.background = color;
+- });
+```
+
+:::
+
+これで「あいて」の丸を光らせるものは、自分の画面から無くなりました。
+残ったボタンは「ひからせる」だけです。
+
 ## 1 行ずつ読む
 
 ### `new Peer(ROOM)` と `new Peer()`
@@ -233,7 +284,3 @@ _図: 役割が違うのは最初だけ。つながったあとは、どちら�
 通り道はできましたが、**まだ何も流していない**からです。次の節でデータを流します。
 
 ::codeview{defaultFile="main.js"}
-
-## 次の節へ
-
-[03 ボタンで色を送る](../03-send/LECTURE.md)

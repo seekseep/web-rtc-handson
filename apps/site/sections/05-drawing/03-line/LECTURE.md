@@ -51,7 +51,7 @@ _図: なめらかな線に見えるが、実際は短い直線の集まり。_
 指でキャンバスをなぞると、ブラウザは「ページをスクロールしたいのだろう」と解釈します。
 これを止めます。
 
-:::code[`style.css` の `canvas` の中]{filepath=style.css offset=37}
+:::code[`style.css` の `canvas` の中]{filepath=style.css offset=49}
 
 ```css
 /* 指でなぞったときにページがスクロールしないようにする（スマホ用） */
@@ -226,7 +226,3 @@ canvas.addEventListener('pointerleave', function () {
 リアルタイム通信では、送る回数を減らす工夫がよく効きます。
 
 ::codeview{defaultFile="main.js"}
-
-## 次の節へ
-
-[04 色を変える](../04-color/LECTURE.md)

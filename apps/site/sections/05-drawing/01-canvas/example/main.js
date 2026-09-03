@@ -82,7 +82,7 @@ function clearCanvas() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-// canvas は 800x600 のまま、画面幅に合わせて縮めて表示している。
+// canvas は 800x600 のまま、空いている場所に合わせて縮めて表示している。
 // クリックされた位置は「画面上の px」なので、縮めた比率で割って
 // 800x600 の中での座標に戻す。これをやらないと 2 台で線がズレる。
 function positionOf(event) {

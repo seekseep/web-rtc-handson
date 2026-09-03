@@ -44,7 +44,7 @@ const peer = new Peer();
 それが `peer.on('open', ...)` で受け取った ID です。
 
 この名前は、あとで相手が自分を呼び出すときの宛先になります。
-[03 章](../../03-connect/02-peer/LECTURE.md) では、この配られた名前を使う代わりに
+[03 章](../../03-connect/04-peer/LECTURE.md) では、この配られた名前を使う代わりに
 「あいことば」を自分から名乗る形にします。
 
 :::warning
@@ -61,7 +61,3 @@ PeerJS Cloud は世界中の人と共有している 1 つのサーバーです�
 - 会社や学校のネットワークが WebSocket をふさいでいることがあります。スマホのテザリングなど、
   別の回線で試してみてください
 - PeerJS Cloud 自体が落ちている可能性もあります。https://status.peerjs.com/ で状態を確認できます
-
-## 次の節へ
-
-[04 Netlify のアカウントを作る](../04-netlify/LECTURE.md)

@@ -5,7 +5,7 @@ PeerJS（WebRTC）でブラウザ同士を直接つなぎ、**2 つの端末で�
 ## 構成
 
 - **教材サイト本体**: [`apps/site/`](./apps/site/) — Astro + Starlight 製。教材ソース（`apps/site/README.md`・`apps/site/sections/`）から静的サイトを生成します。教材の読み方・目次は [apps/site/README.md](./apps/site/README.md) を参照。
-- **完成サンプル**: [`apps/light/`](./apps/light/)（ボタンで光る）と [`apps/draw/`](./apps/draw/)（リアルタイムお絵かき） — 教材のゴールになる 2 つの完成形。`index.html` を開けば動きます。それぞれ [`03-connect/04-deploy`](./apps/site/sections/03-connect/04-deploy/example/) と [`05-drawing/06-deploy`](./apps/site/sections/05-drawing/06-deploy/example/) の `example/` と同じ中身です。
+- **完成サンプル**: [`apps/light/`](./apps/light/)（ボタンで光る）と [`apps/draw/`](./apps/draw/)（リアルタイムお絵かき） — 教材のゴールになる 2 つの完成形。`index.html` を開けば動きます。それぞれ [`03-connect/06-deploy`](./apps/site/sections/03-connect/06-deploy/example/) と [`05-drawing/07-deploy`](./apps/site/sections/05-drawing/07-deploy/example/) の `example/` と同じ中身です。
 
 ## 開発
 
