@@ -9,7 +9,7 @@ c = Canvas(900, 380)
 
 c.text(450, 46, "app/ フォルダの中に、3 つのファイルを作る", scale="xl")
 
-c.sticky(60, 80, 440, 270, color="yellow")
+app = c.sticky(60, 80, 440, 270, color="yellow")
 c.emoji("1f4c1", 86, 96, 40)
 c.text(140, 124, "app/", scale="lg", align="left", fill=PALETTE["yellow"]["text"], font="technical")
 
@@ -28,10 +28,10 @@ c.emoji("1f4c4", 104, 298, 34)
 c.text(150, 312, "main.js", scale="md", align="left", fill=PALETTE["orange"]["text"], font="technical")
 c.text(150, 334, "動き", scale="sm", align="left")
 
-c.cloud(610, 130, 260, 130, color="teal")
+peerjs = c.cloud(610, 130, 260, 130, color="teal")
 c.text(740, 190, "PeerJS 本体", scale="lg", fill=PALETTE["teal"]["text"])
 c.text(740, 216, "CDN から読み込む", scale="sm")
-c.connector(490, 178, 618, 190, label="読み込む", label_scale="sm")
+c.link(app, peerjs, label="読み込む", label_scale="sm", start="e", end="w")
 c.text(700, 300, "インストールは不要", scale="sm")
 
 c.save("01-workspace.svg")
