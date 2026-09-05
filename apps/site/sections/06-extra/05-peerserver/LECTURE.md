@@ -33,7 +33,7 @@ PeerJS Cloud は**世界中の人と共有している 1 つのサーバー**で
 
 _図: つながったあとの線は、サーバーを通らない。_
 
-PeerServer が扱うのは、[02 章 03 節](../../02-how-it-connects/03-signaling/LECTURE.md)で見た
+PeerServer が扱うのは、[04 章 02 節](../../04-how-it-works/02-signaling/LECTURE.md)で見た
 **シグナリング**だけです。つながったあとの線・スタンプは、2 台のあいだを直接流れます。
 
 だから自分で立てても、**サーバーの通信量はほとんど増えません**。
@@ -204,5 +204,5 @@ PeerServer({ port: 9000, path: '/', allow_discovery: true });
 | つながらない回線     | 救えない                       | **救えない**（TURN が別に要る） |
 
 最後の行が大事なところです。
-自分のサーバーを立てても、[つながらない回線](../../04-data/02-trouble/LECTURE.md)は救えません。
+自分のサーバーを立てても、[つながらない回線](../../04-how-it-works/03-my-route/LECTURE.md)は救えません。
 それは次のページの話です。

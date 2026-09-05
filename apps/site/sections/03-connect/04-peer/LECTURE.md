@@ -19,6 +19,61 @@ title: PeerJS でつなぐ
 > **今回さわる `app/`:** `index.html` にボタンを追加、`style.css` を少し追加、`main.js` を書き足し、
 > 練習用のボタンを 2 つのファイルから削除
 
+## その前に — WebRTC と PeerJS
+
+ブラウザ同士を直接つなぐ仕組みが **WebRTC**（Web Real-Time Communication）です。
+プラグインもインストールも要りません。**ブラウザに最初から入っています**。
+
+WebRTC という名前でひとまとめにされていますが、中身は 3 つに分かれています。
+
+| 道具                | 何をするもの                         | 今回使う |
+| ------------------- | ------------------------------------ | -------- |
+| `getUserMedia`      | カメラ・マイクから映像と音を取り出す | 使わない |
+| `RTCPeerConnection` | 相手のブラウザとの通り道を作る       | 使う     |
+| `RTCDataChannel`    | その通り道に、**好きなデータ**を流す | 使う     |
+
+![WebRTC の 3 つの道具のうち、今回使うのは通り道を作る部分とデータを流す部分](./images/01-three-parts.svg)
+
+_図: カメラの部分は今回まったく触らない。_
+
+WebRTC はビデオ通話のために生まれた技術なので、`getUserMedia` の印象が強いかもしれません。
+でも今回作るのはお絵かきです。カメラは要りません。
+使うのは **`RTCDataChannel`**、つまり「作った通り道に、自分で決めた形のデータを流す」部分だけです。
+
+### 生の WebRTC はけっこう大変
+
+`RTCPeerConnection` を直接使うと、こういうことを自分で書くことになります。
+
+```js
+// 生の WebRTC（今回は書きません）
+const pc = new RTCPeerConnection({ iceServers: [...] });
+const channel = pc.createDataChannel('draw');
+const offer = await pc.createOffer();
+await pc.setLocalDescription(offer);
+// ↑ この offer を、どうにかして相手に届ける（← 自分で用意する必要がある）
+pc.onicecandidate = (e) => { /* 見つけた経路候補も相手に届ける */ };
+// 相手から answer が返ってきたら…
+await pc.setRemoteDescription(answer);
+```
+
+「`offer` を相手に届ける」ところに注目してください。
+**相手とまだつながっていないのに、相手に何かを届けなければいけない**のです。
+これが P2P の一番の難所で、[04 章](../../04-how-it-works/01-network/LECTURE.md)のテーマになります。
+
+### PeerJS が包んでくれる
+
+**PeerJS** は、この面倒をまるごと包んだライブラリです。
+`offer` も `answer` も `icecandidate` も出てきません。
+**名乗る・呼び出す・送る・受け取る**の 4 つだけになります。
+このあと書くのは、ほぼその形です。
+
+:::notice
+PeerJS は WebRTC を**隠している**わけではありません。
+つながったあとに `conn.peerConnection` と書けば、中の `RTCPeerConnection` を触れます。
+[04 章](../../04-how-it-works/03-my-route/LECTURE.md) では、これを使って
+「実際にどの経路でつながったか」を覗きます。
+:::
+
 ## PeerJS を読み込む
 
 `index.html` の `<head>` に、PeerJS 本体を読み込む行を足します。
@@ -249,7 +304,7 @@ PeerJS Cloud に**名前が受理された**ときに呼ばれます。
 
 ホストもゲストも、この `open` から先は完全に対等です。だから同じ `ready` 関数を渡しています。
 
-![ホストは名乗って待ち、ゲストは名乗らず呼び出す。open からは対等になる](./images/01-host-guest.svg)
+![ホストは名乗って待ち、ゲストは名乗らず呼び出す。open からは対等になる](./images/02-host-guest.svg)
 
 _図: 役割が違うのは最初だけ。つながったあとは、どちらも同じことができる。_
 

@@ -135,16 +135,16 @@ export default defineConfig({
           items: [{ autogenerate: { directory: '01-introduction' } }],
         },
         {
-          label: '02. 解説1 — つながる仕組み',
-          items: [{ autogenerate: { directory: '02-how-it-connects' } }],
+          label: '02. 解説1 — P2P ってなんなのか',
+          items: [{ autogenerate: { directory: '02-why-p2p' } }],
         },
         {
           label: '03. 実装1 — ボタンで光る',
           items: [{ autogenerate: { directory: '03-connect' } }],
         },
         {
-          label: '04. 解説2 — データの届き方',
-          items: [{ autogenerate: { directory: '04-data' } }],
+          label: '04. 解説2 — 直接つながる仕組み',
+          items: [{ autogenerate: { directory: '04-how-it-works' } }],
         },
         {
           label: '05. 実装2 — お絵かき',

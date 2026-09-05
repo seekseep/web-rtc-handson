@@ -7,7 +7,7 @@ title: TURN を用意する
 
 ![TURN を用意する](./images/00-thumbnail.svg)
 
-[04 章 02 節](../../04-data/02-trouble/LECTURE.md)で、
+[04 章 03 節](../../04-how-it-works/03-my-route/LECTURE.md)で、
 「会社のネットワークだとつながらないことがある」「PeerJS の既定の TURN はもう生きていない」
 という話をしました。その最後の一手を、実際に用意します。
 
@@ -151,7 +151,7 @@ const peer = new Peer(roomId(wordInput.value), {
 
 ## 効いているか確かめる
 
-[04 章 02 節のデモ](../../04-data/02-trouble/LECTURE.md)をもう一度使います。
+[04 章 03 節のデモ](../../04-how-it-works/03-my-route/LECTURE.md)をもう一度使います。
 `config` に自分の TURN を入れた状態で走らせて、
 **`relay` が「見つかった」に変われば成功**です。
 
@@ -189,7 +189,7 @@ TURN を用意し、PeerServer を立て、3 人以上をつなぐ——ここ�
 
 そうなると「最初からサーバーを 1 台立てて、そこに全員つないだほうが早いのでは」
 という考えが出てきます。**そのとおりです。**
-[02 章 01 節](../../02-how-it-connects/01-server-vs-p2p/LECTURE.md)で見た
+[02 章 03 節](../../02-why-p2p/03-p2p/LECTURE.md)で見た
 サーバー経由と P2P の比較が、ここでまた効いてきます。
 
 P2P が気持ちよく効くのは、
