@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="1180" height="390" fill="#ffffff"/>
+<text x="590" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">14 の節は、14 個の「動く状態」</text>
+<text x="80" y="104" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">03 章</text>
+<text x="190" y="104" text-anchor="start" font-size="13" fill="#475569" font-weight="400">ボタンで光る</text>
+<rect x="60" y="131" width="124" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="122" y="165.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">ライト</text>
+<rect x="247" y="131" width="124" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="309" y="165.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">色が変わる</text>
+<rect x="434" y="131" width="124" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="496" y="165.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">2 つになる</text>
+<rect x="621" y="131" width="124" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="683" y="165.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">つながる</text>
+<rect x="808" y="131" width="124" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="870" y="165.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">色が届く</text>
+<rect x="995" y="131" width="124" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="1057" y="165.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">2 台で動く</text>
+<path d="M190.00 158.00 L241.00 158.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M377.00 158.00 L428.00 158.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M564.00 158.00 L615.00 158.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M751.00 158.00 L802.00 158.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M938.00 158.00 L989.00 158.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<text x="80" y="250" text-anchor="start" font-size="21" fill="#15803d" font-weight="700">05 章</text>
+<text x="190" y="250" text-anchor="start" font-size="13" fill="#475569" font-weight="400">お絵かき</text>
+<rect x="60" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="118" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">スタンプ</text>
+<rect x="194" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="252" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">つなぐ</text>
+<rect x="328" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="386" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">届く</text>
+<rect x="462" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="520" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">線</text>
+<rect x="596" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="654" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">色</text>
+<rect x="730" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="788" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">けしごむ</text>
+<rect x="864" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="922" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">ぜんぶ消す</text>
+<rect x="998" y="277" width="116" height="54" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="1056" y="311.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">公開</text>
+<path d="M182.00 304.00 L188.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M316.00 304.00 L322.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M450.00 304.00 L456.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M584.00 304.00 L590.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M718.00 304.00 L724.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M852.00 304.00 L858.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M986.00 304.00 L992.00 304.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<text x="590" y="368" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">前の節に 1 つだけ足す。足したら必ず動かして確かめる</text>
+</svg>

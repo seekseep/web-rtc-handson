@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="900" height="340" fill="#ffffff"/>
+<text x="450" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">つなぐところは、上に載るアプリを知らない</text>
+<text x="200" y="96" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">03 章 ライト</text>
+<text x="700" y="96" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">05 章 お絵かき</text>
+<rect x="50" y="114" width="300" height="76" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="200" y="159.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">丸を光らせる</text>
+<rect x="550" y="114" width="300" height="76" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="700" y="159.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">スタンプを置く</text>
+<rect x="50" y="214" width="300" height="76" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="200" y="259.35" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">つなぐコード</text>
+<rect x="550" y="214" width="300" height="76" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="700" y="259.35" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">つなぐコード</text>
+<path d="M356.00 252.00 L403.00 252.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6" marker-start="url(#aR)"/>
+<path d="M497.00 252.00 L544.00 252.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#aR)"/>
+<text x="450" y="256.55" text-anchor="middle" font-size="13" fill="#0f172a" font-weight="400">まったく同じ</text>
+<text x="450" y="322" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">ちがうのは上だけ。だから下はそのまま挿せる</text>
+</svg>

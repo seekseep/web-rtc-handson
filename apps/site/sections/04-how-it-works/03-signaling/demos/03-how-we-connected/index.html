@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>どの道でつながったのかを見る</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: sans-serif;
+        background: #222;
+        color: #fff;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      input {
+        font-size: 16px;
+        padding: 9px 10px;
+        border-radius: 6px;
+        border: 1px solid #4a515b;
+        background: #2b3038;
+        color: #fff;
+        flex: 1 1 12em;
+        min-width: 0;
+      }
+      button {
+        font-size: 16px;
+        padding: 10px 18px;
+      }
+      button:disabled {
+        opacity: 0.4;
+      }
+      .status {
+        margin: 14px 0 0;
+        font-size: 14px;
+        color: #bbb;
+      }
+      table {
+        margin-top: 14px;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #444;
+      }
+      th {
+        color: #aaa;
+        font-weight: normal;
+      }
+      td.v {
+        font-family: monospace;
+      }
+      .verdict {
+        margin-top: 14px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #2b3038;
+        border-left: 4px solid #17c964;
+        font-size: 15px;
+      }
+      .note {
+        margin-top: 14px;
+        font-size: 13px;
+        color: #bbb;
+        line-height: 1.7;
+      }
+      code {
+        background: #333;
+        padding: 1px 5px;
+        border-radius: 3px;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.5/peerjs.min.js"></script>
+  </head>
+  <body>
+    <div class="row">
+      <input id="word" placeholder="あいことば" />
+      <button id="host">へやをつくる</button>
+      <button id="guest">へやにはいる</button>
+    </div>
+    <p class="status" id="status">
+      2
+      つの画面で同じあいことばを入れ、片方が「へやをつくる」、もう片方が「へやにはいる」を押してください
+    </p>
+
+    <table id="result" hidden>
+      <thead>
+        <tr>
+          <th style="width: 10em">項目</th>
+          <th>結果</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="verdict" id="verdict" hidden></div>
+    <p class="row" style="margin-top: 14px">
+      <button id="again" hidden>もう一度測る</button>
+    </p>
+
+    <p class="note">
+      グローバルな住所は伏せて表示しています。プライベートな住所（<code
+        >192.168.…</code
+      >
+      など）は家の外では意味を持たないので、そのまま出しています。<br />
+      Chrome では LAN の中の住所が <code>….local</code>
+      という名前に置き換わります（mDNS）。実物の番号を Web
+      ページに渡さないための仕組みです。
+    </p>
+
+    <script>
+      const wordEl = document.querySelector('#word');
+      const hostButton = document.querySelector('#host');
+      const guestButton = document.querySelector('#guest');
+      const againButton = document.querySelector('#again');
+      const statusEl = document.querySelector('#status');
+      const resultEl = document.querySelector('#result');
+      const rowsEl = document.querySelector('#rows');
+      const verdictEl = document.querySelector('#verdict');
+
+      // 名簿は世界で 1 つなので、ぶつかりにくい前置きを付ける
+      const PREFIX = 'webrtc-handson-route-';
+
+      let peer = null;
+      let conn = null;
+
+      wordEl.value = Math.random().toString(36).slice(2, 8);
+
+      function status(text) {
+        statusEl.textContent = text;
+      }
+
+      const TYPE_NAME = {
+        host: 'host（この端末が持っている住所）',
+        srflx: 'srflx（NAT の外から見た住所）',
+        prflx: 'prflx（相手から届いて分かった住所）',
+        relay: 'relay（TURN サーバーの住所）',
+      };
+
+      // グローバルな住所だけ伏せる。プライベートな住所は家の外で意味を持たないので出す。
+      // ブラウザ自身が住所を渡さないこともある（Chrome の mDNS / 住所の秘匿）。
+      function mask(address) {
+        if (!address) return 'ブラウザが伏せています';
+        if (address.endsWith('.local')) return address.slice(0, 6) + '….local';
+        if (address.indexOf(':') >= 0) {
+          return address.split(':').slice(0, 2).join(':') + ':…';
+        }
+        const p = address.split('.');
+        if (p.length !== 4) return address;
+        const isPrivate =
+          p[0] === '10' ||
+          p[0] === '127' ||
+          (p[0] === '192' && p[1] === '168') ||
+          (p[0] === '172' && Number(p[1]) >= 16 && Number(p[1]) <= 31);
+        return isPrivate ? address : p[0] + '.' + p[1] + '.•.•';
+      }
+
+      // 住所が取れたときだけポート番号を添える
+      function withPort(candidate) {
+        const masked = mask(candidate.address);
+        if (!candidate.address) return masked;
+        return masked + ':' + candidate.port;
+      }
+
+      function verdictOf(localType, remoteType) {
+        if (localType === 'relay' || remoteType === 'relay') {
+          return 'TURN サーバーが中継しています。ここまで来ると、もう直接ではありません';
+        }
+        if (localType === 'host' && remoteType === 'host') {
+          return '同じネットワークの中で直接つながりました。ルーターの外にも出ていません';
+        }
+        return '別々のネットワークから、NAT を越えて直接つながりました';
+      }
+
+      function row(label, value) {
+        const tr = document.createElement('tr');
+        const th = document.createElement('td');
+        th.textContent = label;
+        const td = document.createElement('td');
+        td.className = 'v';
+        td.textContent = value;
+        tr.appendChild(th);
+        tr.appendChild(td);
+        rowsEl.appendChild(tr);
+      }
+
+      // 実際に採用された候補ペアを探す。ブラウザによって印の付き方が違うので 2 通り見る。
+      async function selectedPair(pc) {
+        const stats = await pc.getStats();
+        let pair = null;
+        stats.forEach(function (r) {
+          if (r.type === 'transport' && r.selectedCandidatePairId) {
+            pair = stats.get(r.selectedCandidatePairId) || pair;
+          }
+        });
+        if (!pair) {
+          stats.forEach(function (r) {
+            if (
+              r.type === 'candidate-pair' &&
+              r.state === 'succeeded' &&
+              (r.selected || r.nominated)
+            ) {
+              pair = r;
+            }
+          });
+        }
+        if (!pair) return null;
+        return {
+          pair: pair,
+          local: stats.get(pair.localCandidateId),
+          remote: stats.get(pair.remoteCandidateId),
+        };
+      }
+
+      async function show() {
+        const pc = conn && conn.peerConnection;
+        if (!pc) return;
+        const found = await selectedPair(pc);
+        rowsEl.textContent = '';
+        if (!found || !found.local || !found.remote) {
+          status(
+            '候補ペアがまだ見つかりません。少し待ってもう一度押してください',
+          );
+          return;
+        }
+        const lt = found.local.candidateType;
+        const rt = found.remote.candidateType;
+        row('こちらの候補', TYPE_NAME[lt] || lt);
+        row('こちらの住所', withPort(found.local));
+        row('あいての候補', TYPE_NAME[rt] || rt);
+        row('あいての住所', withPort(found.remote));
+        row('プロトコル', (found.local.protocol || '?').toUpperCase());
+        const rtt = found.pair.currentRoundTripTime;
+        row(
+          '往復時間',
+          rtt == null ? '測定中' : Math.round(rtt * 1000) + ' ms',
+        );
+        resultEl.hidden = false;
+        verdictEl.textContent = verdictOf(lt, rt);
+        verdictEl.hidden = false;
+        againButton.hidden = false;
+      }
+
+      function ready(c) {
+        conn = c;
+        status('つながりました。どの道が使われたかを調べています…');
+        // 候補ペアが確定して往復時間が乗るまで、少しだけ待つ
+        setTimeout(function () {
+          status('つながりました。下が、実際に使われた道です');
+          show();
+        }, 1200);
+      }
+
+      function start(asHost) {
+        hostButton.disabled = true;
+        guestButton.disabled = true;
+        wordEl.disabled = true;
+        const id = PREFIX + wordEl.value;
+
+        peer = asHost ? new Peer(id) : new Peer();
+        peer.on('open', function () {
+          if (asHost) {
+            status('「' + wordEl.value + '」で待っています…');
+            peer.on('connection', function (c) {
+              c.on('open', function () {
+                ready(c);
+              });
+            });
+          } else {
+            status('「' + wordEl.value + '」を呼び出しています…');
+            const c = peer.connect(id);
+            c.on('open', function () {
+              ready(c);
+            });
+          }
+        });
+
+        peer.on('error', function (err) {
+          if (err.type === 'unavailable-id') {
+            status('そのあいことばは、すでに世界の誰かが使っています');
+          } else if (err.type === 'peer-unavailable') {
+            status(
+              'その名前で待っている人がいません。先に「へやをつくる」を押してください',
+            );
+          } else {
+            status('エラー: ' + err.type);
+          }
+          hostButton.disabled = false;
+          guestButton.disabled = false;
+          wordEl.disabled = false;
+        });
+      }
+
+      hostButton.addEventListener('click', function () {
+        start(true);
+      });
+      guestButton.addEventListener('click', function () {
+        start(false);
+      });
+      againButton.addEventListener('click', show);
+    </script>
+  </body>
+</html>

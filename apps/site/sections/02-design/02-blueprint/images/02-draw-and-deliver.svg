@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="350" viewBox="0 0 880 350" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="880" height="350" fill="#ffffff"/>
+<text x="440" y="44" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">ひとつの願いが、2 つの仕事に割れる</text>
+<rect x="50" y="128" width="180" height="104" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="140" y="187.35" text-anchor="middle" font-size="21" fill="#b45309" font-weight="700"><tspan x="140" dy="0">いっしょに</tspan><tspan x="140" dy="30.45">お絵かき</tspan></text>
+<svg x="499.0" y="54.3" width="82.0" height="82.0" viewBox="0 0 36 36"><path fill="#D79E84" d="M35 30c0 1.104-.896 2-2 2H3c-1.104 0-2-.896-2-2V6c0-1.104.896-2 2-2h30c1.104 0 2 .896 2 2v24z"/><path fill="#BF6952" d="M33 4H3c-1.104 0-2 .896-2 2v24c0 .389.116.748.307 1.055l33.33-26.198C34.276 4.34 33.679 4 33 4z"/><path fill="#8CCAF7" d="M31 22V9c0-.552-.447-1-1-1H6c-.552 0-1 .448-1 1v13h26z"/><path fill="#5DADEC" d="M6 28h13v-7H5v6c0 .553.448 1 1 1z"/><path fill="#292F33" d="M19 21v7h11c.553 0 1-.447 1-1v-6H19z"/><path fill="#67757F" d="M20 19c-.613 0-.852 1.127-1.405 2-.349.55-.822 1-1.595 1-2 0-2 3-3 3-1.256 0-2.512 1.578-3.273 3H19c.879-1.758 1.761-3.514 4-3.913.307-.055.638-.087 1-.087 3 0 3.106-1.553 4-2 1.358-.679 2.251-.437 3-.211V19H20z"/><path fill="#E75A70" d="M25 11l-4 4v4h8v-4z"/><path fill="#292F33" d="M29 16c-.256 0-.512-.098-.707-.293L25 12.414l-3.293 3.293c-.391.391-1.023.391-1.414 0s-.391-1.023 0-1.414l4-4c.391-.391 1.023-.391 1.414 0l4 4c.391.391.391 1.023 0 1.414-.195.195-.451.293-.707.293z"/><path fill="#BB1A34" d="M23 16h2v3h-2z"/><path fill="#FFF" d="M17.219 14.125c0-1.036-.839-1.875-1.875-1.875-.079 0-.155.014-.232.023.028-.129.044-.261.044-.398 0-1.036-.839-1.875-1.875-1.875-.668 0-1.251.352-1.583.878-.208-.08-.431-.128-.667-.128-.952 0-1.73.713-1.851 1.632-.211-.083-.439-.132-.68-.132-1.036 0-1.875.839-1.875 1.875S7.464 16 8.5 16c.041 0 .08-.01.121-.012l.004.012h6.75v-.003c1.021-.017 1.844-.847 1.844-1.872z"/></svg>
+<text x="540" y="163.14" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">描く</text>
+<svg x="499.0" y="192.3" width="82.0" height="82.0" viewBox="0 0 36 36"><path fill="#31373D" d="M11 36s-4 0-4-4V4s0-4 4-4h14s4 0 4 4v28s0 4-4 4H11z"/><path fill="#55ACEE" d="M9 5h18v26H9z"/></svg>
+<text x="540" y="301.14" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">届ける</text>
+<path d="M235.91 163.22 L286.56 154.35" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M442.44 127.07 L493.09 118.21" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="364.5" y="146.662" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">自分の画面に出す</text>
+<path d="M235.92 196.31 L277.88 203.44" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M451.12 232.89 L493.08 240.02" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="364.5" y="224.115" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">相手の画面にも出す</text>
+<text x="720" y="118" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">キャンバスの話</text>
+<text x="720" y="256" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">通信の話</text>
+<text x="440" y="332" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">難しさが別なので、分けて考える</text>
+</svg>

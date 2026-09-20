@@ -135,23 +135,23 @@ export default defineConfig({
           items: [{ autogenerate: { directory: '01-introduction' } }],
         },
         {
-          label: '02. 解説1 — P2P ってなんなのか',
-          items: [{ autogenerate: { directory: '02-why-p2p' } }],
+          label: '02. アプリの設計',
+          items: [{ autogenerate: { directory: '02-design' } }],
         },
         {
-          label: '03. 実装1 — ボタンで光る',
+          label: '03. 簡単なリアルタイム通信',
           items: [{ autogenerate: { directory: '03-connect' } }],
         },
         {
-          label: '04. 解説2 — 直接つながる仕組み',
+          label: '04. リアルタイム通信の仕組み',
           items: [{ autogenerate: { directory: '04-how-it-works' } }],
         },
         {
-          label: '05. 実装2 — お絵かき',
+          label: '05. お絵描きアプリを作る',
           items: [{ autogenerate: { directory: '05-drawing' } }],
         },
         {
-          label: '06. おまけ — もっと遊ぶ',
+          label: '06. 付録',
           items: [{ autogenerate: { directory: '06-extra' } }],
         },
       ],

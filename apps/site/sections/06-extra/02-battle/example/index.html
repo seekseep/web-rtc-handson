@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>色塗りバトル</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.5/peerjs.min.js"></script>
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <input id="word" placeholder="あいことば" value="test" />
+      <button id="host">へやをつくる</button>
+      <button id="guest">へやにはいる</button>
+      <span id="status">まだつながっていません</span>
+    </header>
+
+    <div class="hud">
+      <span id="my-score">あなた 0%</span>
+      <div class="ink"><div class="ink-bar" id="ink-bar"></div></div>
+      <strong id="time">60</strong>
+      <span id="your-score">あいて 0%</span>
+    </div>
+
+    <div class="stage">
+      <canvas id="canvas" width="800" height="600"></canvas>
+
+      <!-- 案内は盤面にかぶせる。場所を取らないので、試合が始まっても
+           画面の割り付けが変わらない。 -->
+      <div class="overlay" id="overlay">
+        <strong id="overlay-text">色塗りバトル</strong>
+        <span id="overlay-note"
+          >あいことばを決めて、ふたりでつないでください</span
+        >
+        <button id="ready">じゅんびOK</button>
+      </div>
+    </div>
+  </body>
+</html>

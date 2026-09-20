@@ -11,7 +11,6 @@ body {
   color: #fff;
 }
 
-header,
 .tools {
   display: flex;
   flex-wrap: wrap;
@@ -20,7 +19,6 @@ header,
   margin-bottom: 12px;
 }
 
-input,
 button {
   font-size: 16px;
   padding: 6px 10px;
@@ -31,7 +29,7 @@ button {
   outline: 3px solid #ffd60a;
 }
 
-/* キャンバスを置く場所。ヘッダーと道具バーの残りの高さを、ここが全部使う */
+/* キャンバスを置く場所。上のバーを引いた残りの高さを、ここが全部使う */
 .stage {
   flex: 1;
   /* flex の中身は既定では縮まないので、縮んでよいことを伝える */

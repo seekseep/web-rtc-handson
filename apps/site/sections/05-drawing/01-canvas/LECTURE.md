@@ -7,46 +7,62 @@ title: キャンバスにスタンプを置く
 
 ![キャンバスにスタンプを置く](./images/00-thumbnail.svg)
 
-ここからお絵かきツールにしていきます。
+ここからお絵かきツールを作ります。
 
-うれしいお知らせがあります。**つなぐコードは 1 行も変えません**。
-03 章で書いた「名乗る・呼び出す・送る・受け取る」は、そのまま使い回せます。
-変わるのは「何を送るか」だけです。
+この節では、**クリックした場所にスタンプを置く**ところまで作ります。
+通信はまだ出てきません。PeerJS も読み込みません。**1 人で遊べるものを先に完成させます**。
 
-この節では、丸を消してキャンバスに置き換え、**クリックした場所にスタンプを置く**ところまで作ります。
-まだ相手には送りません。
+[02 章 02 節](../../02-design/02-blueprint/LECTURE.md) で決めたとおり、
+章の中は**簡単なものから**です。スタンプは「1 回押したら 1 個置く」だけなので、
+キャンバスの使い方を覚えるのにちょうどいい大きさです。
 
-> **今回さわる `app/`:** `index.html` の丸をキャンバスに置き換え、`style.css` を書き直し、
-> `main.js` の「光る」部分をキャンバスの処理に置き換え
+> **今回さわる `app/`:** `index.html`・`style.css`・`main.js` を新しく作る
 
-## 丸をキャンバスに置き換える
+## 新しく 3 つのファイルを作る
 
-`index.html` の `<main>` と `<button id="light">` を消して、次に置き換えます。
-`<header>` はそのまま残します。
+03 章のライトとは**別のアプリ**なので、ファイルは作り直します。
 
-:::code[`index.html` の `<body>` の中（`<header>` の下をまるごと置き換え）]{filepath=index.html offset=19}
-
-```html
-<div class="tools">
-  <button class="stamp selected" data-stamp="🐱">🐱</button>
-  <button class="stamp" data-stamp="🌸">🌸</button>
-  <button class="stamp" data-stamp="⭐">⭐</button>
-</div>
-
-<div class="stage">
-  <canvas id="canvas" width="800" height="600"></canvas>
-</div>
+```text
+app/
+├── index.html   画面の骨組み
+├── style.css    見た目
+└── main.js      動き
 ```
 
+3 つとも全文を書き直すので、03 章の `app/` にそのまま上書きしても構いません。
+ライトのほうも残しておきたい人は、別のフォルダを作ってください。
+
+:::notice
+03 章で書いた**つなぐコード**は捨てません。次の節で、そっくりそのまま持ってきます。
+あのコードはライト専用ではなく、アプリの中身を知らないまま使い回せるからです。
 :::
 
-`<header>` の中の状態表示も、ボタンと同じ行に並ぶように `<span>` へ変えておきます。
+## index.html — 画面の骨組み
 
-:::code[`index.html` の `<header>` の中]{filepath=index.html offset=16 newOffset=16}
+:::code[`app/index.html`（全文）]{filepath=index.html offset=1}
 
-```diff
-- <p id="status">まだつながっていません</p>
-+ <span id="status">まだつながっていません</span>
+```html
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>キャンバスとスタンプ</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <div class="tools">
+      <button class="stamp selected" data-stamp="🐱">🐱</button>
+      <button class="stamp" data-stamp="🌸">🌸</button>
+      <button class="stamp" data-stamp="⭐">⭐</button>
+    </div>
+
+    <div class="stage">
+      <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+  </body>
+</html>
 ```
 
 :::
@@ -57,13 +73,11 @@ title: キャンバスにスタンプを置く
 - `width="800" height="600"` … キャンバスの**中の解像度**です。CSS の大きさとは別物で、
   ここがズレの原因になります（後述）
 - `<div class="stage">` … キャンバスを置く場所です。
-  「ヘッダーと道具バーを引いた残りの高さ」をこの枠が受け持ち、キャンバスはその中に収まります
+  「道具バーを引いた残りの高さ」をこの枠が受け持ち、キャンバスはその中に収まります
 
-## style.css を書き直す
+## style.css — 見た目
 
-丸のスタイルは要らなくなったので、まるごと入れ替えます。
-
-:::code[`app/style.css`（全文を置き換え）]{filepath=style.css offset=1}
+:::code[`app/style.css`（全文）]{filepath=style.css offset=1}
 
 ```css
 body {
@@ -79,7 +93,6 @@ body {
   color: #fff;
 }
 
-header,
 .tools {
   display: flex;
   flex-wrap: wrap;
@@ -88,7 +101,6 @@ header,
   margin-bottom: 12px;
 }
 
-input,
 button {
   font-size: 16px;
   padding: 6px 10px;
@@ -99,7 +111,7 @@ button {
   outline: 3px solid #ffd60a;
 }
 
-/* キャンバスを置く場所。ヘッダーと道具バーの残りの高さを、ここが全部使う */
+/* キャンバスを置く場所。上のバーを引いた残りの高さを、ここが全部使う */
 .stage {
   flex: 1;
   /* flex の中身は既定では縮まないので、縮んでよいことを伝える */
@@ -121,29 +133,25 @@ canvas {
 
 - `body` の `height: 100dvh` と `display: flex` … 画面の高さぴったりの縦並びにします
   （`dvh` はスマホのアドレスバーを除いた実際の高さです）
-- `.stage` の `flex: 1` … ヘッダーと道具バーを置いた**残りの高さを全部**もらいます。
+- `.stage` の `flex: 1` … 道具バーを置いた**残りの高さを全部**もらいます。
   `min-height: 0` は「必要なら縮んでよい」という意味で、これが無いと縮まずにはみ出します
 - キャンバスの `max-width` / `max-height` … 縦横の比（`800 x 600`）を保ったまま、
   `.stage` に収まる大きさまで縮んで表示されます。**画面がどんな大きさでもスクロールしません**
 
-## main.js の部品を入れ替える
+## main.js — 部品をつかむ
 
-`myCircle` と `peerCircle` と `lightButton` は要らなくなりました。
-代わりにキャンバスを取り出します。
+「部品を取っておく」から始めるのは、[03 章 01 節](../../03-connect/01-light/LECTURE.md) と同じです。
+取るのはキャンバス 1 つだけです。
 
-:::code[`main.js` の先頭]{filepath=main.js offset=1 newOffset=1}
+:::code[`app/main.js`（先頭）]{filepath=main.js offset=1}
 
-```diff
-  // 画面の部品を取っておく
-  const wordInput = document.querySelector('#word');
-  const hostButton = document.querySelector('#host');
-  const guestButton = document.querySelector('#guest');
-  const statusText = document.querySelector('#status');
-- const myCircle = document.querySelector('#my-circle');
-- const peerCircle = document.querySelector('#peer-circle');
-- const lightButton = document.querySelector('#light');
-+ const canvas = document.querySelector('#canvas');
-+ const ctx = canvas.getContext('2d');
+```js
+// 画面の部品を取っておく
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
+
+// いま選んでいるスタンプ
+let stamp = '🐱';
 ```
 
 :::
@@ -151,48 +159,11 @@ canvas {
 `canvas.getContext('2d')` で取れる `ctx` が、実際に絵を描く道具です。
 「キャンバス」が板だとすると、`ctx` は筆にあたります。
 
-いま選んでいるスタンプを覚えておく変数も足します。
-
-:::code[`main.js`（`let conn = null;` の下）]{filepath=main.js offset=12}
-
-```js
-// いま選んでいるスタンプ
-let stamp = '🐱';
-```
-
-:::
-
-## 受け取る処理を、いったん消す
-
-`ready()` の中の `conn.on('data', ...)` は、`peerCircle` を使っていました。
-その丸はもう無いので、**いったん消します**。次の節で書き直します。
-
-:::code[`main.js` の `ready` の中]{filepath=main.js offset=63 newOffset=65}
-
-```diff
-  function ready() {
-    statusText.textContent = 'つながりました';
-
-    conn.on('close', function () {
-      statusText.textContent = 'せつだんされました';
-    });
--
--   // 相手から届いた色を、「あいて」の丸に塗る。
--   conn.on('data', function (data) {
--     peerCircle.style.background = data.color;
--   });
-  }
-```
-
-:::
-
-`lightButton.addEventListener(...)` も、まるごと消してください。
+`stamp` は `const` ではなく `let` です。ボタンを押すと中身が変わるからです。
 
 ## 描く道具を作る
 
-`ready()` の下に、キャンバスまわりのコードを足していきます。
-
-:::code[`main.js`（`ready` の下）]{filepath=main.js offset=73}
+:::code[`main.js`（`let stamp` の下）]{filepath=main.js offset=8}
 
 ```js
 function drawStamp(x, y, emoji) {
@@ -231,7 +202,7 @@ function clearCanvas() {
 
 _図: 見た目 350px のキャンバスの右端は、中の座標では 800。比率で割り戻す。_
 
-:::code[`main.js`（`clearCanvas` の下）]{filepath=main.js offset=85}
+:::code[`main.js`（`clearCanvas` の下）]{filepath=main.js offset=20}
 
 ```js
 // canvas は 800x600 のまま、空いている場所に合わせて縮めて表示している。
@@ -253,12 +224,13 @@ function positionOf(event) {
 - `event.clientX - rect.left` … 画面の左端からではなく、**キャンバスの左端から**何 px かに直します
 - `/ rect.width * canvas.width` … 「見た目の何割の位置か」を出してから、`800` を掛けて中の座標にします
 
-これをやっておくと、PC で描いた線がスマホでも同じ場所に出ます。
-**送る座標を、端末に依存しない値にそろえている**わけです。
+いまは 1 人で描いているので、無くても困りません。
+効いてくるのは相手とつないでからです。**送る座標を、端末に依存しない値にそろえている**ので、
+PC で置いたスタンプがスマホでも同じ場所に出ます。
 
 ## クリックでスタンプを置く
 
-:::code[`main.js`（`positionOf` の下）]{filepath=main.js offset=97}
+:::code[`main.js`（`positionOf` の下）]{filepath=main.js offset=32}
 
 ```js
 canvas.addEventListener('pointerdown', function (event) {
@@ -289,14 +261,23 @@ clearCanvas();
 
 `pointerdown` は、マウスのクリックでも指でのタップでも同じように呼ばれるイベントです。
 `mousedown` と `touchstart` を別々に書かなくて済みます。
+[02 章 02 節](../../02-design/02-blueprint/LECTURE.md) で「スマホでも動く」を条件にしましたが、
+それはこれで守れます。
+
+`select` は「同じ仲間のボタンから `selected` を外して、押されたものだけに付ける」係です。
+道具はこのあとペン・色・けしごむと増えるので、最初から使い回せる形にしておきます。
 
 ## 動かす
 
+`index.html` をブラウザで開きます。
 キャンバスをクリックすると、選んでいるスタンプが置かれます。
 上のボタンでスタンプを切り替えられます。
 
-まだ相手には届きません。次の節で送ります。
-
 ::preview[このステップの完成イメージ（実際に触って動かせます）]{height="560"}
+
+## まだ 1 人で遊んでいるだけ
+
+ここまでは、いつもの Web ページと何も変わりません。
+次の節で、03 章で書いたつなぐコードを持ってきて、**相手とつなぎます**。
 
 ::codeview{defaultFile="main.js"}

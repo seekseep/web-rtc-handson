@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>① サーバーに置いたファイルを開く</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        padding: 16px 18px 18px;
+        background: #222;
+        color: #fff;
+        font-family: sans-serif;
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: #222;
+        flex: none;
+      }
+      h1 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .url {
+        font-family: monospace;
+        font-size: 11px;
+        color: #9aa4b2;
+        background: #2b3038;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .spacer {
+        flex: 1;
+      }
+      button {
+        font-size: 12px;
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid #4a515b;
+        background: #2b3038;
+        color: #fff;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      svg {
+        display: block;
+        width: 100%;
+        max-width: 620px;
+        height: auto;
+        margin: 6px auto 0;
+      }
+      .note {
+        margin: 0;
+        font-size: 12px;
+        color: #9aa4b2;
+        min-height: 1.5em;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="head">
+      <span class="badge" style="background: #60a5fa">1</span>
+      <h1>サーバーに置いたファイルを開く</h1>
+      <span class="url">https://</span>
+      <span class="spacer"></span>
+      <button id="open-a">A からアクセスする</button>
+      <button id="open-b">B からアクセスする</button>
+    </div>
+    <div id="stage"></div>
+    <p class="note" id="note">
+      どちらから押してもかまいません。押した側だけが 1 往復します
+    </p>
+
+    <script>
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+
+      const SERVER = '#f5a524';
+
+      function svgEl(name, attrs) {
+        const node = document.createElementNS(SVG_NS, name);
+        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        return node;
+      }
+
+      function sleep(ms) {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, ms);
+        });
+      }
+
+      const noteEl = document.querySelector('#note');
+
+      function note(text) {
+        noteEl.textContent = text;
+      }
+
+      /**
+       * 「舞台」を作る。ノード（絵文字＋ラベル）を置き、そのあいだに線（wire）を
+       * 引いたり、玉（packet）を走らせたりできる。
+       */
+      function makeStage(host, spec) {
+        const svg = svgEl('svg', { viewBox: '0 0 620 ' + spec.height });
+        const layers = {};
+        // flash は node より下。波紋が絵文字の後ろから湧いて見えるようにする。
+        ['box', 'wire', 'flash', 'node', 'packet'].forEach(function (name) {
+          layers[name] = svgEl('g', {});
+          svg.appendChild(layers[name]);
+        });
+        host.appendChild(svg);
+
+        const nodes = {};
+        spec.nodes.forEach(function (n) {
+          const group = svgEl('g', {});
+          const face = svgEl('text', {
+            x: n.x,
+            y: n.y + 10,
+            'text-anchor': 'middle',
+            'font-size': 28,
+          });
+          face.textContent = n.emoji;
+          const label = svgEl('text', {
+            x: n.x,
+            y: n.y + 32,
+            'text-anchor': 'middle',
+            'font-size': 11,
+            fill: '#c7ced8',
+          });
+          label.textContent = n.label;
+          group.appendChild(face);
+          group.appendChild(label);
+          layers.node.appendChild(group);
+          nodes[n.id] = { x: n.x, y: n.y, group: group };
+        });
+
+        // 線の端点。ノードの絵文字に重ならないよう、中心から 24px 離す。
+        // 玉（travel）はこれを使わない。玉はノードの中心から出て中心に入る。
+        function ends(a, b) {
+          const from = nodes[a];
+          const to = nodes[b];
+          const dx = to.x - from.x;
+          const dy = to.y - from.y;
+          const len = Math.hypot(dx, dy) || 1;
+          const ux = (dx / len) * 24;
+          const uy = (dy / len) * 24;
+          return {
+            x1: from.x + ux,
+            y1: from.y + uy,
+            x2: to.x - ux,
+            y2: to.y - uy,
+          };
+        }
+
+        return {
+          /** 線を 1 本引く。返り値の要素を remove() すれば消える。 */
+          wire: function (a, b, options) {
+            const p = ends(a, b);
+            const line = svgEl('line', {
+              x1: p.x1,
+              y1: p.y1,
+              x2: p.x2,
+              y2: p.y2,
+              stroke: options.color,
+              'stroke-width': options.dashed ? 2 : 3,
+              'stroke-linecap': 'round',
+            });
+            if (options.dashed) line.setAttribute('stroke-dasharray', '5 5');
+            layers.wire.appendChild(line);
+            return line;
+          },
+
+          /** 「届かない」を表す ✕ 印つきの破線。静止画として置きっぱなしにする。 */
+          blocked: function (x1, x2, y, text) {
+            layers.box.appendChild(
+              svgEl('line', {
+                x1: x1,
+                y1: y,
+                x2: x2,
+                y2: y,
+                stroke: '#4a515b',
+                'stroke-width': 2,
+                'stroke-dasharray': '5 5',
+              }),
+            );
+            const mark = svgEl('text', {
+              x: (x1 + x2) / 2,
+              y: y + 5,
+              'text-anchor': 'middle',
+              'font-size': 16,
+              fill: '#ef4444',
+            });
+            mark.textContent = '✕';
+            layers.box.appendChild(mark);
+            if (text) {
+              const caption = svgEl('text', {
+                x: (x1 + x2) / 2,
+                y: y + 22,
+                'text-anchor': 'middle',
+                'font-size': 11,
+                fill: '#78828f',
+              });
+              caption.textContent = text;
+              layers.box.appendChild(caption);
+            }
+          },
+
+          /** a から b へ玉を 1 つ走らせる。届いたら解決する Promise を返す。 */
+          travel: function (a, b, options) {
+            return new Promise(function (resolve) {
+              // 玉は線の端ではなくノードの中心から出し入れする。端から出すと
+              // 「何も無い空間から玉が湧いた」ように見え、右のノードが送り手の
+              // ときに「右から玉が流れてくる」と誤読される。
+              const from = nodes[a];
+              const to = nodes[b];
+              const color = options.color;
+              const dot = svgEl('circle', {
+                cx: from.x,
+                cy: from.y,
+                r: 0,
+                fill: color,
+              });
+              const label = svgEl('text', {
+                x: from.x,
+                y: from.y - 14,
+                'text-anchor': 'middle',
+                'font-size': 11,
+                fill: color,
+                opacity: 0,
+              });
+              label.textContent = options.label || '';
+              // 「ここから出した」の合図。r は絵文字の半径 14 より内側から始めて、
+              // 絵文字の後ろから輪が湧き出すようにする（唐突に現れない）。
+              const ripple = svgEl('circle', {
+                cx: from.x,
+                cy: from.y,
+                r: 12,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': 2,
+                opacity: 0,
+              });
+              layers.flash.appendChild(ripple);
+              layers.packet.appendChild(dot);
+              if (options.label) layers.packet.appendChild(label);
+
+              const duration = options.duration || 800;
+              const started = performance.now();
+              function step(now) {
+                // rAF が渡す now は「このフレームが始まった時刻」なので、
+                // started より数ミリ秒だけ前になることがある。挟まないと t が
+                // 負になり、r に負の値を入れて SVG がエラーを吐く。
+                const t = Math.max(0, Math.min(1, (now - started) / duration));
+                // easeInOutQuad。等速より「送った → 届いた」に見える。
+                const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                const x = from.x + (to.x - from.x) * e;
+                const y = from.y + (to.y - from.y) * e;
+                dot.setAttribute('cx', x);
+                dot.setAttribute('cy', y);
+                label.setAttribute('x', x);
+                label.setAttribute('y', y - 14);
+                // 最初と最後の 15%（800ms なら 120ms ずつ）で半径を 0 ↔ 7 に動かし、
+                // ノードから生まれて、ノードに吸い込まれて消えるように見せる。
+                // 位置の e ではなく t で測るのは、e が端でわざと遅いから。e で 15%
+                // は t の 27%（219ms）にあたり、出足がもたついて見える。
+                const scale = Math.min(1, t / 0.15, (1 - t) / 0.15);
+                dot.setAttribute('r', 7 * scale);
+                // 波紋とラベルは 0.3 で測る。t=0.3 は中心から約 40px、絵文字（14）
+                // も線の始点（24）も越えた先。ラベルが絵文字と喧嘩しない。
+                const away = Math.min(1, t / 0.3);
+                ripple.setAttribute('r', 12 + 14 * away);
+                ripple.setAttribute('opacity', 0.7 * (1 - away));
+                label.setAttribute('opacity', Math.min(away, (1 - t) / 0.3));
+                if (t < 1) {
+                  requestAnimationFrame(step);
+                } else {
+                  ripple.remove();
+                  dot.remove();
+                  label.remove();
+                  resolve();
+                }
+              }
+              requestAnimationFrame(step);
+            });
+          },
+        };
+      }
+
+      const stage = makeStage(document.querySelector('#stage'), {
+        height: 170,
+        nodes: [
+          { id: 'a', x: 90, y: 56, emoji: '🌐', label: 'ブラウザ A' },
+          { id: 's', x: 310, y: 56, emoji: '🖥️', label: 'サーバー' },
+          { id: 'b', x: 530, y: 56, emoji: '🌐', label: 'ブラウザ B' },
+        ],
+      });
+
+      const openA = document.querySelector('#open-a');
+      const openB = document.querySelector('#open-b');
+      // ✕ 印は消さずに残すので、押すたびに重ね描きしないよう 1 回だけにする。
+      let blockedShown = false;
+      // どちらがページをもらったか。2 台そろって、はじめて「それでも他人同士」
+      // という話ができる。
+      const opened = { a: false, b: false };
+
+      // 玉が走っているあいだは、どちらも押させない。
+      function setBusy(on) {
+        openA.disabled = on;
+        openB.disabled = on;
+      }
+
+      async function open(who) {
+        setBusy(true);
+        const name = who === 'a' ? 'A' : 'B';
+        note(name + ' がサーバーにページを取りに行く');
+        const line = stage.wire(who, 's', { color: SERVER });
+        await stage.travel(who, 's', { color: SERVER, label: 'ください' });
+        await stage.travel('s', who, { color: SERVER, label: 'index.html' });
+        line.remove();
+        opened[who] = true;
+        note(name + ' に届いた。1 往復で終わり、接続は切れる');
+
+        if (opened.a && opened.b) {
+          await sleep(600);
+          if (!blockedShown) {
+            stage.blocked(130, 490, 134, 'A と B のあいだには何も無い');
+            blockedShown = true;
+          }
+          note('2 台とも同じページを持っている。でも、つながってはいない');
+        }
+        setBusy(false);
+      }
+
+      openA.addEventListener('click', function () {
+        open('a');
+      });
+      openB.addEventListener('click', function () {
+        open('b');
+      });
+    </script>
+  </body>
+</html>
