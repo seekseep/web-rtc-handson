@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="370" viewBox="0 0 1080 370" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="1080" height="370" fill="#ffffff"/>
+<text x="540" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">3 つの段にわけて作る</text>
+<rect x="60" y="145" width="280" height="110" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="200" y="207.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">相手の画面が光る</text>
+<rect x="400" y="145" width="280" height="110" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="540" y="207.35" text-anchor="middle" font-size="21" fill="#b45309" font-weight="700">しくみを理解する</text>
+<rect x="740" y="145" width="280" height="110" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="880" y="207.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">お絵かきを完成させる</text>
+<path d="M346.00 200.00 L394.00 200.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M686.00 200.00 L734.00 200.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="200" y="128" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="400">03 章</text>
+<text x="540" y="128" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400">04 章</text>
+<text x="880" y="128" text-anchor="middle" font-size="13" fill="#15803d" font-weight="400">05 章</text>
+<text x="540" y="320" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">小さな成功を積み重ねて、最後のアプリにたどり着く</text>
+</svg>

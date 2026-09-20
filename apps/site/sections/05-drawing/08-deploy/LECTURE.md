@@ -16,7 +16,7 @@ title: あとから来た人にも見せて、公開する
 
 ## なぜ白紙のままなのか
 
-[02 章 02 節](../../02-design/02-blueprint/LECTURE.md) で「保存」はやらないと決めました。
+[02 章 03 節](../../02-design/03-plan/LECTURE.md) で「保存」はやらないと決めました。
 ブラウザ同士を直接つなぐやり方には、「記録係」がいないからです
 （くわしくは [04 章 02 節](../../04-how-it-works/02-webrtc/LECTURE.md)）。
 
@@ -81,14 +81,26 @@ const history = [];
 
 ## つながったときに送り直す
 
-:::code[`main.js` の `ready` の中（`conn.on('data', apply)` の下）]{filepath=main.js offset=81}
+:::code[`main.js` の `ready`]{filepath=main.js offset=67 newOffset=70}
 
-```js
-// 自分がこれまでに描いたものを送り直して、相手の画面にも同じ絵を出す。
-// あとから入ってきた人にも、いまの絵が見えるようになる。
-history.forEach(function (data) {
-  conn.send(data);
-});
+```diff
+  // ホストでもゲストでも、つながったあとにやることは同じ。
+  function ready() {
+    statusText.textContent = 'つながりました';
+
+    conn.on('close', function () {
+      statusText.textContent = 'せつだんされました';
+    });
+
+    // 相手から届いた指示も、自分が出した指示と同じ apply に通す。
+    conn.on('data', apply);
++
++   // 自分がこれまでに描いたものを送り直して、相手の画面にも同じ絵を出す。
++   // あとから入ってきた人にも、いまの絵が見えるようになる。
++   history.forEach(function (data) {
++     conn.send(data);
++   });
+  }
 ```
 
 :::

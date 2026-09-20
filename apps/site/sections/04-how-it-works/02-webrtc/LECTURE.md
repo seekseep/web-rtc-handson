@@ -118,7 +118,7 @@ WebRTC は、ここを力ずくで越えるための技術です。やってい�
 :::notice
 WebRTC を素で書くと、`RTCPeerConnection` を作り、`createOffer()` して、
 `setLocalDescription()` して……と数十行かかります。
-[02 章 01 節](../../02-design/01-request/LECTURE.md) で「難しそうだ」と言ったのはこの部分で、
+[02 章 02 節](../../02-design/02-research/LECTURE.md) で「難しそうだ」と言ったのはこの部分で、
 PeerJS はそこをまとめて引き受けてくれています。
 :::
 
