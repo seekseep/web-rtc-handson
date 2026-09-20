@@ -84,7 +84,8 @@
       <span class="url">（URL は無い）</span>
       <span class="spacer"></span>
       <button id="connect">つなぐ</button>
-      <button id="send">送る</button>
+      <button id="send-a">A から送る</button>
+      <button id="send-b">B から送る</button>
     </div>
     <div id="stage"></div>
     <p class="note" id="note">
@@ -289,7 +290,8 @@
       });
 
       const connect = document.querySelector('#connect');
-      const send = document.querySelector('#send');
+      const sendA = document.querySelector('#send-a');
+      const sendB = document.querySelector('#send-b');
       let connected = false;
       let busy = false;
 
@@ -298,7 +300,8 @@
       // 手続きを踏まないと張れない。その順番を、押せるかどうかで見せる。
       function syncButtons() {
         connect.disabled = busy;
-        send.disabled = busy || !connected;
+        sendA.disabled = busy || !connected;
+        sendB.disabled = busy || !connected;
       }
 
       function setBusy(on) {
@@ -351,16 +354,24 @@
         setBusy(false);
       });
 
-      send.addEventListener('click', async function () {
+      async function send(who) {
         setBusy(true);
-        note('A → B');
-        await stage.travel('a', 'b', {
+        const target = who === 'a' ? 'b' : 'a';
+        note((who === 'a' ? 'A' : 'B') + ' → ' + (who === 'a' ? 'B' : 'A'));
+        await stage.travel(who, target, {
           color: DIRECT,
           label: 'こんにちは',
           duration: 1000,
         });
         note('サーバーを通らずに届いた。これが今回作るもの');
         setBusy(false);
+      }
+
+      sendA.addEventListener('click', function () {
+        send('a');
+      });
+      sendB.addEventListener('click', function () {
+        send('b');
       });
     </script>
   </body>

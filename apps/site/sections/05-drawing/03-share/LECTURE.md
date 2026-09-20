@@ -73,11 +73,20 @@ _図: `apply` は共通、送るかどうかだけが違う。_
 
 `ready()` に 1 行足します。
 
-:::code[`main.js` の `ready` の中（`conn.on('close', ...)` の下）]{filepath=main.js offset=72}
+:::code[`main.js` の `ready`]{filepath=main.js offset=64 newOffset=64}
 
-```js
-// 相手から届いた指示も、自分が出した指示と同じ apply に通す。
-conn.on('data', apply);
+```diff
+  // ホストでもゲストでも、つながったあとにやることは同じ。
+  function ready() {
+    statusText.textContent = 'つながりました';
+
+    conn.on('close', function () {
+      statusText.textContent = 'せつだんされました';
+    });
++
++   // 相手から届いた指示も、自分が出した指示と同じ apply に通す。
++   conn.on('data', apply);
+  }
 ```
 
 :::

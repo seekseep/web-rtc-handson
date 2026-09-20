@@ -427,13 +427,19 @@ function tick() {
 
 // 点数・インク・のこり時間を、いまの状態のとおりに書きかえる。
 function showHud() {
-  myScoreText.textContent = 'あなた ' + percentOf(me) + '%';
-  yourScoreText.textContent = 'あいて ' + percentOf(other(me)) + '%';
+  // つながるまではどちらの色でもない。数えると白いマスが全部自分のものに
+  // 見えてしまうので、0% のままにしておく。
+  myScoreText.textContent =
+    'あなた ' + (me === EMPTY ? 0 : percentOf(me)) + '%';
+  yourScoreText.textContent =
+    'あいて ' + (me === EMPTY ? 0 : percentOf(other(me))) + '%';
 
   inkBar.style.width = (ink / INK_MAX) * 100 + '%';
   // インクぎれは文字ではなく色で知らせる。ゲージを見たままで気づける。
   if (inkEmpty) {
     inkBar.style.background = '#e5484d';
+  } else if (me === EMPTY) {
+    inkBar.style.background = '#888';
   } else {
     inkBar.style.background = colorOf(me);
   }

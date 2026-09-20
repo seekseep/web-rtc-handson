@@ -53,6 +53,11 @@ button {
   flex: 1;
   /* flex の中身は既定では縮まないので、縮んでよいことを伝える */
   min-height: 0;
+  /* 盤面をまんなかに置く。かぶせる案内もここを中心にそろうので、
+     画面が縦長でも案内の文字が盤面の上に乗る */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 canvas {

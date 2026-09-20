@@ -318,9 +318,9 @@
       const stage = makeStage(document.querySelector('#stage'), {
         height: 120,
         nodes: [
-          { id: 'a', x: 90, y: 56, emoji: '🌐', label: 'ブラウザ A（自分）' },
+          { id: 'a', x: 90, y: 56, emoji: '🌐', label: 'ブラウザ A' },
           { id: 's', x: 310, y: 56, emoji: '🗄️', label: 'サーバー + DB' },
-          { id: 'b', x: 530, y: 56, emoji: '🌐', label: 'ブラウザ B（相手）' },
+          { id: 'b', x: 530, y: 56, emoji: '🌐', label: 'ブラウザ B' },
         ],
       });
 
@@ -381,7 +381,9 @@
         render();
         note(
           seen[other(who)] === stored
-            ? 'DB には保存された。' + name(other(who)) + ' はたまたま同じ内容を持っている'
+            ? 'DB には保存された。' +
+                name(other(who)) +
+                ' はたまたま同じ内容を持っている'
             : 'DB には保存された。それでも ' +
                 name(other(who)) +
                 ' の画面（オレンジ）は古いまま',

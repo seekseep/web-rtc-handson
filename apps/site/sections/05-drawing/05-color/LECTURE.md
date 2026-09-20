@@ -66,12 +66,19 @@ CSS に `.color-red { background: ... }` のような定義を増やす必要が
 
 ## 決め打ちをやめる
 
-:::code[`main.js` の `pointermove` の中]{filepath=main.js offset=157 newOffset=158}
+:::code[`main.js` の `pointermove` の中]{filepath=main.js offset=151 newOffset=152}
 
 ```diff
--   color: '#333333',
-+   color: color,
-    width: 4,
+    draw({
+      type: 'line',
+      x1: last.x,
+      y1: last.y,
+      x2: pos.x,
+      y2: pos.y,
+-     color: '#333333',
++     color: color,
+      width: 4,
+    });
 ```
 
 :::

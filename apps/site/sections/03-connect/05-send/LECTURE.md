@@ -18,13 +18,22 @@ title: ボタンで色を送る
 
 `ready()` の中に、届いたときの処理を足します。
 
-:::code[`main.js` の `ready` の中（`conn.on('close', ...)` の下）]{filepath=main.js offset=67}
+:::code[`main.js` の `ready`]{filepath=main.js offset=59 newOffset=59}
 
-```js
-// 相手から届いた色を、「あいて」の丸に塗る。
-conn.on('data', function (data) {
-  peerCircle.style.background = data.color;
-});
+```diff
+  // ホストでもゲストでも、つながったあとにやることは同じ。
+  function ready() {
+    statusText.textContent = 'つながりました';
+
+    conn.on('close', function () {
+      statusText.textContent = 'せつだんされました';
+    });
++
++   // 相手から届いた色を、「あいて」の丸に塗る。
++   conn.on('data', function (data) {
++     peerCircle.style.background = data.color;
++   });
+  }
 ```
 
 :::

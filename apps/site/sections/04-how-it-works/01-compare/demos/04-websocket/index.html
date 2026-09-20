@@ -84,7 +84,8 @@
       <span class="url">wss://</span>
       <span class="spacer"></span>
       <button id="connect">つなぐ</button>
-      <button id="send">送る</button>
+      <button id="send-a">A から送る</button>
+      <button id="send-b">B から送る</button>
       <button id="push">サーバーから配る</button>
     </div>
     <div id="stage"></div>
@@ -278,7 +279,8 @@
       });
 
       const connect = document.querySelector('#connect');
-      const send = document.querySelector('#send');
+      const sendA = document.querySelector('#send-a');
+      const sendB = document.querySelector('#send-b');
       const push = document.querySelector('#push');
       let connected = false;
       let busy = false;
@@ -288,7 +290,8 @@
       // 無いのに玉が飛ぶと、「線があるから送れる」という順番が消えてしまう。
       function syncButtons() {
         connect.disabled = busy;
-        send.disabled = busy || !connected;
+        sendA.disabled = busy || !connected;
+        sendB.disabled = busy || !connected;
         push.disabled = busy || !connected;
       }
 
@@ -326,14 +329,24 @@
         }
       });
 
-      send.addEventListener('click', async function () {
+      async function send(who) {
         setBusy(true);
-        note('A → サーバー');
-        await stage.travel('a', 's', { color: SERVER, label: 'こんにちは' });
-        note('サーバー → B');
-        await stage.travel('s', 'b', { color: SERVER, label: 'こんにちは' });
+        const target = who === 'a' ? 'b' : 'a';
+        const from = who === 'a' ? 'A' : 'B';
+        const to = who === 'a' ? 'B' : 'A';
+        note(from + ' → サーバー');
+        await stage.travel(who, 's', { color: SERVER, label: 'こんにちは' });
+        note('サーバー → ' + to);
+        await stage.travel('s', target, { color: SERVER, label: 'こんにちは' });
         note('届いた。ただし同じ言葉が、サーバーを 2 回通っている');
         setBusy(false);
+      }
+
+      sendA.addEventListener('click', function () {
+        send('a');
+      });
+      sendB.addEventListener('click', function () {
+        send('b');
       });
 
       push.addEventListener('click', async function () {

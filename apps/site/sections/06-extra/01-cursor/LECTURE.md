@@ -59,6 +59,9 @@ _図: 同じ通り道（`conn`）を使うが、通す前の扱いが違う。_
   .stage {
 +   position: relative;
     flex: 1;
+    /* flex の中身は既定では縮まないので、縮んでよいことを伝える */
+    min-height: 0;
+  }
 ```
 
 :::
@@ -125,12 +128,23 @@ function sendCursor(pos) {
 
 ## 受け取る側
 
-:::code[`main.js` の `apply` の中（最後）]{filepath=main.js offset=101}
+:::code[`main.js` の `apply`]{filepath=main.js offset=90 newOffset=91}
 
-```js
-if (data.type === 'cursor') {
-  showCursor(data.x, data.y);
-}
+```diff
+  function apply(data) {
+    if (data.type === 'line') {
+      drawLine(data.x1, data.y1, data.x2, data.y2, data.color, data.width);
+    }
+    if (data.type === 'stamp') {
+      drawStamp(data.x, data.y, data.emoji);
+    }
+    if (data.type === 'clear') {
+      clearCanvas();
+    }
++   if (data.type === 'cursor') {
++     showCursor(data.x, data.y);
++   }
+  }
 ```
 
 :::
@@ -164,16 +178,32 @@ function showCursor(x, y) {
 `pointermove` は、**ボタンを押していなくても**マウスが動くたびに呼ばれます。
 だから `last === null` で帰る前に送ります。
 
-:::code[`main.js` の `pointermove` の中（先頭）]{filepath=main.js offset=197}
+:::code[`main.js` の `pointermove`]{filepath=main.js offset=167 newOffset=197}
 
-```js
-canvas.addEventListener('pointermove', function (event) {
-  const pos = positionOf(event);
+```diff
+  canvas.addEventListener('pointermove', function (event) {
+-   if (last === null) return;
+-
+    const pos = positionOf(event);
 
-  // 描いていないときも、ペン先の位置だけは送り続ける
-  sendCursor(pos);
++   // 描いていないときも、ペン先の位置だけは送り続ける
++   sendCursor(pos);
++
++   if (last === null) return;
++
+    draw({
+      type: 'line',
+      x1: last.x,
+      y1: last.y,
+      x2: pos.x,
+      y2: pos.y,
+      // けしごむは「背景と同じ白い色で、太く描くペン」として作る
+      color: tool === 'eraser' ? '#ffffff' : color,
+      width: tool === 'eraser' ? 40 : 4,
+    });
 
-  if (last === null) return;
+    last = pos;
+  });
 ```
 
 :::

@@ -46,12 +46,20 @@ title: ぜんぶ消す
 
 `apply` に、新しい種類の指示を受け付ける枝を足します。
 
-:::code[`main.js` の `apply` の中（最後）]{filepath=main.js offset=88}
+:::code[`main.js` の `apply`]{filepath=main.js offset=80 newOffset=81}
 
-```js
-if (data.type === 'clear') {
-  clearCanvas();
-}
+```diff
+  function apply(data) {
+    if (data.type === 'line') {
+      drawLine(data.x1, data.y1, data.x2, data.y2, data.color, data.width);
+    }
+    if (data.type === 'stamp') {
+      drawStamp(data.x, data.y, data.emoji);
+    }
++   if (data.type === 'clear') {
++     clearCanvas();
++   }
+  }
 ```
 
 :::

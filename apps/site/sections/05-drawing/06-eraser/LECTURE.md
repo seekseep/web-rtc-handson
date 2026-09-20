@@ -65,14 +65,21 @@ document.querySelectorAll('.tool').forEach(function (button) {
 
 あとは、線を引くときの色と太さを道具によって切り替えるだけです。
 
-:::code[`main.js` の `pointermove` の中]{filepath=main.js offset=158 newOffset=158}
+:::code[`main.js` の `pointermove` の中]{filepath=main.js offset=152 newOffset=152}
 
 ```diff
--   color: color,
--   width: 4,
-+   // けしごむは「背景と同じ白い色で、太く描くペン」として作る
-+   color: tool === 'eraser' ? '#ffffff' : color,
-+   width: tool === 'eraser' ? 40 : 4,
+    draw({
+      type: 'line',
+      x1: last.x,
+      y1: last.y,
+      x2: pos.x,
+      y2: pos.y,
+-     color: color,
+-     width: 4,
++     // けしごむは「背景と同じ白い色で、太く描くペン」として作る
++     color: tool === 'eraser' ? '#ffffff' : color,
++     width: tool === 'eraser' ? 40 : 4,
+    });
 ```
 
 :::

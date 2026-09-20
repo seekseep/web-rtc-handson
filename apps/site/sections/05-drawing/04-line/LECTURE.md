@@ -51,11 +51,20 @@ _図: なめらかな線に見えるが、実際は短い直線の集まり。_
 指でキャンバスをなぞると、ブラウザは「ページをスクロールしたいのだろう」と解釈します。
 これを止めます。
 
-:::code[`style.css` の `canvas` の中]{filepath=style.css offset=49}
+:::code[`style.css` の `canvas`]{filepath=style.css offset=41 newOffset=41}
 
-```css
-/* 指でなぞったときにページがスクロールしないようにする（スマホ用） */
-touch-action: none;
+```diff
+  canvas {
+    display: block;
+    background: #fff;
+    border-radius: 8px;
+    /* 実際の解像度は 800x600 のまま、あいている場所に収まる大きさで表示する。
+       こうすると、どの端末でも同じ座標で絵を共有できて、画面もスクロールしない。 */
+    max-width: 100%;
+    max-height: 100%;
++   /* 指でなぞったときにページがスクロールしないようにする（スマホ用） */
++   touch-action: none;
+  }
 ```
 
 :::

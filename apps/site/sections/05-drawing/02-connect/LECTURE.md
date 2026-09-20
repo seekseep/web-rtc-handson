@@ -80,6 +80,11 @@ _図: つなぐところは、上に載るアプリが何であるかを知ら�
 + header,
   .tools {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
 ```
 
 :::
@@ -92,6 +97,8 @@ _図: つなぐところは、上に載るアプリが何であるかを知ら�
 + input,
   button {
     font-size: 16px;
+    padding: 6px 10px;
+  }
 ```
 
 :::

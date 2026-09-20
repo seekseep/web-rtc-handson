@@ -72,20 +72,42 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 
 最後に、`ROOM` を使っていた 2 か所を書き換えます。
 
-:::code[`main.js` の `hostButton` の中]{filepath=main.js offset=19 newOffset=22}
+:::code[`main.js` の `hostButton`]{filepath=main.js offset=18 newOffset=21}
 
 ```diff
-- const peer = new Peer(ROOM);
-+ const peer = new Peer(roomId(wordInput.value));
+  hostButton.addEventListener('click', function () {
+-   const peer = new Peer(ROOM);
++   const peer = new Peer(roomId(wordInput.value));
+
+    peer.on('open', function () {
+      statusText.textContent = 'あいてを待っています…';
+    });
+
+    peer.on('connection', function (newConn) {
+      conn = newConn;
+      conn.on('open', ready);
+    });
+
+    peer.on('error', showError);
+  });
 ```
 
 :::
 
-:::code[`main.js` の `guestButton` の中]{filepath=main.js offset=38 newOffset=41}
+:::code[`main.js` の `guestButton`]{filepath=main.js offset=34 newOffset=37}
 
 ```diff
-- conn = peer.connect(ROOM);
-+ conn = peer.connect(roomId(wordInput.value));
+  guestButton.addEventListener('click', function () {
+    const peer = new Peer();
+
+    peer.on('open', function () {
+-     conn = peer.connect(ROOM);
++     conn = peer.connect(roomId(wordInput.value));
+      conn.on('open', ready);
+    });
+
+    peer.on('error', showError);
+  });
 ```
 
 :::
