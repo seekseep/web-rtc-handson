@@ -546,15 +546,15 @@
 
       // ---------------- ステップの部品（3 つのタブで共通の前半）----------------
 
-      // ①名乗る: 2 つのブラウザが、それぞれサーバーに名前を登録するだけ。
+      // ①シグナリング接続: 2 つのブラウザが、それぞれシグナリングサーバーに id を登録するだけ。
       function helloSteps() {
         return [
           {
-            phase: '名乗る',
+            phase: 'シグナリング接続',
             wire: 'aSig',
             dir: 1,
             kind: 'signal',
-            chip: 'あいことば',
+            chip: 'WS 接続',
             route: 'ブラウザ A → シグナリングサーバー',
             title: 'ホストが「私は neko-123 です」と名簿に載せてもらう',
             plain:
@@ -563,7 +563,7 @@
             set: { aName: 'neko-123', aStatus: '登録中…' },
           },
           {
-            phase: '名乗る',
+            phase: 'シグナリング接続',
             wire: 'aSig',
             dir: -1,
             kind: 'signal',
@@ -576,11 +576,11 @@
             set: { aStatus: '名簿に載った' },
           },
           {
-            phase: '名乗る',
+            phase: 'シグナリング接続',
             wire: 'bSig',
             dir: 1,
             kind: 'signal',
-            chip: '名乗る',
+            chip: 'WS 接続',
             route: 'ブラウザ B → シグナリングサーバー',
             title: 'ゲストも同じサーバーにつなぐ',
             plain:
@@ -589,7 +589,7 @@
             set: { bName: 'tori-456（自動）', bStatus: '登録中…' },
           },
           {
-            phase: '名乗る',
+            phase: 'シグナリング接続',
             wire: 'bSig',
             dir: -1,
             kind: 'signal',
@@ -604,16 +604,16 @@
         ];
       }
 
-      // ②相談する: 話し方の取り決め（SDP）をサーバー越しに 1 往復。住所はまだ入っていない。
+      // ②SDP 交換: 話し方の取り決め（offer / answer）をサーバー越しに 1 往復。候補はまだ入っていない。
       function talkSteps() {
         return [
           {
-            phase: '相談する',
+            phase: 'SDP 交換',
             at: 'browserB',
             kind: 'signal',
             chip: 'offer を書く',
             route: 'ブラウザ B の中',
-            title: 'ゲストが「つなぎたい」と言い、自己紹介文を書く',
+            title: 'ゲストが peer.connect() を呼び、offer（SDP）を作る',
             plain:
               'peer.connect() を呼んだ瞬間にすること。データの通り道の設計図（offer）を作る。まだ誰にも送っていない。',
             payload: P.makeOffer,
@@ -621,19 +621,19 @@
             ms: 900,
           },
           {
-            phase: '相談する',
+            phase: 'SDP 交換',
             wire: 'bSig',
             dir: 1,
             kind: 'signal',
             chip: 'OFFER',
             route: 'ブラウザ B → シグナリングサーバー',
-            title: '「neko-123 に渡して」と、自己紹介文をサーバーに預ける',
+            title: '「neko-123 に渡して」と、offer をサーバーに預ける',
             plain:
               'まだ直接の道が無いので、届けてもらうしかない。ここがシグナリングサーバーの仕事。',
             payload: P.offer,
           },
           {
-            phase: '相談する',
+            phase: 'SDP 交換',
             wire: 'aSig',
             dir: -1,
             kind: 'signal',
@@ -646,7 +646,7 @@
             set: { aStatus: '呼び出しが来た' },
           },
           {
-            phase: '相談する',
+            phase: 'SDP 交換',
             at: 'browserA',
             kind: 'signal',
             chip: 'answer を書く',
@@ -658,7 +658,7 @@
             ms: 900,
           },
           {
-            phase: '相談する',
+            phase: 'SDP 交換',
             wire: 'aSig',
             dir: 1,
             kind: 'signal',
@@ -670,7 +670,7 @@
             payload: P.answer,
           },
           {
-            phase: '相談する',
+            phase: 'SDP 交換',
             wire: 'bSig',
             dir: -1,
             kind: 'signal',
@@ -685,24 +685,24 @@
         ];
       }
 
-      // ⑤鍵を決める・⑥送る: 経路が決まったあとは、どのシナリオでも同じ手順。
+      // ⑤DTLS ハンドシェイク・⑥データチャネル: 経路が決まったあとは、どのシナリオでも同じ手順。
       function finishSteps(wire, tone, lastPayload, lastPlain, doneLabel) {
         return [
           {
-            phase: '鍵を決める',
+            phase: 'DTLS ハンドシェイク',
             wire: wire,
             dir: 1,
             kind: tone,
             chip: 'DTLS',
             route: 'ブラウザ A ↔ ブラウザ B',
-            title: '道が決まったので、暗号化の鍵を決める',
+            title: '道が決まったので、DTLS で暗号化の鍵を交換する',
             plain:
               'ここでやっと、相手と直接話している。証明書の指紋を突き合わせて、なりすましでないことを確かめる。',
             payload: P.dtls,
             ms: 1100,
           },
           {
-            phase: '送る',
+            phase: 'データチャネル',
             wire: wire,
             dir: 1,
             kind: tone,
@@ -720,7 +720,7 @@
             },
           },
           {
-            phase: '送る',
+            phase: 'データチャネル',
             wire: wire,
             dir: -1,
             kind: tone,
@@ -783,10 +783,10 @@
 
       function gather(who, found, cands, plain, payload) {
         return {
-          phase: '住所を教え合う',
+          phase: 'ICE 候補交換',
           at: who,
           kind: 'help',
-          chip: '住所さがし',
+          chip: 'ICE 候補収集',
           route: (who === 'browserA' ? 'ブラウザ A' : 'ブラウザ B') + ' の中',
           title: found,
           plain: plain,
@@ -817,16 +817,16 @@
           lanBox: true,
           linkWire: 'direct',
           legend: [
-            ['signal', 'サーバーを通る'],
-            ['probe', '試している'],
-            ['direct', '直接'],
+            ['signal', 'シグナリング（サーバー経由）'],
+            ['probe', '接続性チェック'],
+            ['direct', 'P2P で直接'],
           ],
           steps: helloSteps()
             .concat(talkSteps())
             .concat([
               gather(
                 'browserB',
-                '自分の住所をさがす（同じ Wi-Fi なので 1 つだけ）',
+                'ICE 候補を集める（同じ Wi-Fi なので host が 1 つだけ）',
                 ['192.168.1.9:54321  host'],
                 'ブラウザは「自分に届く住所」を片っ端から集める。家の中の住所は自分で分かるので、すぐ 1 つ見つかる。',
                 t(
@@ -839,7 +839,7 @@
                 ),
               ),
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: 1,
                 kind: 'signal',
@@ -856,7 +856,7 @@
                 ),
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: -1,
                 kind: 'signal',
@@ -874,7 +874,7 @@
               },
               gather(
                 'browserA',
-                'ホストも自分の住所をさがす',
+                'ホストも ICE 候補を集める',
                 ['192.168.1.5:54321  host'],
                 '同じことを A 側でもやる。おたがいに教え合わないと、どちらからも投げられない。',
                 t(
@@ -886,7 +886,7 @@
                 ),
               ),
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: 1,
                 kind: 'signal',
@@ -902,7 +902,7 @@
                 ),
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: -1,
                 kind: 'signal',
@@ -920,11 +920,11 @@
                 set: { bStatus: '相手の住所を 1 件受け取った' },
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: 1,
                 kind: 'probe',
-                chip: '疎通確認',
+                chip: 'Binding Request',
                 route: 'ブラウザ A → ブラウザ B（直接）',
                 title: '教わった住所に、試しに直接投げてみる',
                 plain:
@@ -932,11 +932,11 @@
                 payload: P.check,
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: -1,
                 kind: 'direct',
-                chip: '返事',
+                chip: 'Binding Success',
                 route: 'ブラウザ B → ブラウザ A（直接）',
                 title: '返事が返ってきた。道が決まった',
                 plain:
@@ -973,18 +973,18 @@
           wires: pick(WIRES_HOME, ['aSig', 'bSig', 'aHelp', 'bHelp', 'direct']),
           linkWire: 'direct',
           legend: [
-            ['signal', 'サーバーを通る'],
-            ['help', '住所を教えてもらう'],
-            ['probe', '試している'],
+            ['signal', 'シグナリング（サーバー経由）'],
+            ['help', 'STUN / TURN への問い合わせ'],
+            ['probe', '接続性チェック'],
             ['fail', '届かなかった'],
-            ['direct', '直接'],
+            ['direct', 'P2P で直接'],
           ],
           steps: helloSteps()
             .concat(talkSteps())
             .concat([
               gather(
                 'browserB',
-                '自分の住所をさがす（家の中の住所しか出てこない）',
+                'ICE 候補を集める（まず host しか出てこない）',
                 ['192.168.11.9:54321  host'],
                 '見つかるのは家の中でしか通じない番号。これを相手に伝えても、まず届かない。',
                 t(
@@ -997,11 +997,11 @@
                 ),
               ),
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bHelp',
                 dir: 1,
                 kind: 'help',
-                chip: 'STUN 問い合わせ',
+                chip: 'Binding Request',
                 route: 'ブラウザ B → STUN サーバー',
                 title: '「外から見た私は、どこにいますか」と聞きに行く',
                 plain:
@@ -1009,11 +1009,11 @@
                 payload: P.stunAsk,
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bHelp',
                 dir: -1,
                 kind: 'help',
-                chip: '住所の答え',
+                chip: 'Binding Success',
                 route: 'STUN サーバー → ブラウザ B',
                 title:
                   '「あなたは 198.51.100.9:41100 から来ている」と返ってくる',
@@ -1028,7 +1028,7 @@
                 },
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: 1,
                 kind: 'signal',
@@ -1045,7 +1045,7 @@
                 ),
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: -1,
                 kind: 'signal',
@@ -1075,22 +1075,22 @@
                 ),
               ),
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aHelp',
                 dir: 1,
                 kind: 'help',
-                chip: 'STUN 問い合わせ',
+                chip: 'Binding Request',
                 route: 'ブラウザ A → STUN サーバー',
                 title: 'A も外から見た自分を聞きに行く',
                 plain: '同じ STUN サーバーに、同じことを聞く。',
                 payload: P.stunAsk,
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aHelp',
                 dir: -1,
                 kind: 'help',
-                chip: '住所の答え',
+                chip: 'Binding Success',
                 route: 'STUN サーバー → ブラウザ A',
                 title: '「あなたは 203.0.113.7:52100 から来ている」',
                 plain:
@@ -1104,7 +1104,7 @@
                 },
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: 1,
                 kind: 'signal',
@@ -1120,7 +1120,7 @@
                 ),
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: -1,
                 kind: 'signal',
@@ -1138,12 +1138,12 @@
                 set: { bStatus: '相手の候補を 2 件受け取った' },
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: 1,
                 kind: 'fail',
                 fail: true,
-                chip: 'host で試す',
+                chip: 'host ペア',
                 route: 'ブラウザ A → ブラウザ B（家の中の住所あて）',
                 title: 'まず家の中の住所どうしで試す → 届かない',
                 plain:
@@ -1156,11 +1156,11 @@
                 set: { aStatus: 'host どうしは駄目だった' },
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: 1,
                 kind: 'probe',
-                chip: 'srflx で試す',
+                chip: 'srflx ペア',
                 route: 'ブラウザ A → ブラウザ B（外から見た住所あて）',
                 title: '外から見た住所どうしで、両側から同時に投げる',
                 plain:
@@ -1169,11 +1169,11 @@
                 ms: 1200,
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: -1,
                 kind: 'direct',
-                chip: '返事',
+                chip: 'Binding Success',
                 route: 'ブラウザ B → ブラウザ A（直接）',
                 title: '返事が返ってきた。この道に決まった',
                 plain:
@@ -1220,28 +1220,28 @@
           ]),
           linkWire: 'relay',
           legend: [
-            ['signal', 'サーバーを通る'],
-            ['help', '住所を教えてもらう'],
-            ['probe', '試している'],
+            ['signal', 'シグナリング（サーバー経由）'],
+            ['help', 'STUN / TURN への問い合わせ'],
+            ['probe', '接続性チェック'],
             ['fail', '届かなかった'],
-            ['relay', 'TURN が中継'],
+            ['relay', 'TURN 経由'],
           ],
           steps: helloSteps()
             .concat(talkSteps())
             .concat([
               gather(
                 'browserB',
-                '自分の住所をさがす',
+                'ICE 候補を集める',
                 ['192.168.11.9:54321  host'],
                 'ここまでは ② と同じ。まず家（会社）の中の住所が見つかる。',
                 t('pc.onicecandidate で出てくるもの:', '', '  ' + CAND.homeB),
               ),
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bHelp',
                 dir: 1,
                 kind: 'help',
-                chip: 'STUN 問い合わせ',
+                chip: 'Binding Request',
                 route: 'ブラウザ B → STUN サーバー',
                 title: '外から見た自分を聞きに行く',
                 plain:
@@ -1249,11 +1249,11 @@
                 payload: P.stunAsk,
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bHelp',
                 dir: -1,
                 kind: 'help',
-                chip: '住所の答え',
+                chip: 'Binding Success',
                 route: 'STUN サーバー → ブラウザ B',
                 title: '「198.51.100.9:41100 から来ている」と返ってくる',
                 plain:
@@ -1267,7 +1267,7 @@
                 },
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: 1,
                 kind: 'signal',
@@ -1283,7 +1283,7 @@
                 ),
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: -1,
                 kind: 'signal',
@@ -1301,7 +1301,7 @@
               },
               gather(
                 'browserA',
-                'ホストも住所をさがし、STUN に聞く',
+                'ホストも ICE 候補を集め、STUN に聞く',
                 ['192.168.1.5:54321  host', '203.0.113.7:52100  srflx'],
                 '左右対称。A 側も 2 つの候補を持つ。',
                 t(
@@ -1312,7 +1312,7 @@
                 ),
               ),
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: 1,
                 kind: 'signal',
@@ -1328,7 +1328,7 @@
                 ),
               },
               {
-                phase: '住所を教え合う',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: -1,
                 kind: 'signal',
@@ -1345,12 +1345,12 @@
                 set: { bStatus: '相手の候補を 2 件受け取った' },
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: 1,
                 kind: 'fail',
                 fail: true,
-                chip: 'host で試す',
+                chip: 'host ペア',
                 route: 'ブラウザ A → ブラウザ B（家の中の住所あて）',
                 title: '家の中の住所どうし → 届かない',
                 plain: '② と同じ理由。192.168.x.x は外に出ていけない。',
@@ -1358,12 +1358,12 @@
                 set: { aStatus: 'host どうしは駄目' },
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'direct',
                 dir: 1,
                 kind: 'fail',
                 fail: true,
-                chip: 'srflx で試す',
+                chip: 'srflx ペア',
                 route: 'ブラウザ A → ブラウザ B（外から見た住所あて）',
                 title: '外から見た住所どうし → これも届かない',
                 plain:
@@ -1377,7 +1377,7 @@
                 ms: 1200,
               },
               {
-                phase: '中継を借りる',
+                phase: 'TURN 割り当て',
                 wire: 'bHelp',
                 dir: 1,
                 kind: 'relay',
@@ -1389,11 +1389,11 @@
                 payload: P.turnAllocate,
               },
               {
-                phase: '中継を借りる',
+                phase: 'TURN 割り当て',
                 wire: 'bHelp',
                 dir: -1,
                 kind: 'relay',
-                chip: '中継の住所',
+                chip: 'Allocate Success',
                 route: 'TURN サーバー → ブラウザ B',
                 title: '198.51.100.20:49152 を借りられた',
                 plain:
@@ -1408,11 +1408,11 @@
                 },
               },
               {
-                phase: '中継を借りる',
+                phase: 'TURN 割り当て',
                 wire: 'bHelp',
                 dir: 1,
                 kind: 'relay',
-                chip: '許可',
+                chip: 'CreatePermission',
                 route: 'ブラウザ B → TURN サーバー',
                 title: '「A から来た荷物だけ通して」と許可を出す',
                 plain:
@@ -1420,7 +1420,7 @@
                 payload: P.turnPermission,
               },
               {
-                phase: '中継を借りる',
+                phase: 'ICE 候補交換',
                 wire: 'bSig',
                 dir: 1,
                 kind: 'signal',
@@ -1437,7 +1437,7 @@
                 ),
               },
               {
-                phase: '中継を借りる',
+                phase: 'ICE 候補交換',
                 wire: 'aSig',
                 dir: -1,
                 kind: 'signal',
@@ -1454,11 +1454,11 @@
                 set: { aStatus: '中継の住所を受け取った' },
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'relay',
                 dir: 1,
                 kind: 'relay',
-                chip: '疎通確認',
+                chip: 'Binding Request',
                 route: 'ブラウザ A → TURN → ブラウザ B',
                 title: '中継ごしに、もう一度試す',
                 plain:
@@ -1467,11 +1467,11 @@
                 ms: 1300,
               },
               {
-                phase: '試す',
+                phase: '接続性チェック',
                 wire: 'relay',
                 dir: -1,
                 kind: 'relay',
-                chip: '返事',
+                chip: 'Binding Success',
                 route: 'ブラウザ B → TURN → ブラウザ A',
                 title: '返事が返った。中継の道に決まった',
                 plain:
@@ -1988,6 +1988,52 @@
         seekTo(s.starts[Math.max(0, Math.min(s.steps.length - 1, next))]);
       }
 
+      // フェーズ帯の幅は「そのフェーズにかかる時間の比」で決まるので、
+      // 短いフェーズには長い名前が入りきらない。入る中でいちばん詳しい名前を使う。
+      const PHASE_LABELS = {
+        シグナリング接続: ['シグナリング接続', 'シグナリング', 'WS'],
+        'SDP 交換': ['SDP 交換', 'SDP'],
+        'ICE 候補交換': ['ICE 候補交換', 'ICE 候補', 'ICE'],
+        接続性チェック: ['接続性チェック', 'チェック'],
+        'TURN 割り当て': ['TURN 割り当て', 'TURN'],
+        'DTLS ハンドシェイク': ['DTLS ハンドシェイク', 'DTLS'],
+        データチャネル: ['データチャネル', 'データ'],
+      };
+
+      // ボタンの scrollWidth は右側の余白を数えないので、文字幅は canvas で測る。
+      const fitCanvas = document.createElement('canvas').getContext('2d');
+
+      function fitPhaseLabels() {
+        Array.prototype.forEach.call(phasesEl.children, function (b) {
+          const names = PHASE_LABELS[b.title] || [b.title];
+          b.style.fontSize = '';
+          b.style.letterSpacing = '';
+          const cs = getComputedStyle(b);
+          const avail =
+            b.clientWidth -
+            parseFloat(cs.paddingLeft) -
+            parseFloat(cs.paddingRight);
+          const fits = function (name, px) {
+            fitCanvas.font = px + 'px ' + cs.fontFamily;
+            return fitCanvas.measureText(name).width <= avail;
+          };
+          const base = parseFloat(cs.fontSize);
+          for (let i = 0; i < names.length; i++) {
+            if (fits(names[i], base)) {
+              b.textContent = names[i];
+              return;
+            }
+          }
+          // いちばん短い名前でも入らないときだけ、文字を小さくして詰める
+          const last = names[names.length - 1];
+          b.textContent = last;
+          b.style.fontSize = fits(last, base - 1)
+            ? base - 1 + 'px'
+            : base - 2 + 'px';
+          if (!fits(last, base - 2)) b.style.letterSpacing = '-0.3px';
+        });
+      }
+
       function buildPhases(s) {
         phasesEl.textContent = '';
         const groups = [];
@@ -2018,6 +2064,7 @@
           });
           phasesEl.appendChild(b);
         });
+        fitPhaseLabels();
       }
 
       function buildLegend(s) {
@@ -2060,6 +2107,8 @@
         });
         tabsEl.appendChild(b);
       });
+
+      window.addEventListener('resize', fitPhaseLabels);
 
       seekEl.addEventListener('input', function () {
         setPlaying(false);
