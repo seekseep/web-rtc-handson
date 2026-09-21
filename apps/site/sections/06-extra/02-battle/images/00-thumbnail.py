@@ -9,8 +9,10 @@ from genfig import Canvas, PALETTE
 c = Canvas(900, 300)
 c.text(450, 50, "同じ盤面を、ふたりで塗り合う", scale="xl")
 
-blue = c.node(150, 160, "あなた", emoji_cp="1f58a", color="blue")
-orange = c.node(750, 160, "あいて", emoji_cp="1f58a", color="orange")
+blue = c.node(150, 155, "", emoji_cp="1f4bb")
+c.text(150, 219, "自分", scale="md", fill=PALETTE["blue"]["text"])
+orange = c.node(750, 155, "", emoji_cp="1f4bb")
+c.text(750, 219, "相手", scale="md", fill=PALETTE["orange"]["text"])
 
 # 盤面はラベル付きノードだと文字が中央で重なるので、枠だけ置いて中身は自分で並べる
 board = c.sticky(350, 97, 200, 116, color="gray")

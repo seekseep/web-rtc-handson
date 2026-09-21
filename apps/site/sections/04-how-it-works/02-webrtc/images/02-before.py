@@ -15,8 +15,8 @@ c.text(480, 50, "以前は、ブラウザだけではできなかった", scale=
 c.sticky(48, 86, 404, 196, color="gray")
 c.text(250, 126, "以前", scale="lg", fill=PALETTE["gray"]["text"])
 
-br1 = c.node(114, 180, "", emoji_cp="1f310", w=64, h=56)
-c.text(114, 222, "ブラウザ", scale="sm")
+br1 = c.node(114, 180, "", emoji_cp="1f4bb", w=64, h=56)
+c.text(114, 222, "自分", scale="sm")
 wall = c.node(250, 180, "", emoji_cp="1f6a7", w=64, h=56)
 c.text(250, 222, "プラグイン・専用ソフト", scale="sm")
 cam1 = c.node(386, 180, "", emoji_cp="1f4f9", w=64, h=56)
@@ -34,8 +34,8 @@ c.raw('<line x1="480" y1="96" x2="480" y2="272" '
 c.sticky(508, 86, 404, 196, color="green")
 c.text(710, 126, "いま", scale="lg", fill=PALETTE["green"]["text"])
 
-br2 = c.node(600, 180, "", emoji_cp="1f310", w=64, h=56)
-c.text(600, 222, "ブラウザ", scale="sm")
+br2 = c.node(600, 180, "", emoji_cp="1f4bb", w=64, h=56)
+c.text(600, 222, "自分", scale="sm")
 cam2 = c.node(820, 180, "", emoji_cp="1f4f9", w=64, h=56)
 c.text(820, 222, "ビデオ通話", scale="sm")
 

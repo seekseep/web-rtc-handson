@@ -1,28 +1,29 @@
 # 02-http.svg
 # スキーマ: SOURCE-PATH-GOAL + CYCLE（ください → はい、これ の 1 往復）
-# 2 台のブラウザが同じサーバーから同じページをもらう。ただし A と B のあいだには線が無い
+# 2 台が同じサーバーから同じページをもらう。ただし自分と相手のあいだには線が無い
 
 import sys
 sys.path.insert(0, "/Users/seekseep/.claude/skills/genfig")
-from genfig import Canvas, PALETTE
+from genfig import Canvas
 
 c = Canvas(960, 384)
 c.text(480, 46, "② サーバーに置いたファイルを、みんなが開く", scale="xl")
 
-c.node(140, 180, "ブラウザ A", emoji_cp="1f310")
-c.node(480, 180, "サーバー", emoji_cp="1f5a5")
-c.node(820, 180, "ブラウザ B", emoji_cp="1f310")
+me = c.node(140, 180, "自分", emoji_cp="1f4bb")
+server = c.node(480, 180, "サーバー", emoji_cp="1f5c4")
+you = c.node(820, 180, "相手", emoji_cp="1f4bb")
 
-c.connector(196, 152, 428, 152, label="ください", label_scale="sm")
-c.connector(428, 196, 196, 196, primary=False, label="index.html", label_scale="sm")
-c.connector(764, 152, 532, 152, label="ください", label_scale="sm")
-c.connector(532, 196, 764, 196, primary=False, label="index.html", label_scale="sm")
+# 往路と復路に同じ offset を渡すと、互いに反対側の車線へ分かれる
+c.link(me, server, label="ください", label_scale="sm", offset=24)
+c.link(server, me, label="index.html", label_scale="sm", offset=24, primary=False)
+c.link(you, server, label="ください", label_scale="sm", offset=-24)
+c.link(server, you, label="index.html", label_scale="sm", offset=-24, primary=False)
 
 c.text(480, 272, "渡したら、接続はいったん切れる", scale="sm")
 
 c.raw('<line x1="200" y1="314" x2="760" y2="314" stroke="#cbd5e1" '
       'stroke-width="2" stroke-dasharray="7 6"/>')
 c.emoji("274c", 462, 296, 36)
-c.text(480, 366, "同じページをもらっただけ。A と B のあいだには何も無い", scale="sm")
+c.text(480, 366, "同じページをもらっただけ。自分と相手のあいだには何も無い", scale="sm")
 
 c.save("02-http.svg")

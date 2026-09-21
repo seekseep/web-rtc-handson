@@ -1,6 +1,6 @@
 # 00-thumbnail.svg
-# スキーマ: LINK（2 人が直接つながる）
-# この節の答えを 1 行で見せる。「映像・音声・データを、相手のブラウザへ直接」
+# スキーマ: LINK（2 台が直接つながる）
+# この節の答えを 1 行で見せる。「映像・音声・データを、相手へ直接」
 
 import sys
 
@@ -11,16 +11,11 @@ c = Canvas(900, 300)
 
 c.text(450, 52, "WebRTC は、何をするための技術か", scale="xl")
 
-c.emoji("1f9d1", 70, 133, 52)
-c.text(96, 223, "あなた", scale="label")
-a = c.node(210, 172, "ブラウザ A", emoji_cp="1f310")
+me = c.node(230, 172, "自分", emoji_cp="1f4bb")
+you = c.node(670, 172, "相手", emoji_cp="1f4bb")
 
-b = c.node(690, 172, "ブラウザ B", emoji_cp="1f310")
-c.emoji("1f9d1", 778, 133, 52)
-c.text(804, 223, "相手", scale="label")
+c.link(me, you, label="映像・音声・データ", both=True, label_scale="md")
 
-c.link(a, b, label="映像・音声・データ", both=True, label_scale="md")
-
-c.text(450, 272, "あいだにサーバーを置かずに、相手のブラウザへ直接", scale="sm")
+c.text(450, 272, "あいだにサーバーを置かずに、相手のパソコンへ直接", scale="sm")
 
 c.save("00-thumbnail.svg")

@@ -11,9 +11,9 @@ c = Canvas(960, 340)
 
 c.text(480, 48, "真ん中を通すと、同じ 1 通が 2 回運ばれる", scale="xl")
 
-a = c.node(150, 150, "ブラウザ A", emoji_cp="1f310")
-sv = c.node(480, 150, "サーバー", emoji_cp="1f5a5")
-b = c.node(810, 150, "ブラウザ B", emoji_cp="1f310")
+a = c.node(150, 150, "自分", emoji_cp="1f4bb")
+sv = c.node(480, 150, "サーバー", emoji_cp="1f5c4")
+b = c.node(810, 150, "相手", emoji_cp="1f4bb")
 
 c.link(a, sv, label="こんにちは", label_scale="sm")
 c.link(sv, b, label="こんにちは", label_scale="sm")

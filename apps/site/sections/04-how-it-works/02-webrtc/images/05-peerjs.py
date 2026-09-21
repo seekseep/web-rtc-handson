@@ -12,7 +12,7 @@ c = Canvas(880, 348)
 c.text(440, 50, "PeerJS は、WebRTC の上にかぶせる薄い皮", scale="xl")
 
 layers = [
-    (92, "green", "あなたのコード", "new Peer(...) / peer.connect(...)", "technical"),
+    (92, "green", "自分のコード", "new Peer(...) / peer.connect(...)", "technical"),
     (166, "blue", "PeerJS", "面倒な手続きを肩代わりする", None),
     (240, "gray", "WebRTC（ブラウザの中）", "実際に通信しているのはここ", None),
 ]

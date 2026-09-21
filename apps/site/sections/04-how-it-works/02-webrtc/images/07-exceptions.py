@@ -15,10 +15,10 @@ c.text(480, 50, "それでも、サーバーが 0 台にはならない", scale=
 c.sticky(48, 86, 404, 244, color="gray")
 c.text(250, 124, "つなぐ前", scale="lg", fill=PALETTE["gray"]["text"])
 
-sv1 = c.node(250, 186, "シグナリング", emoji_cp="1f5a5", w=64, h=56,
+sv1 = c.node(250, 186, "シグナリング", emoji_cp="1f5c4", w=64, h=56,
              label_scale="label")
-a1 = c.node(128, 280, "", emoji_cp="1f310", w=60, h=52)
-b1 = c.node(372, 280, "", emoji_cp="1f310", w=60, h=52)
+a1 = c.node(128, 280, "", emoji_cp="1f4bb", w=60, h=52)
+b1 = c.node(372, 280, "", emoji_cp="1f4bb", w=60, h=52)
 
 c.link(a1, sv1, dash="dashed", primary=False)
 c.link(sv1, b1, dash="dashed", primary=False)
@@ -34,10 +34,10 @@ c.raw('<line x1="480" y1="96" x2="480" y2="320" '
 c.sticky(508, 86, 404, 244, color="orange")
 c.text(710, 124, "直接つながらないとき", scale="lg", fill=PALETTE["orange"]["text"])
 
-sv2 = c.node(710, 186, "中継サーバー", emoji_cp="1f5a5", w=64, h=56,
+sv2 = c.node(710, 186, "中継サーバー", emoji_cp="1f5c4", w=64, h=56,
              label_scale="label")
-a2 = c.node(588, 280, "", emoji_cp="1f310", w=60, h=52)
-b2 = c.node(832, 280, "", emoji_cp="1f310", w=60, h=52)
+a2 = c.node(588, 280, "", emoji_cp="1f4bb", w=60, h=52)
+b2 = c.node(832, 280, "", emoji_cp="1f4bb", w=60, h=52)
 
 c.link(a2, sv2)
 c.link(sv2, b2)

@@ -1,5 +1,5 @@
 # 03-database.svg
-# スキーマ: SOURCE-PATH-GOAL（相手 → サーバー/DB）+ BLOCKAGE（自分へは勝手に届かない）
+# スキーマ: SOURCE-PATH-GOAL（相手 → サーバー + DB）+ BLOCKAGE（自分へは勝手に届かない）
 # 「保存はされている。ただし自分の画面は、こちらから取りに行くまで変わらない」を見せる
 
 import sys
@@ -9,10 +9,10 @@ from genfig import Canvas
 c = Canvas(960, 440)
 c.text(480, 48, "③ DB に入れれば、他人の変更も残る", scale="xl")
 
-other = c.node(170, 140, "相手のブラウザ", emoji_cp="1f310")
+other = c.node(170, 140, "相手", emoji_cp="1f4bb")
 store = c.node(760, 230, "サーバー + DB", shape="cylinder", color="green",
                w=200, h=130)
-me = c.node(170, 340, "自分のブラウザ", emoji_cp="1f310")
+me = c.node(170, 340, "自分", emoji_cp="1f4bb")
 
 c.link(other, store, label="書きこむ")
 

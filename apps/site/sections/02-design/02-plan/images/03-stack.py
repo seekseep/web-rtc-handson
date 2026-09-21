@@ -17,7 +17,7 @@ c.text(72, 122, "リアルタイム通信", scale="lg", align="left",
        fill=PALETTE["blue"]["text"])
 
 cloud = c.node(530, 195, "PeerJS Cloud", emoji_cp="2601", w=220, h=96)  # ☁️
-pc = c.node(210, 315, "じぶんの PC", emoji_cp="1f4bb", w=190, h=96)  # 💻
+pc = c.node(210, 315, "自分の PC", emoji_cp="1f4bb", w=190, h=96)  # 💻
 phone = c.node(850, 315, "スマホ", emoji_cp="1f4f1", w=190, h=96)  # 📱
 
 c.link(cloud, pc, primary=False, dash="dashed", label="つなぐ前の合図だけ")
@@ -38,4 +38,4 @@ c.link(drop, url)
 
 c.text(530, 646, "Netlify はページを配るだけ。描いたデータはそこを通らない", scale="sm")
 
-c.save("01-stack.svg")
+c.save("03-stack.svg")

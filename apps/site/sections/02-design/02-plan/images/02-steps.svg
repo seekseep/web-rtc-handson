@@ -10,7 +10,7 @@
 <text x="880" y="217.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">線を描く</text>
 <path d="M346.00 210.00 L394.00 210.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
 <path d="M686.00 210.00 L734.00 210.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
-<text x="200" y="138" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="400">じぶんの画面だけ</text>
+<text x="200" y="138" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="400">自分の画面だけ</text>
 <text x="540" y="138" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400">リアルタイム通信</text>
 <text x="880" y="138" text-anchor="middle" font-size="13" fill="#15803d" font-weight="400">お絵かきらしく</text>
 <text x="540" y="330" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">どの段でも、いったん動くところまで作ってから次に進む</text>

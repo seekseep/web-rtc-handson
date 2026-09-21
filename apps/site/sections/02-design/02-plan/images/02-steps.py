@@ -17,7 +17,7 @@ step3 = c.node(880, 210, "線を描く", shape="sticky", color="green", w=280, h
 c.link(step1, step2)
 c.link(step2, step3)
 
-c.text(200, 138, "じぶんの画面だけ", scale="sm", fill=PALETTE["blue"]["text"])
+c.text(200, 138, "自分の画面だけ", scale="sm", fill=PALETTE["blue"]["text"])
 c.text(540, 138, "リアルタイム通信", scale="sm", fill=PALETTE["yellow"]["text"])
 c.text(880, 138, "お絵かきらしく", scale="sm", fill=PALETTE["green"]["text"])
 

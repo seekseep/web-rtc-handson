@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
-<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
 <rect x="0" y="0" width="900" height="320" fill="#ffffff"/>
 <text x="450" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">1 回のクリックで、両方の画面が白紙になる</text>
 <rect x="70" y="92" width="180" height="56" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
 <text x="160" y="124" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">ぜんぶ消す</text>
-<line x1="258" y1="120" x2="368" y2="120" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
 <rect x="380" y="92" width="230" height="56" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<path d="M256.00 120.00 L374.00 120.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
 <text x="495" y="124" text-anchor="middle" font-size="17" fill="#b45309" font-weight="600" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">{ type: 'clear' }</text>
-<line x1="450" y1="158" x2="300" y2="194" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
-<line x1="560" y1="158" x2="690" y2="194" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M450.00 158.00 L300.00 194.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M560.00 158.00 L690.00 194.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
 <rect x="170" y="200" width="230" height="76" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-<text x="285" y="296" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">じぶんの画面</text>
+<text x="285" y="296" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">自分の画面</text>
 <rect x="580" y="200" width="230" height="76" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-<text x="695" y="296" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">あいての画面</text>
+<text x="695" y="296" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">相手の画面</text>
 </svg>

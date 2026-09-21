@@ -8,14 +8,17 @@ from genfig import Canvas, PALETTE
 c = Canvas(900, 360)
 
 c.text(450, 46, "つながるまでと、つながったあと", scale="xl")
-c.cloud(330, 76, 240, 116, color="teal")
+cloud = c.cloud(330, 76, 240, 116, color="teal")
 c.text(450, 136, "PeerJS Cloud", scale="lg", fill=PALETTE["teal"]["text"])
 c.text(450, 162, "シグナリング", scale="sm")
-c.node(150, 250, "ブラウザ A", emoji_cp="1f310")
-c.node(750, 250, "ブラウザ B", emoji_cp="1f310")
-c.connector(196, 208, 338, 150, dash="dashed", primary=False, label="SDP / 居場所", label_scale="sm")
-c.connector(562, 150, 704, 208, dash="dashed", primary=False)
-c.connector(220, 288, 680, 288, label="データチャネル（ここは直接）", label_scale="sm")
+
+me = c.node(150, 250, "自分", emoji_cp="1f4bb")
+you = c.node(750, 250, "相手", emoji_cp="1f4bb")
+
+c.link(me, cloud, dash="dashed", primary=False, label="SDP / 居場所", label_scale="sm")
+c.link(cloud, you, dash="dashed", primary=False)
+c.link(me, you, label="データチャネル（ここは直接）", label_scale="sm")
+
 c.text(450, 336, "破線はつながるまで。実線はつながったあと", scale="sm")
 
 c.save("01-signaling.svg")

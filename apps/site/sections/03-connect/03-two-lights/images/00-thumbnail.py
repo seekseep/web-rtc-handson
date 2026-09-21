@@ -9,9 +9,9 @@ c = Canvas(900, 322)
 c.text(450, 50, "ライトを 2 つ、ボタンも 2 つ", scale="xl")
 
 c.ellipse(300, 125, 52, 52, color="yellow")
-c.text(300, 198, "じぶん", scale="md")
+c.text(300, 198, "自分", scale="md")
 c.ellipse(620, 125, 52, 52, color="gray")
-c.text(620, 198, "あいて", scale="md")
+c.text(620, 198, "相手", scale="md")
 
 c.sticky(215, 220, 170, 54, color="blue")
 c.text(300, 254, "ひからせる", scale="md", fill=PALETTE["blue"]["text"])
