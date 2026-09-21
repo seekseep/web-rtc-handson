@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
-<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
 <rect x="0" y="0" width="900" height="360" fill="#ffffff"/>
 <text x="450" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">同じ line の指示で、色と太さだけを変える</text>
 <rect x="50" y="84" width="380" height="230" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
@@ -10,11 +10,11 @@
 <path d="M110 280 Q 190 230 250 268 T 370 250" fill="none" stroke="#333333" stroke-width="5" stroke-linecap="round"/>
 <rect x="470" y="84" width="380" height="230" rx="16" fill="#ffedd5" stroke="#f97316" stroke-width="3.5"/>
 <text x="660" y="116" text-anchor="middle" font-size="21" fill="#c2410c" font-weight="700">けしごむ</text>
+<line x1="520" y1="170" x2="800" y2="170" stroke="#cbd5e1" stroke-width="44" stroke-linecap="round"/>
 <line x1="520" y1="170" x2="800" y2="170" stroke="#ffffff" stroke-width="40" stroke-linecap="round"/>
-<line x1="520" y1="170" x2="800" y2="170" stroke="#e2e8f0" stroke-width="40" stroke-linecap="round" opacity="0.9"/>
 <text x="660" y="208" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">color: '#ffffff' / width: 40</text>
 <rect x="510" y="234" width="300" height="60" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
 <path d="M530 280 Q 610 230 670 268 T 790 250" fill="none" stroke="#333333" stroke-width="5" stroke-linecap="round"/>
-<line x1="640" y1="240" x2="640" y2="288" stroke="#ffffff" stroke-width="40" stroke-linecap="round"/>
+<line x1="640" y1="236" x2="640" y2="292" stroke="#ffffff" stroke-width="40" stroke-linecap="butt"/>
 <text x="450" y="344" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">送る指示の種類は増えない。受け取る側は「白い太い線」としか思わない</text>
 </svg>
