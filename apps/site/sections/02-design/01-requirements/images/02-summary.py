@@ -1,4 +1,4 @@
-# 02-priority.svg
+# 02-summary.svg
 # スキーマ: CENTER-PERIPHERY（中心に置く体験と、その外側に回すもの）
 # 3 時間で全部はできないので、何を中心に据えるかを決めたことを見せる
 
@@ -24,4 +24,4 @@ c.link(core, later, dash="dashed", primary=False, label="動いたあとで")
 
 c.text(490, 414, "全部を作り込まない。まず中心の体験を成立させて、そこから広げる", scale="sm")
 
-c.save("02-priority.svg")
+c.save("02-summary.svg")
