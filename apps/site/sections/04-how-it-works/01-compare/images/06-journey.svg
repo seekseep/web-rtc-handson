@@ -1,29 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="310" viewBox="0 0 960 310" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
-<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
-<rect x="0" y="0" width="960" height="310" fill="#ffffff"/>
-<text x="480" y="48" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">この教材で、すでに通ってきた道</text>
-<ellipse cx="130" cy="118" rx="34" ry="34" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
-<text x="130" y="127" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">⓪</text>
-<text x="130" y="194" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">ローカル</text>
-<text x="130" y="226" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">index.html を作って開く</text>
-<text x="130" y="252" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">03 章のあいだ</text>
-<ellipse cx="360" cy="118" rx="34" ry="34" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
-<text x="360" y="127" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">①</text>
-<text x="360" y="194" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">静的サイト</text>
-<text x="360" y="226" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">Netlify に公開する</text>
-<text x="360" y="252" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="400">03 章のおわり</text>
-<ellipse cx="590" cy="118" rx="34" ry="34" fill="#ffedd5" stroke="#f97316" stroke-width="3.5"/>
-<text x="590" y="127" text-anchor="middle" font-size="21" fill="#c2410c" font-weight="700">③</text>
-<text x="590" y="194" text-anchor="middle" font-size="21" fill="#c2410c" font-weight="700">WebSocket</text>
-<text x="590" y="226" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">PeerJS Cloud とつながる</text>
-<text x="590" y="252" text-anchor="middle" font-size="13" fill="#c2410c" font-weight="400">気づかないうちに</text>
-<ellipse cx="820" cy="118" rx="34" ry="34" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
-<text x="820" y="127" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">④</text>
-<text x="820" y="194" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">WebRTC</text>
-<text x="820" y="226" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">相手のブラウザに直接送る</text>
-<text x="820" y="252" text-anchor="middle" font-size="13" fill="#15803d" font-weight="400">03 章 〜 05 章</text>
-<path d="M170.00 118.00 L320.00 118.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
-<path d="M400.00 118.00 L550.00 118.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
-<path d="M630.00 118.00 L780.00 118.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
-<text x="480" y="294" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">② 動的サイトだけ通っていない。どこにも保存しないから</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="330" viewBox="0 0 960 330" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker><marker id="aRskip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#cbd5e1"/></marker></defs>
+<rect x="0" y="0" width="960" height="330" fill="#ffffff"/>
+<text x="480" y="38" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">この教材で、すでに通ってきた道</text>
+<ellipse cx="110" cy="140" rx="34" ry="34" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="110" y="149" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">⓪</text>
+<text x="110" y="216" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">ローカル</text>
+<text x="110" y="248" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">index.html を作って開く</text>
+<text x="110" y="274" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">03 章のあいだ</text>
+<ellipse cx="295" cy="140" rx="34" ry="34" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="295" y="149" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">①</text>
+<text x="295" y="216" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">静的サイト</text>
+<text x="295" y="248" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">Netlify に公開する</text>
+<text x="295" y="274" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="400">03 章のおわり</text>
+<ellipse cx="480" cy="140" rx="34" ry="34" fill="#f8fafc" stroke="#cbd5e1" stroke-width="3.5" stroke-dasharray="6 6"/>
+<text x="480" y="149" text-anchor="middle" font-size="21" fill="#94a3b8" font-weight="700">②</text>
+<text x="480" y="216" text-anchor="middle" font-size="21" fill="#94a3b8" font-weight="700">動的サイト</text>
+<text x="480" y="248" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="400">サーバーに保存する</text>
+<text x="480" y="274" text-anchor="middle" font-size="13" fill="#94a3b8" font-weight="400">ここだけ通っていない</text>
+<ellipse cx="665" cy="140" rx="34" ry="34" fill="#ffedd5" stroke="#f97316" stroke-width="3.5"/>
+<text x="665" y="149" text-anchor="middle" font-size="21" fill="#c2410c" font-weight="700">③</text>
+<text x="665" y="216" text-anchor="middle" font-size="21" fill="#c2410c" font-weight="700">WebSocket</text>
+<text x="665" y="248" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">PeerJS Cloud とつながる</text>
+<text x="665" y="274" text-anchor="middle" font-size="13" fill="#c2410c" font-weight="400">気づかないうちに</text>
+<ellipse cx="850" cy="140" rx="34" ry="34" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="850" y="149" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">④</text>
+<text x="850" y="216" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">WebRTC</text>
+<text x="850" y="248" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">相手のブラウザに直接送る</text>
+<text x="850" y="274" text-anchor="middle" font-size="13" fill="#15803d" font-weight="400">03 章 〜 05 章</text>
+<path d="M150.00 140.00 L255.00 140.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M335.00 140.00 L440.00 140.00" fill="none" stroke="#cbd5e1" stroke-width="2.0" stroke-dasharray="6 6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M520.00 140.00 L625.00 140.00" fill="none" stroke="#cbd5e1" stroke-width="2.0" stroke-dasharray="6 6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M705.00 140.00 L790.00 140.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M321.00 118.00 C 400.00 60.00, 560.00 60.00, 639.00 118.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<text x="480" y="314" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">② 動的サイトだけ飛ばしている。このお絵かきは、どこにも保存しないから</text>
 </svg>
