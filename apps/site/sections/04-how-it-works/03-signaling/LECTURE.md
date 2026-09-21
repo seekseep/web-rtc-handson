@@ -34,7 +34,9 @@ _図: 破線がシグナリング（つながるまで）、太い実線がデ�
 - **SDP**（`offer` / `answer`）… 「私はこういう形式でやりとりできます」という自己紹介
 - **ICE candidate** … 「私にはこの住所で届きます」という**居場所の候補**
 
-前の節で見たとおり、自分の住所は 1 つに決まりません。
+やっかいなのは、**自分の住所が 1 つに決まらない**ことです。
+家の中で名乗っている番号と、外から見えている番号は別のものですし、
+どちらが相手に通じるかは、試してみるまで分かりません。
 だから 1 つに絞らず、**思いつく候補を全部出し合って、片っ端から試します**。
 
 ## 経路の候補は、3 種類ある
@@ -234,7 +236,7 @@ Chrome は LAN の中の住所を `….local` という名前に置き換えて�
 - **`chrome://webrtc-internals`** … Chrome に最初から入っています。
   `getStats()` から取り出したものが、全部グラフで見えます。まず開いてみてください
 - **自分の端末を調べる** … `ifconfig`（Windows なら `ipconfig`）と `traceroute` を叩いて、
-  前の節の NAT の図と見くらべるところから
+  [06 章 03 節](../../06-extra/03-nat/LECTURE.md) の NAT の図と見くらべるところから
 - **仕様書そのもの** … ICE は [RFC 8445](https://datatracker.ietf.org/doc/html/rfc8445)、
   STUN は [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489)、
   TURN は [RFC 8656](https://datatracker.ietf.org/doc/html/rfc8656)。

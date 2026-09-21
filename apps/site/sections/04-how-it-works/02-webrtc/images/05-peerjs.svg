@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="348" viewBox="0 0 880 348" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="880" height="348" fill="#ffffff"/>
+<text x="440" y="50" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">PeerJS は、WebRTC の上にかぶせる薄い皮</text>
+<rect x="60" y="92" width="460" height="62" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="290" y="132" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">あなたのコード</text>
+<text x="548" y="130" text-anchor="start" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">new Peer(...) / peer.connect(...)</text>
+<rect x="60" y="166" width="460" height="62" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="290" y="206" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700">PeerJS</text>
+<text x="548" y="204" text-anchor="start" font-size="13" fill="#475569" font-weight="400">面倒な手続きを肩代わりする</text>
+<rect x="60" y="240" width="460" height="62" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="290" y="280" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">WebRTC（ブラウザの中）</text>
+<text x="548" y="278" text-anchor="start" font-size="13" fill="#475569" font-weight="400">実際に通信しているのはここ</text>
+<text x="440" y="334" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">書き足したのは上の 1 枚だけ。下の 2 枚は最初からそこにある</text>
+</svg>
