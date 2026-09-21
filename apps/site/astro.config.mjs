@@ -135,7 +135,7 @@ export default defineConfig({
           items: [{ autogenerate: { directory: '01-introduction' } }],
         },
         {
-          label: '02. アプリの設計',
+          label: '02. ハンズオンの設計',
           items: [{ autogenerate: { directory: '02-design' } }],
         },
         {
