@@ -71,8 +71,8 @@ await pc.setRemoteDescription(answer);
 :::notice
 PeerJS は WebRTC を**隠している**わけではありません。
 つながったあとに `conn.peerConnection` と書けば、中の `RTCPeerConnection` を触れます。
-[04 章 03 節](../../04-how-it-works/03-signaling/LECTURE.md) では、これを使って
-「実際にどの経路でつながったか」を覗きます。
+PeerJS がその裏でどんな手続きを進めているかは、
+[04 章 03 節](../../04-how-it-works/03-signaling/LECTURE.md) で 1 ステップずつ見ます。
 :::
 
 ### 相手を見つける係 — PeerJS Cloud

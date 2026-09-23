@@ -7,7 +7,7 @@ sys.path.insert(0, "/Users/seekseep/.claude/skills/genfig")
 from genfig import Canvas
 
 c = Canvas(960, 384)
-c.text(480, 46, "③ WebSocket で、つなぎっぱなしにする", scale="xl")
+c.text(480, 46, "WebSocket で、つなぎっぱなしにする", scale="xl")
 
 me = c.node(140, 180, "自分", emoji_cp="1f4bb")
 server = c.node(480, 180, "サーバー", emoji_cp="1f5c4")

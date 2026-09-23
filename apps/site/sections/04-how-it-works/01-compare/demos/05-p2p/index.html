@@ -3,16 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>④ P2P でブラウザ同士を直接つなぐ</title>
+    <title>P2P でブラウザ同士を直接つなぐ</title>
     <style>
+      /* 明暗の 2 組。どちらを使うかは <html data-theme> で決まる（下の script）。
+         線や玉の色も JS からこの変数を指すので、切り替えると描いてあるものまで
+         変わる。明るい側のアクセントは暗い側より濃くする。白地では、細い線や
+         小さな文字が元の明るさのままだと読めない。 */
       :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --text: #1b1f24;
+        --muted: #5b6472;
+        --label: #3a4048;
+        --surface: #ffffff;
+        --chip: #e6e9ee;
+        --border: #c9ced6;
+        --server: #b45309;
+        --direct: #15803d;
+      }
+      :root[data-theme='dark'] {
         color-scheme: dark;
+        --bg: #222;
+        --text: #fff;
+        --muted: #9aa4b2;
+        --label: #c7ced8;
+        --surface: #2b3038;
+        --chip: #2b3038;
+        --border: #4a515b;
+        --server: #f5a524;
+        --direct: #17c964;
       }
       body {
         margin: 0;
         padding: 16px 18px 18px;
-        background: #222;
-        color: #fff;
+        background: var(--bg);
+        color: var(--text);
         font-family: sans-serif;
       }
       .head {
@@ -20,17 +45,6 @@
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
-      }
-      .badge {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: #222;
-        flex: none;
       }
       h1 {
         margin: 0;
@@ -40,67 +54,114 @@
       .url {
         font-family: monospace;
         font-size: 11px;
-        color: #9aa4b2;
-        background: #2b3038;
+        color: var(--muted);
+        background: var(--chip);
         padding: 2px 6px;
         border-radius: 4px;
-      }
-      .spacer {
-        flex: 1;
       }
       button {
         font-size: 12px;
         padding: 5px 12px;
         border-radius: 6px;
-        border: 1px solid #4a515b;
-        background: #2b3038;
-        color: #fff;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
         cursor: pointer;
       }
       button:disabled {
         opacity: 0.35;
         cursor: default;
       }
+      /* 図（SVG）は横幅に合わせて縮む。上に重ねるボタンや画面も同じ割合で
+         縮めないと、ノードとの位置がずれる。viewBox の 1 を --u として幅から作る。 */
+      #stage {
+        position: relative;
+        max-width: 620px;
+        margin: 6px auto 0;
+        container-type: inline-size;
+        --u: calc(100cqw / 620);
+      }
       svg {
         display: block;
         width: 100%;
-        max-width: 620px;
         height: auto;
-        margin: 6px auto 0;
+      }
+      /* ノードの下（above なら上）に置く HTML。位置は makeStage が % で入れる。 */
+      .pin {
+        position: absolute;
+        display: flex;
+        gap: calc(6 * var(--u));
+        white-space: nowrap;
+        transform: translateX(-50%);
+      }
+      .pin.above {
+        transform: translate(-50%, -100%);
+      }
+      .pin button {
+        font-size: calc(12 * var(--u));
+        padding: calc(5 * var(--u)) calc(12 * var(--u));
+        border-radius: calc(6 * var(--u));
       }
       .note {
         margin: 0;
         font-size: 12px;
-        color: #9aa4b2;
+        color: var(--muted);
         min-height: 1.5em;
         text-align: center;
       }
     </style>
+    <script>
+      // 明暗は教材ページに合わせる。埋め込み先の <html data-theme>（Starlight が
+      // 入れる）を読む。開いたあとの切り替えは、教材ページの preview-client.js が
+      // こちらの data-theme を書き換えて届ける。単体で開いたときは OS の設定に従う。
+      (function () {
+        let theme = null;
+        try {
+          if (window.parent !== window) {
+            theme = window.parent.document.documentElement.dataset.theme;
+          }
+        } catch (e) {
+          // 別オリジンに埋め込まれていると親は読めない。OS の設定に落とす。
+        }
+        document.documentElement.dataset.theme =
+          theme ||
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      })();
+    </script>
   </head>
   <body>
     <div class="head">
-      <span class="badge" style="background: #17c964">4</span>
       <h1>P2P でブラウザ同士を直接つなぐ</h1>
       <span class="url">（URL は無い）</span>
-      <span class="spacer"></span>
-      <button id="connect">つなぐ</button>
-      <button id="send-a">A から送る</button>
-      <button id="send-b">B から送る</button>
     </div>
-    <div id="stage"></div>
+    <div id="stage">
+      <div class="pin" data-node="a">
+        <button id="connect-a">つなぐ</button>
+        <button id="send-a">送る</button>
+      </div>
+      <div class="pin" data-node="b">
+        <button id="connect-b">つなぐ</button>
+        <button id="send-b">送る</button>
+      </div>
+    </div>
     <p class="note" id="note">
-      まず「つなぐ」を押してください。つながってから送れます
+      A と B、両方の「つなぐ」を押してください。そろったら直接つながります
     </p>
 
     <script>
       const SVG_NS = 'http://www.w3.org/2000/svg';
 
-      const SERVER = '#f5a524';
-      const DIRECT = '#17c964';
+      const SERVER = 'var(--server)';
+      const DIRECT = 'var(--direct)';
 
+      // 色は CSS 変数（var(--server) など）で渡す。確実に CSS として解釈させる
+      // ため、fill / stroke だけは属性ではなく style に入れる。
       function svgEl(name, attrs) {
         const node = document.createElementNS(SVG_NS, name);
-        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        for (const key in attrs) {
+          if (key === 'fill' || key === 'stroke') node.style[key] = attrs[key];
+          else node.setAttribute(key, attrs[key]);
+        }
         return node;
       }
 
@@ -139,13 +200,23 @@
             y: n.y + 32,
             'text-anchor': 'middle',
             'font-size': 11,
-            fill: '#c7ced8',
+            fill: 'var(--label)',
           });
           label.textContent = n.label;
           group.appendChild(face);
           group.appendChild(label);
           layers.node.appendChild(group);
           nodes[n.id] = { x: n.x, y: n.y, group: group };
+        });
+
+        // 図の上に重ねる HTML（ボタンや画面）を、data-node で指したノードの
+        // 下（above なら上）に置く。図は横幅に合わせて伸び縮みするので、位置は
+        // viewBox に対する % で持つ。
+        host.querySelectorAll('[data-node]').forEach(function (el) {
+          const n = nodes[el.dataset.node];
+          const y = el.classList.contains('above') ? n.y - 26 : n.y + 44;
+          el.style.left = (n.x / 620) * 100 + '%';
+          el.style.top = (y / spec.height) * 100 + '%';
         });
 
         // 線の端点。ノードの絵文字に重ならないよう、中心から 24px 離す。
@@ -189,9 +260,6 @@
             return line;
           },
 
-          clearWires: function () {
-            layers.wire.textContent = '';
-          },
 
           /** a から b へ玉を 1 つ走らせる。届いたら解決する Promise を返す。 */
           travel: function (a, b, options) {
@@ -275,33 +343,55 @@
       }
 
       const stage = makeStage(document.querySelector('#stage'), {
-        height: 170,
+        height: 210,
         nodes: [
           {
             id: 's',
             x: 310,
             y: 40,
-            emoji: '🖥️',
+            emoji: '🗄️',
             label: 'シグナリングサーバー',
           },
-          { id: 'a', x: 90, y: 118, emoji: '🌐', label: 'ブラウザ A' },
-          { id: 'b', x: 530, y: 118, emoji: '🌐', label: 'ブラウザ B' },
+          { id: 'a', x: 90, y: 118, emoji: '💻', label: 'ブラウザ A' },
+          { id: 'b', x: 530, y: 118, emoji: '💻', label: 'ブラウザ B' },
         ],
       });
 
-      const connect = document.querySelector('#connect');
-      const sendA = document.querySelector('#send-a');
-      const sendB = document.querySelector('#send-b');
-      let connected = false;
+      const buttons = {
+        a: {
+          connect: document.querySelector('#connect-a'),
+          send: document.querySelector('#send-a'),
+        },
+        b: {
+          connect: document.querySelector('#connect-b'),
+          send: document.querySelector('#send-b'),
+        },
+      };
+      // joined は「つなぐ」を押したかどうか。相手を待っているあいだは、
+      // サーバーへの破線（serverLines）だけがある。2 台そろうと破線を外して、
+      // 直接の線（directLine）に張り替える。
+      const joined = { a: false, b: false };
+      const serverLines = { a: null, b: null };
+      let directLine = null;
       let busy = false;
 
+      function name(who) {
+        return who === 'a' ? 'A' : 'B';
+      }
+
+      function other(who) {
+        return who === 'a' ? 'b' : 'a';
+      }
+
       // 押せる条件は 2 つ。玉が走っているあいだは押させない。「送る」は、
-      // つながっていないあいだも押させない。直接の線は、先にサーバー経由の
-      // 手続きを踏まないと張れない。その順番を、押せるかどうかで見せる。
+      // 直接つながるまで押させない。直接の線は、先にサーバー経由の手続きを
+      // 踏まないと張れない。その順番を、押せるかどうかで見せる。
       function syncButtons() {
-        connect.disabled = busy;
-        sendA.disabled = busy || !connected;
-        sendB.disabled = busy || !connected;
+        ['a', 'b'].forEach(function (who) {
+          buttons[who].connect.disabled = busy;
+          buttons[who].connect.textContent = joined[who] ? '切る' : 'つなぐ';
+          buttons[who].send.disabled = busy || !directLine;
+        });
       }
 
       function setBusy(on) {
@@ -309,55 +399,58 @@
         syncButtons();
       }
 
-      /** サーバー経由で居場所を教え合い、そのあと直接の線に張り替える。 */
-      async function handshake() {
-        // 線を引き直す前に消す。つなぐ→切る→つなぐ で重ね描きしないため。
-        stage.clearWires();
-        stage.dim('s', false);
-        const toServer = stage.wire('a', 's', { color: SERVER, dashed: true });
-        const toGuest = stage.wire('s', 'b', { color: SERVER, dashed: true });
-
-        note('まずサーバー経由で、お互いの居場所を教え合う');
-        await stage.travel('a', 's', { color: SERVER, label: '居場所' });
-        await stage.travel('s', 'b', { color: SERVER, label: '居場所' });
-        await stage.travel('b', 's', { color: SERVER, label: '居場所' });
-        await stage.travel('s', 'a', { color: SERVER, label: '居場所' });
-
-        toServer.remove();
-        toGuest.remove();
-        stage.dim('s', true);
-        stage.wire('a', 'b', { color: DIRECT });
-        connected = true;
-        connect.textContent = '切る';
-        syncButtons();
+      function waitAtServer(who) {
+        serverLines[who] = stage.wire(who, 's', { color: SERVER, dashed: true });
       }
 
-      function disconnect() {
-        stage.clearWires();
-        stage.dim('s', false);
-        connected = false;
-        connect.textContent = 'つなぐ';
-        syncButtons();
+      /** 2 台そろったら、サーバー経由で居場所を教え合い、直接の線に張り替える。 */
+      async function join(who) {
+        joined[who] = true;
+        waitAtServer(who);
+        const peer = other(who);
+        if (!joined[peer]) {
+          note(name(who) + ' がサーバーにつないだ。相手が来るのを待っている');
+          return;
+        }
+
+        // あとから来た側が、先に待っていた側へ声をかける。
+        note('そろった。サーバー経由で、お互いの居場所を教え合う');
+        await stage.travel(who, 's', { color: SERVER, label: '居場所' });
+        await stage.travel('s', peer, { color: SERVER, label: '居場所' });
+        await stage.travel(peer, 's', { color: SERVER, label: '居場所' });
+        await stage.travel('s', who, { color: SERVER, label: '居場所' });
+
+        serverLines.a.remove();
+        serverLines.b.remove();
+        serverLines.a = null;
+        serverLines.b = null;
+        stage.dim('s', true);
+        directLine = stage.wire('a', 'b', { color: DIRECT });
+        note('つながった。サーバーはもう用済み（薄くなった）');
+      }
+
+      function leave(who) {
+        joined[who] = false;
+        if (directLine) {
+          directLine.remove();
+          directLine = null;
+          stage.dim('s', false);
+          // 残った側は、サーバーにつないだまま次の相手を待つ。
+          waitAtServer(other(who));
+          note(name(who) + ' が切った。もう一度つなぐには、またサーバーが要る');
+        } else {
+          serverLines[who].remove();
+          serverLines[who] = null;
+          note(name(who) + ' がサーバーから離れた');
+        }
       }
 
       syncButtons();
 
-      connect.addEventListener('click', async function () {
-        setBusy(true);
-        if (connected) {
-          disconnect();
-          note('切った。もう一度つなぐには、またサーバーが要る');
-        } else {
-          await handshake();
-          note('つながった。サーバーはもう用済み（薄くなった）');
-        }
-        setBusy(false);
-      });
-
       async function send(who) {
         setBusy(true);
-        const target = who === 'a' ? 'b' : 'a';
-        note((who === 'a' ? 'A' : 'B') + ' → ' + (who === 'a' ? 'B' : 'A'));
+        const target = other(who);
+        note(name(who) + ' → ' + name(target));
         await stage.travel(who, target, {
           color: DIRECT,
           label: 'こんにちは',
@@ -367,11 +460,16 @@
         setBusy(false);
       }
 
-      sendA.addEventListener('click', function () {
-        send('a');
-      });
-      sendB.addEventListener('click', function () {
-        send('b');
+      ['a', 'b'].forEach(function (who) {
+        buttons[who].connect.addEventListener('click', async function () {
+          setBusy(true);
+          if (joined[who]) leave(who);
+          else await join(who);
+          setBusy(false);
+        });
+        buttons[who].send.addEventListener('click', function () {
+          send(who);
+        });
       });
     </script>
   </body>

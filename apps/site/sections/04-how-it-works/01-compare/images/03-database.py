@@ -7,7 +7,7 @@ sys.path.insert(0, "/Users/seekseep/.claude/skills/genfig")
 from genfig import Canvas
 
 c = Canvas(960, 440)
-c.text(480, 48, "③ DB に入れれば、他人の変更も残る", scale="xl")
+c.text(480, 48, "DB に入れれば、他人の変更も残る", scale="xl")
 
 other = c.node(170, 140, "相手", emoji_cp="1f4bb")
 store = c.node(760, 230, "サーバー + DB", shape="cylinder", color="green",

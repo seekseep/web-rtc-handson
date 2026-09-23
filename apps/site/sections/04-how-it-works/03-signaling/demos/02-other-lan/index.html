@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>別々の LAN でつながるまで</title>
+    <style>
+      /* 明暗の 2 組。どちらを使うかは <html data-theme> で決まる（下の script）。
+         線や玉の色も JS からこの変数を指すので、切り替えると描いてあるものまで
+         変わる。明るい側のアクセントは暗い側より濃くする。白地では、細い線や
+         小さな文字が元の明るさのままだと読めない。 */
+      :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --text: #1b1f24;
+        --muted: #5b6472;
+        --label: #3a4048;
+        --surface: #ffffff;
+        --border: #c9ced6;
+        --box: #eceff3;
+        --cloud: #e3e8ef;
+        --signal: #b45309;
+        --stun: #1d4ed8;
+        --direct: #15803d;
+        --fail: #b91c1c;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+        --bg: #222;
+        --text: #fff;
+        --muted: #9aa4b2;
+        --label: #c7ced8;
+        --surface: #2b3038;
+        --border: #4a515b;
+        --box: #2a2d33;
+        --cloud: #30353d;
+        --signal: #f5a524;
+        --stun: #60a5fa;
+        --direct: #17c964;
+        --fail: #f87171;
+      }
+      body {
+        margin: 0;
+        padding: 14px 16px 16px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: sans-serif;
+      }
+      button {
+        font-size: 12px;
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      #stage,
+      .note,
+      .nav {
+        max-width: 620px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #stage {
+        margin-top: 6px;
+      }
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      /* 説明の長さはステップごとに違う。2 行ぶん空けておき、進めるたびに
+         ボタンの位置が上下しないようにする。 */
+      .note {
+        margin-top: 4px;
+        margin-bottom: 0;
+        font-size: 13px;
+        line-height: 1.6;
+        min-height: calc(2 * 1.6em);
+      }
+      .phase {
+        display: inline-block;
+        margin-right: 8px;
+        padding: 0 8px;
+        border-radius: 999px;
+        background: var(--text);
+        color: var(--bg);
+        font-size: 11px;
+        line-height: 1.7;
+      }
+      .phase:empty {
+        display: none;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .counter {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--muted);
+      }
+    </style>
+    <script>
+      // 明暗は教材ページに合わせる。埋め込み先の <html data-theme>（Starlight が
+      // 入れる）を読む。開いたあとの切り替えは、教材ページの preview-client.js が
+      // こちらの data-theme を書き換えて届ける。単体で開いたときは OS の設定に従う。
+      (function () {
+        let theme = null;
+        try {
+          if (window.parent !== window) {
+            theme = window.parent.document.documentElement.dataset.theme;
+          }
+        } catch (e) {
+          // 別オリジンに埋め込まれていると親は読めない。OS の設定に落とす。
+        }
+        document.documentElement.dataset.theme =
+          theme ||
+          (matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light');
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- 絵は twemoji（教材の図と同じもの）。OS の絵文字だと端末ごとに見た目が
+         変わり、図と並べたときに別物に見える。SVG をここに埋め込んで、図の中から
+         <use> で呼ぶ。1f5c4 / 1f4bb は twemoji のファイル名。 -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="emoji-server" viewBox="0 0 36 36">
+        <path
+          fill="#292F33"
+          d="M30 34c0 1.104-.896 2-2 2H8c-1.104 0-2-.896-2-2V2c0-1.104.896-2 2-2h20c1.104 0 2 .896 2 2v32z"
+        />
+        <path
+          fill="#66757F"
+          d="M28 16c0 .552-.447 1-1 1H9c-.552 0-1-.448-1-1V3c0-.552.448-1 1-1h18c.553 0 1 .448 1 1v13zm0 17c0 .553-.447 1-1 1H9c-.552 0-1-.447-1-1V20c0-.553.448-1 1-1h18c.553 0 1 .447 1 1v13z"
+        />
+        <path
+          fill="#292F33"
+          d="M22 8c0 .552-.447 1-1 1h-6c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h6c.553 0 1 .448 1 1v3zm0 17c0 .553-.447 1-1 1h-6c-.552 0-1-.447-1-1v-3c0-.553.448-1 1-1h6c.553 0 1 .447 1 1v3z"
+        />
+        <path
+          fill="#E1E8ED"
+          d="M15 5h6v3h-6zm0 17h6v3h-6zm9-8.97c0 .536-.435.97-.97.97H12.97c-.536 0-.97-.435-.97-.97v-.06c0-.536.434-.97.97-.97h10.06c.535 0 .97.435.97.97v.06zm0 16.999c0 .536-.435.971-.97.971H12.97c-.536 0-.97-.435-.97-.971v-.059c0-.535.434-.97.97-.97h10.06c.535 0 .97.435.97.971v.058z"
+        />
+      </symbol>
+      <symbol id="emoji-laptop" viewBox="0 0 36 36">
+        <path
+          fill="#CCD6DD"
+          d="M34 29.096c-.417-.963-.896-2.008-2-2.008h-1c1.104 0 2-.899 2-2.008V8.008C33 6.899 32.104 6 31 6H5c-1.104 0-2 .899-2 2.008V25.08c0 1.109.896 2.008 2 2.008H4c-1.104 0-1.667 1.004-2 2.008l-2 4.895C0 35.101.896 36 2 36h32c1.104 0 2-.899 2-2.008l-2-4.896z"
+        />
+        <path
+          fill="#9AAAB4"
+          d="M.008 34.075l.006.057.17.692C.5 35.516 1.192 36 2 36h32c1.076 0 1.947-.855 1.992-1.925H.008z"
+        />
+        <path
+          fill="#5DADEC"
+          d="M31 24.075c0 .555-.447 1.004-1 1.004H6c-.552 0-1-.449-1-1.004V9.013c0-.555.448-1.004 1-1.004h24c.553 0 1 .45 1 1.004v15.062z"
+        />
+        <path
+          fill="#AEBBC1"
+          d="M32.906 31.042l-.76-2.175c-.239-.46-.635-.837-1.188-.837H5.11c-.552 0-.906.408-1.156 1.036l-.688 1.977c-.219.596.448 1.004 1 1.004h7.578s.937-.047 1.103-.608c.192-.648.415-1.624.463-1.796.074-.264.388-.531.856-.531h8.578c.5 0 .746.253.811.566.042.204.312 1.141.438 1.782.111.571 1.221.586 1.221.586h6.594c.551 0 1.217-.471.998-1.004z"
+        />
+        <path
+          fill="#9AAAB4"
+          d="M22.375 33.113h-7.781c-.375 0-.538-.343-.484-.675.054-.331.359-1.793.383-1.963.023-.171.274-.375.524-.375h7.015c.297 0 .49.163.55.489.059.327.302 1.641.321 1.941.019.301-.169.583-.528.583z"
+        />
+      </symbol>
+    </svg>
+    <div id="stage"></div>
+    <p class="note">
+      <span class="phase" id="phase"></span><span id="text"></span>
+    </p>
+    <div class="nav">
+      <button id="restart">最初から</button>
+      <button id="prev">◀ 前へ</button>
+      <button id="next">次へ ▶</button>
+      <span class="counter" id="counter"></span>
+    </div>
+
+    <script>
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      const W = 620;
+      const H = 330;
+
+      const SIGNAL = 'var(--signal)';
+      const STUN = 'var(--stun)';
+      const DIRECT = 'var(--direct)';
+      const FAIL = 'var(--fail)';
+
+      // 色は CSS 変数（var(--signal) など）で渡す。確実に CSS として解釈させる
+      // ため、fill / stroke だけは属性ではなく style に入れる。
+      function svgEl(name, attrs) {
+        const node = document.createElementNS(SVG_NS, name);
+        for (const key in attrs) {
+          if (key === 'fill' || key === 'stroke') node.style[key] = attrs[key];
+          else node.setAttribute(key, attrs[key]);
+        }
+        return node;
+      }
+
+      // ---------------- ステップ ----------------
+      //
+      // 1 ステップ = 玉を走らせて（packets）、終わったら図に残すもの（lines /
+      // dim / drop）を足す。「前へ」で戻れるように、図は「最初からそのステップの
+      // 手前まで」を毎回積み上げ直して描く。
+      //
+      // サーバーへ行くときも、別の LAN へ行くときも、真ん中のインターネット（net）を
+      // 通る。LAN の中だけで済むときは通らない。
+
+      // 別々の LAN にいる 2 人。TURN サーバーは出番が無いので、薄いまま置いておく。
+      const SCENE = {
+        boxes: [
+          { x: 20, y: 220, w: 260, h: 100, label: 'A の LAN' },
+          {
+            x: 340,
+            y: 220,
+            w: 260,
+            h: 100,
+            label: 'B の LAN',
+            align: 'right',
+          },
+        ],
+        nodes: [
+          {
+            id: 'sig',
+            x: 110,
+            y: 52,
+            emoji: 'server',
+            label: 'シグナリングサーバー',
+          },
+          {
+            id: 'stun',
+            x: 310,
+            y: 52,
+            emoji: 'server',
+            label: 'STUN サーバー',
+          },
+          {
+            id: 'turn',
+            x: 510,
+            y: 52,
+            emoji: 'server',
+            label: 'TURN サーバー',
+          },
+          { id: 'net', x: 310, y: 150, cloud: true, label: 'インターネット' },
+          {
+            id: 'a',
+            x: 150,
+            y: 275,
+            emoji: 'laptop',
+            label: 'A（へやをつくる）',
+          },
+          {
+            id: 'b',
+            x: 470,
+            y: 275,
+            emoji: 'laptop',
+            label: 'B（へやにはいる）',
+          },
+          { id: 'va', x: 240, y: 275 },
+          { id: 'vb', x: 380, y: 275 },
+        ],
+        unused: ['turn'],
+        steps: [
+          {
+            phase: '',
+            text: 'A と B が、別々の LAN にいる（TURN サーバーは使わない）。「次へ」で 1 ステップずつ進む',
+          },
+          {
+            phase: '名乗る',
+            text: 'A と B が、シグナリングサーバーにつなぐ',
+            packets: [
+              {
+                path: ['a', 'net', 'sig'],
+                label: 'へやをつくる',
+                color: SIGNAL,
+              },
+              {
+                path: ['b', 'net', 'sig'],
+                label: 'へやにはいる',
+                color: SIGNAL,
+                delay: 400,
+              },
+            ],
+            lines: [
+              {
+                key: 'sa',
+                path: ['a', 'net', 'sig'],
+                color: SIGNAL,
+                dashed: true,
+              },
+              {
+                key: 'sb',
+                path: ['b', 'net', 'sig'],
+                color: SIGNAL,
+                dashed: true,
+              },
+            ],
+          },
+          {
+            phase: 'SDP を交換',
+            text: 'B が「こう話したい」（offer）を、サーバー経由で A に渡す',
+            packets: [
+              {
+                path: ['b', 'net', 'sig', 'net', 'a'],
+                label: 'offer',
+                color: SIGNAL,
+              },
+            ],
+          },
+          {
+            phase: 'SDP を交換',
+            text: 'A が「それで話そう」（answer）を返す。まだ住所は伝えていない',
+            packets: [
+              {
+                path: ['a', 'net', 'sig', 'net', 'b'],
+                label: 'answer',
+                color: SIGNAL,
+              },
+            ],
+          },
+          {
+            phase: '候補を集める',
+            text: 'STUN サーバーに、外から見た自分の住所を聞く（srflx）',
+            packets: [
+              {
+                path: ['a', 'net', 'stun', 'net', 'a'],
+                label: ['住所は？', '住所は？', '外の住所', '外の住所'],
+                color: STUN,
+              },
+              {
+                path: ['b', 'net', 'stun', 'net', 'b'],
+                label: ['住所は？', '住所は？', '外の住所', '外の住所'],
+                color: STUN,
+                delay: 1200,
+              },
+            ],
+          },
+          {
+            phase: '候補を交換',
+            text: '自分で分かる LAN の中の住所（host）と、聞いて分かった srflx を、候補としてサーバー経由で送り合う',
+            packets: [
+              {
+                path: ['a', 'net', 'sig', 'net', 'b'],
+                label: '候補',
+                color: SIGNAL,
+              },
+              {
+                path: ['b', 'net', 'sig', 'net', 'a'],
+                label: '候補',
+                color: SIGNAL,
+                delay: 400,
+              },
+            ],
+          },
+          {
+            phase: '試す',
+            text: 'host どうしで試す → 届かない。相手の LAN の中の住所は、こちらの LAN には無い',
+            packets: [
+              { path: ['a', 'va'], label: '届く？', color: DIRECT, fail: true },
+              {
+                path: ['b', 'vb'],
+                label: '届く？',
+                color: DIRECT,
+                fail: true,
+                delay: 300,
+              },
+            ],
+          },
+          {
+            phase: '試す',
+            text: 'srflx どうしで試す → 届いた。外から見た住所なら、インターネット越しに届く',
+            packets: [
+              {
+                path: ['a', 'net', 'b'],
+                label: '届く？',
+                color: DIRECT,
+                mark: { at: 'b', ok: true },
+              },
+              {
+                path: ['b', 'net', 'a'],
+                label: '届く？',
+                color: DIRECT,
+                delay: 300,
+                mark: { at: 'a', ok: true },
+              },
+            ],
+          },
+          {
+            phase: 'つながった',
+            text: 'つながった。ここからはサーバーを通らず、直接届く',
+            packets: [{ path: ['a', 'net', 'b'], label: '色', color: DIRECT }],
+            drop: ['sa', 'sb'],
+            dim: ['sig', 'stun'],
+            lines: [{ key: 'data', path: ['a', 'net', 'b'], color: DIRECT }],
+          },
+        ],
+      };
+
+      // ---------------- 図 ----------------
+
+      const stageEl = document.querySelector('#stage');
+      let layers = null;
+      let nodes = null;
+
+      // インターネットは雲で描く。形は genfig の cloud() と同じ（06 章の NAT の図と
+      // 同じ雲）。この path は 100 × 70 の枠で描かれていて、実際に塗られるのは
+      // CLOUD_BOX の範囲。その中心を、ノードの位置に合わせて置く。
+      const CLOUD_PATH =
+        'M25,60 a20,20 0 0 1 -4,-39 a23,23 0 0 1 44,-7 a17,17 0 0 1 16,13 a16,16 0 0 1 -5,33 Z';
+      const CLOUD_BOX = { x: 6.95, y: 0.15, w: 88.23, h: 60.04 };
+      const CLOUD_SIZE = { w: 170, h: 76 };
+
+      function drawCloud(group, n) {
+        const sx = CLOUD_SIZE.w / CLOUD_BOX.w;
+        const sy = CLOUD_SIZE.h / CLOUD_BOX.h;
+        const tx = n.x - (CLOUD_BOX.x + CLOUD_BOX.w / 2) * sx;
+        const ty = n.y - (CLOUD_BOX.y + CLOUD_BOX.h / 2) * sy;
+        group.appendChild(
+          svgEl('path', {
+            d: CLOUD_PATH,
+            transform:
+              'translate(' + tx + ' ' + ty + ') scale(' + sx + ' ' + sy + ')',
+            fill: 'var(--cloud)',
+            stroke: 'var(--border)',
+            'stroke-width': 1.5,
+            // scale で線まで太くならないようにする。
+            'vector-effect': 'non-scaling-stroke',
+          }),
+        );
+        const label = svgEl('text', {
+          x: n.x,
+          y: n.y + 5,
+          'text-anchor': 'middle',
+          'font-size': 12,
+          fill: 'var(--muted)',
+        });
+        label.textContent = n.label;
+        group.appendChild(label);
+      }
+
+      function buildStage(sc) {
+        stageEl.textContent = '';
+        const svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H });
+        layers = {};
+        // flash は node より下。波紋が絵の後ろから湧いて見えるようにする。
+        ['box', 'wire', 'flash', 'node', 'packet', 'mark'].forEach(
+          function (name) {
+            layers[name] = svgEl('g', {});
+            svg.appendChild(layers[name]);
+          },
+        );
+        stageEl.appendChild(svg);
+
+        sc.boxes.forEach(function (b) {
+          layers.box.appendChild(
+            svgEl('rect', {
+              x: b.x,
+              y: b.y,
+              width: b.w,
+              height: b.h,
+              rx: 12,
+              fill: 'var(--box)',
+              stroke: 'var(--border)',
+            }),
+          );
+          // B の箱は右上に書く。左上だと、B からサーバーへ向かう線とぶつかる。
+          const right = b.align === 'right';
+          const label = svgEl('text', {
+            x: right ? b.x + b.w - 12 : b.x + 12,
+            y: b.y + 19,
+            'text-anchor': right ? 'end' : 'start',
+            'font-size': 11,
+            fill: 'var(--muted)',
+          });
+          label.textContent = b.label;
+          layers.box.appendChild(label);
+        });
+
+        nodes = {};
+        sc.nodes.forEach(function (n) {
+          const group = svgEl('g', {});
+          nodes[n.id] = { x: n.x, y: n.y, group: group, visible: !!n.emoji };
+          layers.node.appendChild(group);
+          if (n.cloud) {
+            drawCloud(group, n);
+            return;
+          }
+          if (!n.emoji) return;
+          group.appendChild(
+            svgEl('use', {
+              href: '#emoji-' + n.emoji,
+              x: n.x - 15,
+              y: n.y - 15,
+              width: 30,
+              height: 30,
+            }),
+          );
+          // サーバーは下から線が来るので、ラベルを上に置く。
+          const above = n.emoji === 'server';
+          const label = svgEl('text', {
+            x: n.x,
+            y: above ? n.y - 26 : n.y + 32,
+            'text-anchor': 'middle',
+            'font-size': 11,
+            fill: 'var(--label)',
+          });
+          label.textContent = n.label;
+          group.appendChild(label);
+        });
+      }
+
+      // 線の端は、絵に重ならないよう中心から 22px 手前で止める。
+      function pullBack(from, to) {
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const len = Math.hypot(dx, dy) || 1;
+        return { x: from.x + (dx / len) * 22, y: from.y + (dy / len) * 22 };
+      }
+
+      function drawLine(line) {
+        const pts = line.path.map(function (id) {
+          return nodes[id];
+        });
+        const first = pullBack(pts[0], pts[1]);
+        const last = pullBack(pts[pts.length - 1], pts[pts.length - 2]);
+        const coords = [first].concat(pts.slice(1, -1), [last]);
+        layers.wire.appendChild(
+          svgEl('polyline', {
+            points: coords
+              .map(function (p) {
+                return p.x + ',' + p.y;
+              })
+              .join(' '),
+            fill: 'none',
+            stroke: line.color,
+            'stroke-width': line.dashed ? 2 : 3,
+            'stroke-dasharray': line.dashed ? '5 5' : 'none',
+            'stroke-linecap': 'round',
+            'stroke-linejoin': 'round',
+          }),
+        );
+      }
+
+      // 試した結果の ✓ / ✕。絵のあるノードでは右上に寄せ、絵を隠さない。
+      function drawMark(id, ok) {
+        const n = nodes[id];
+        const x = n.visible ? n.x + 17 : n.x;
+        const y = n.visible ? n.y - 17 : n.y;
+        const color = ok ? DIRECT : FAIL;
+        layers.mark.appendChild(
+          svgEl('circle', {
+            cx: x,
+            cy: y,
+            r: 10,
+            fill: 'var(--surface)',
+            stroke: color,
+            'stroke-width': 2,
+          }),
+        );
+        const text = svgEl('text', {
+          x: x,
+          y: y + 4.5,
+          'text-anchor': 'middle',
+          'font-size': 13,
+          'font-weight': 700,
+          fill: color,
+        });
+        text.textContent = ok ? '✓' : '✕';
+        layers.mark.appendChild(text);
+      }
+
+      // ---------------- 玉を走らせる ----------------
+
+      function wait(ms, token) {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, token.cancelled ? 0 : ms);
+        });
+      }
+
+      /**
+       * from から to へ玉を 1 区間走らせる。サーバーを経由する道は、区間ごとに
+       * 呼び分ける。grow（最初の区間）で湧き出し、shrink（最後の区間）で
+       * 吸い込まれて消える。途中の区間では大きさを変えない。
+       */
+      function travel(from, to, opts, token) {
+        return new Promise(function (resolve) {
+          const color = opts.color;
+          const dot = svgEl('circle', {
+            cx: from.x,
+            cy: from.y,
+            r: 0,
+            fill: color,
+          });
+          const label = svgEl('text', {
+            x: from.x,
+            y: from.y - 14,
+            'text-anchor': 'middle',
+            'font-size': 11,
+            fill: color,
+            opacity: 0,
+          });
+          label.textContent = opts.label || '';
+          // 「ここから出した」の合図。r は絵の半径より内側から始めて、
+          // 絵の後ろから輪が湧き出すようにする。
+          const ripple = svgEl('circle', {
+            cx: from.x,
+            cy: from.y,
+            r: 12,
+            fill: 'none',
+            stroke: color,
+            'stroke-width': 2,
+            opacity: 0,
+          });
+          if (opts.grow) layers.flash.appendChild(ripple);
+          layers.packet.appendChild(dot);
+          layers.packet.appendChild(label);
+
+          // 長い区間ほど時間をかける。一定だと、短い区間だけ玉がゆっくりに見える。
+          const duration = 260 + Math.hypot(to.x - from.x, to.y - from.y) * 1.3;
+          const started = performance.now();
+          function step(now) {
+            if (token.cancelled) {
+              ripple.remove();
+              dot.remove();
+              label.remove();
+              resolve();
+              return;
+            }
+            // rAF が渡す now は started より数ミリ秒前になることがある。挟まないと
+            // t が負になり、r に負の値を入れて SVG がエラーを吐く。
+            const t = Math.max(0, Math.min(1, (now - started) / duration));
+            const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            const x = from.x + (to.x - from.x) * e;
+            const y = from.y + (to.y - from.y) * e;
+            dot.setAttribute('cx', x);
+            dot.setAttribute('cy', y);
+            label.setAttribute('x', x);
+            label.setAttribute('y', y - 14);
+            let scale = 1;
+            let shown = 1;
+            if (opts.grow) {
+              scale = Math.min(scale, t / 0.15);
+              shown = Math.min(shown, t / 0.3);
+              const away = Math.min(1, t / 0.3);
+              ripple.setAttribute('r', 12 + 14 * away);
+              ripple.setAttribute('opacity', 0.7 * (1 - away));
+            }
+            if (opts.shrink) {
+              scale = Math.min(scale, (1 - t) / 0.15);
+              // ラベルは玉より早く消す。着いた先がサーバーだと、最後まで出して
+              // おくとサーバーの絵とラベルに重なって読みにくい。
+              shown = Math.min(shown, (1 - t) / 0.45);
+            }
+            dot.setAttribute('r', 7 * scale);
+            label.setAttribute('opacity', shown);
+            if (t < 1) {
+              requestAnimationFrame(step);
+            } else {
+              ripple.remove();
+              dot.remove();
+              label.remove();
+              resolve();
+            }
+          }
+          requestAnimationFrame(step);
+        });
+      }
+
+      async function send(p, token) {
+        if (p.delay) await wait(p.delay, token);
+        const hops = p.path.length - 1;
+        for (let h = 0; h < hops; h++) {
+          if (token.cancelled) return;
+          await travel(
+            nodes[p.path[h]],
+            nodes[p.path[h + 1]],
+            {
+              color: p.color,
+              label: Array.isArray(p.label) ? p.label[h] : p.label,
+              grow: h === 0,
+              shrink: h === hops - 1,
+            },
+            token,
+          );
+        }
+      }
+
+      // ---------------- 状態を積み上げて描く ----------------
+
+      const phaseEl = document.querySelector('#phase');
+      const textEl = document.querySelector('#text');
+      const counterEl = document.querySelector('#counter');
+      const prevBtn = document.querySelector('#prev');
+      const nextBtn = document.querySelector('#next');
+
+      let index = 0;
+      let token = { cancelled: false };
+
+      /** 最初から steps[count - 1] までを終えたときに、図に残っているもの。 */
+      function stateAfter(count) {
+        let lines = [];
+        let dim = (SCENE.unused || []).slice();
+        for (let k = 0; k < count; k++) {
+          const step = SCENE.steps[k];
+          if (step.drop) {
+            lines = lines.filter(function (l) {
+              return step.drop.indexOf(l.key) < 0;
+            });
+          }
+          if (step.lines) lines = lines.concat(step.lines);
+          if (step.dim) dim = dim.concat(step.dim);
+        }
+        return { lines: lines, dim: dim };
+      }
+
+      function paint(state) {
+        layers.wire.textContent = '';
+        layers.mark.textContent = '';
+        state.lines.forEach(drawLine);
+        Object.keys(nodes).forEach(function (id) {
+          nodes[id].group.setAttribute(
+            'opacity',
+            state.dim.indexOf(id) >= 0 ? '0.3' : '1',
+          );
+        });
+      }
+
+      /** i 番目のステップを見せる。手前までを描いてから、i 番目の玉を走らせる。 */
+      async function play(i) {
+        // 走っている途中の玉は止める。止めないと、前のステップの玉が残って混ざる。
+        token.cancelled = true;
+        const mine = { cancelled: false };
+        token = mine;
+        index = i;
+
+        const step = SCENE.steps[i];
+        phaseEl.textContent = step.phase;
+        textEl.textContent = step.text;
+        counterEl.textContent = i + 1 + ' / ' + SCENE.steps.length;
+        prevBtn.disabled = i === 0;
+        nextBtn.disabled = i === SCENE.steps.length - 1;
+        paint(stateAfter(i));
+
+        const packets = step.packets || [];
+        await Promise.all(
+          packets.map(function (p) {
+            return send(p, mine);
+          }),
+        );
+        if (mine.cancelled) return;
+
+        paint(stateAfter(i + 1));
+        packets.forEach(function (p) {
+          if (p.fail) drawMark(p.path[p.path.length - 1], false);
+          if (p.mark) drawMark(p.mark.at, p.mark.ok);
+        });
+      }
+
+      document.querySelector('#restart').addEventListener('click', function () {
+        play(0);
+      });
+      prevBtn.addEventListener('click', function () {
+        if (index > 0) play(index - 1);
+      });
+      nextBtn.addEventListener('click', function () {
+        if (index < SCENE.steps.length - 1) play(index + 1);
+      });
+
+      buildStage(SCENE);
+      play(0);
+    </script>
+  </body>
+</html>

@@ -7,7 +7,7 @@ sys.path.insert(0, "/Users/seekseep/.claude/skills/genfig")
 from genfig import Canvas, PALETTE
 
 c = Canvas(960, 352)
-c.text(480, 46, "① ローカルのファイルを開く", scale="xl")
+c.text(480, 46, "ローカルのファイルを開く", scale="xl")
 
 c.sticky(44, 84, 428, 222, color="gray")
 c.text(258, 116, "自分のパソコンの中", scale="lg", fill=PALETTE["gray"]["text"])

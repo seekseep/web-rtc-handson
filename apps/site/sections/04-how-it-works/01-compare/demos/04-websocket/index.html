@@ -3,16 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>③ WebSocket でつなぎっぱなしにする</title>
+    <title>WebSocket でつなぎっぱなしにする</title>
     <style>
+      /* 明暗の 2 組。どちらを使うかは <html data-theme> で決まる（下の script）。
+         線や玉の色も JS からこの変数を指すので、切り替えると描いてあるものまで
+         変わる。明るい側のアクセントは暗い側より濃くする。白地では、細い線や
+         小さな文字が元の明るさのままだと読めない。 */
       :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --text: #1b1f24;
+        --muted: #5b6472;
+        --label: #3a4048;
+        --surface: #ffffff;
+        --chip: #e6e9ee;
+        --border: #c9ced6;
+        --server: #b45309;
+      }
+      :root[data-theme='dark'] {
         color-scheme: dark;
+        --bg: #222;
+        --text: #fff;
+        --muted: #9aa4b2;
+        --label: #c7ced8;
+        --surface: #2b3038;
+        --chip: #2b3038;
+        --border: #4a515b;
+        --server: #f5a524;
       }
       body {
         margin: 0;
         padding: 16px 18px 18px;
-        background: #222;
-        color: #fff;
+        background: var(--bg);
+        color: var(--text);
         font-family: sans-serif;
       }
       .head {
@@ -20,17 +43,6 @@
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
-      }
-      .badge {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: #222;
-        flex: none;
       }
       h1 {
         margin: 0;
@@ -40,67 +52,116 @@
       .url {
         font-family: monospace;
         font-size: 11px;
-        color: #9aa4b2;
-        background: #2b3038;
+        color: var(--muted);
+        background: var(--chip);
         padding: 2px 6px;
         border-radius: 4px;
-      }
-      .spacer {
-        flex: 1;
       }
       button {
         font-size: 12px;
         padding: 5px 12px;
         border-radius: 6px;
-        border: 1px solid #4a515b;
-        background: #2b3038;
-        color: #fff;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
         cursor: pointer;
       }
       button:disabled {
         opacity: 0.35;
         cursor: default;
       }
+      /* 図（SVG）は横幅に合わせて縮む。上に重ねるボタンや画面も同じ割合で
+         縮めないと、ノードとの位置がずれる。viewBox の 1 を --u として幅から作る。 */
+      #stage {
+        position: relative;
+        max-width: 620px;
+        margin: 6px auto 0;
+        container-type: inline-size;
+        --u: calc(100cqw / 620);
+      }
       svg {
         display: block;
         width: 100%;
-        max-width: 620px;
         height: auto;
-        margin: 6px auto 0;
+      }
+      /* ノードの下（above なら上）に置く HTML。位置は makeStage が % で入れる。 */
+      .pin {
+        position: absolute;
+        display: flex;
+        gap: calc(6 * var(--u));
+        white-space: nowrap;
+        transform: translateX(-50%);
+      }
+      .pin.above {
+        transform: translate(-50%, -100%);
+      }
+      .pin button {
+        font-size: calc(12 * var(--u));
+        padding: calc(5 * var(--u)) calc(12 * var(--u));
+        border-radius: calc(6 * var(--u));
       }
       .note {
         margin: 0;
         font-size: 12px;
-        color: #9aa4b2;
+        color: var(--muted);
         min-height: 1.5em;
         text-align: center;
       }
     </style>
+    <script>
+      // 明暗は教材ページに合わせる。埋め込み先の <html data-theme>（Starlight が
+      // 入れる）を読む。開いたあとの切り替えは、教材ページの preview-client.js が
+      // こちらの data-theme を書き換えて届ける。単体で開いたときは OS の設定に従う。
+      (function () {
+        let theme = null;
+        try {
+          if (window.parent !== window) {
+            theme = window.parent.document.documentElement.dataset.theme;
+          }
+        } catch (e) {
+          // 別オリジンに埋め込まれていると親は読めない。OS の設定に落とす。
+        }
+        document.documentElement.dataset.theme =
+          theme ||
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      })();
+    </script>
   </head>
   <body>
     <div class="head">
-      <span class="badge" style="background: #f5a524">3</span>
       <h1>WebSocket でつなぎっぱなしにする</h1>
       <span class="url">wss://</span>
-      <span class="spacer"></span>
-      <button id="connect">つなぐ</button>
-      <button id="send-a">A から送る</button>
-      <button id="send-b">B から送る</button>
-      <button id="push">サーバーから配る</button>
     </div>
-    <div id="stage"></div>
+    <div id="stage">
+      <div class="pin" data-node="a">
+        <button id="connect-a">つなぐ</button>
+        <button id="send-a">送る</button>
+      </div>
+      <div class="pin" data-node="s">
+        <button id="push">配る</button>
+      </div>
+      <div class="pin" data-node="b">
+        <button id="connect-b">つなぐ</button>
+        <button id="send-b">送る</button>
+      </div>
+    </div>
     <p class="note" id="note">
-      まず「つなぐ」を押してください。つながっているあいだだけ、送れます
+      A と B が、それぞれ自分でサーバーにつなぎます。まず「つなぐ」を押してください
     </p>
 
     <script>
       const SVG_NS = 'http://www.w3.org/2000/svg';
 
-      const SERVER = '#f5a524';
+      const SERVER = 'var(--server)';
 
+      // 色は CSS 変数（var(--server) など）で渡す。確実に CSS として解釈させる
+      // ため、fill / stroke だけは属性ではなく style に入れる。
       function svgEl(name, attrs) {
         const node = document.createElementNS(SVG_NS, name);
-        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        for (const key in attrs) {
+          if (key === 'fill' || key === 'stroke') node.style[key] = attrs[key];
+          else node.setAttribute(key, attrs[key]);
+        }
         return node;
       }
 
@@ -139,13 +200,23 @@
             y: n.y + 32,
             'text-anchor': 'middle',
             'font-size': 11,
-            fill: '#c7ced8',
+            fill: 'var(--label)',
           });
           label.textContent = n.label;
           group.appendChild(face);
           group.appendChild(label);
           layers.node.appendChild(group);
           nodes[n.id] = { x: n.x, y: n.y, group: group };
+        });
+
+        // 図の上に重ねる HTML（ボタンや画面）を、data-node で指したノードの
+        // 下（above なら上）に置く。図は横幅に合わせて伸び縮みするので、位置は
+        // viewBox に対する % で持つ。
+        host.querySelectorAll('[data-node]').forEach(function (el) {
+          const n = nodes[el.dataset.node];
+          const y = el.classList.contains('above') ? n.y - 26 : n.y + 44;
+          el.style.left = (n.x / 620) * 100 + '%';
+          el.style.top = (y / spec.height) * 100 + '%';
         });
 
         // 線の端点。ノードの絵文字に重ならないよう、中心から 24px 離す。
@@ -184,9 +255,6 @@
             return line;
           },
 
-          clearWires: function () {
-            layers.wire.textContent = '';
-          },
 
           /** a から b へ玉を 1 つ走らせる。届いたら解決する Promise を返す。 */
           travel: function (a, b, options) {
@@ -270,29 +338,48 @@
       }
 
       const stage = makeStage(document.querySelector('#stage'), {
-        height: 120,
+        height: 150,
         nodes: [
-          { id: 'a', x: 90, y: 56, emoji: '🌐', label: 'ブラウザ A' },
-          { id: 's', x: 310, y: 56, emoji: '🖥️', label: 'サーバー' },
-          { id: 'b', x: 530, y: 56, emoji: '🌐', label: 'ブラウザ B' },
+          { id: 'a', x: 90, y: 56, emoji: '💻', label: 'ブラウザ A' },
+          { id: 's', x: 310, y: 56, emoji: '🗄️', label: 'サーバー' },
+          { id: 'b', x: 530, y: 56, emoji: '💻', label: 'ブラウザ B' },
         ],
       });
 
-      const connect = document.querySelector('#connect');
-      const sendA = document.querySelector('#send-a');
-      const sendB = document.querySelector('#send-b');
+      const buttons = {
+        a: {
+          connect: document.querySelector('#connect-a'),
+          send: document.querySelector('#send-a'),
+        },
+        b: {
+          connect: document.querySelector('#connect-b'),
+          send: document.querySelector('#send-b'),
+        },
+      };
       const push = document.querySelector('#push');
-      let connected = false;
+      // それぞれのブラウザが、自分でサーバーに張った線。つないでいなければ null。
+      const lines = { a: null, b: null };
       let busy = false;
 
+      function name(who) {
+        return who === 'a' ? 'A' : 'B';
+      }
+
+      function other(who) {
+        return who === 'a' ? 'b' : 'a';
+      }
+
       // 押せる条件は 2 つ。玉が走っているあいだは押させない（重なると経路が
-      // 読めなくなる）。送る・配るは、つながっていないあいだも押させない。線が
+      // 読めなくなる）。送るは、自分がつないでいないあいだも押させない。線が
       // 無いのに玉が飛ぶと、「線があるから送れる」という順番が消えてしまう。
+      // 配るは、1 台でもつないでいれば押せる。
       function syncButtons() {
-        connect.disabled = busy;
-        sendA.disabled = busy || !connected;
-        sendB.disabled = busy || !connected;
-        push.disabled = busy || !connected;
+        ['a', 'b'].forEach(function (who) {
+          buttons[who].connect.disabled = busy;
+          buttons[who].connect.textContent = lines[who] ? '切る' : 'つなぐ';
+          buttons[who].send.disabled = busy || !lines[who];
+        });
+        push.disabled = busy || !(lines.a || lines.b);
       }
 
       function setBusy(on) {
@@ -300,63 +387,59 @@
         syncButtons();
       }
 
-      function openLine() {
-        // 線を引き直す前に消す。つなぐ→切る→つなぐ で重ね描きしないため。
-        stage.clearWires();
-        stage.wire('a', 's', { color: SERVER });
-        stage.wire('s', 'b', { color: SERVER });
-        connected = true;
-        connect.textContent = '切る';
-        syncButtons();
-      }
-
-      function closeLine() {
-        stage.clearWires();
-        connected = false;
-        connect.textContent = 'つなぐ';
-        syncButtons();
-      }
-
       syncButtons();
 
-      connect.addEventListener('click', function () {
-        if (connected) {
-          closeLine();
-          note('切れた。ここから先は、サーバーから知らせることもできない');
+      // つなぎに行くのは、いつもブラウザの側。サーバーは、つないできた相手を
+      // 覚えておくだけで、自分からはつなぎに行けない。
+      function toggle(who) {
+        if (lines[who]) {
+          lines[who].remove();
+          lines[who] = null;
+          note(name(who) + ' が切った。サーバーはもう ' + name(who) + ' に知らせられない');
         } else {
-          openLine();
-          note('つなぎっぱなしになった。閉じるまでこの線は残る');
+          lines[who] = stage.wire(who, 's', { color: SERVER });
+          note(name(who) + ' がサーバーにつないだ。閉じるまでこの線は残る');
         }
-      });
+        syncButtons();
+      }
 
       async function send(who) {
         setBusy(true);
-        const target = who === 'a' ? 'b' : 'a';
-        const from = who === 'a' ? 'A' : 'B';
-        const to = who === 'a' ? 'B' : 'A';
-        note(from + ' → サーバー');
+        const to = other(who);
+        note(name(who) + ' → サーバー');
         await stage.travel(who, 's', { color: SERVER, label: 'こんにちは' });
-        note('サーバー → ' + to);
-        await stage.travel('s', target, { color: SERVER, label: 'こんにちは' });
-        note('届いた。ただし同じ言葉が、サーバーを 2 回通っている');
+        if (lines[to]) {
+          note('サーバー → ' + name(to));
+          await stage.travel('s', to, { color: SERVER, label: 'こんにちは' });
+          note('届いた。ただし同じ言葉が、サーバーを 2 回通っている');
+        } else {
+          note(name(to) + ' がつないでいないので、サーバーから先へは届けられない');
+        }
         setBusy(false);
       }
 
-      sendA.addEventListener('click', function () {
-        send('a');
-      });
-      sendB.addEventListener('click', function () {
-        send('b');
+      ['a', 'b'].forEach(function (who) {
+        buttons[who].connect.addEventListener('click', function () {
+          toggle(who);
+        });
+        buttons[who].send.addEventListener('click', function () {
+          send(who);
+        });
       });
 
       push.addEventListener('click', async function () {
         setBusy(true);
         note('サーバーから、聞かれていないのに送る');
-        await Promise.all([
-          stage.travel('s', 'a', { color: SERVER, label: 'お知らせ' }),
-          stage.travel('s', 'b', { color: SERVER, label: 'お知らせ' }),
-        ]);
-        note('ここが ⓪〜② との一番の違い。こちらが聞かなくても届く');
+        await Promise.all(
+          ['a', 'b']
+            .filter(function (who) {
+              return lines[who];
+            })
+            .map(function (who) {
+              return stage.travel('s', who, { color: SERVER, label: 'お知らせ' });
+            }),
+        );
+        note('ここがこれまでとの一番の違い。こちらが聞かなくても届く');
         setBusy(false);
       });
     </script>

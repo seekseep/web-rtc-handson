@@ -3,16 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>② DB に入れても、リロードするまで見えない</title>
+    <title>DB に入れても、リロードするまで見えない</title>
     <style>
+      /* 明暗の 2 組。どちらを使うかは <html data-theme> で決まる（下の script）。
+         線や玉の色も JS からこの変数を指すので、切り替えると描いてあるものまで
+         変わる。明るい側のアクセントは暗い側より濃くする。白地では、細い線や
+         小さな文字が元の明るさのままだと読めない。 */
       :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --text: #1b1f24;
+        --muted: #5b6472;
+        --label: #3a4048;
+        --surface: #ffffff;
+        --chip: #e6e9ee;
+        --border: #c9ced6;
+        --server: #b45309;
+        --stale: #b45309;
+      }
+      :root[data-theme='dark'] {
         color-scheme: dark;
+        --bg: #222;
+        --text: #fff;
+        --muted: #9aa4b2;
+        --label: #c7ced8;
+        --surface: #2b3038;
+        --chip: #2b3038;
+        --border: #4a515b;
+        --server: #f5a524;
+        --stale: #f5a524;
       }
       body {
         margin: 0;
         padding: 16px 18px 18px;
-        background: #222;
-        color: #fff;
+        background: var(--bg);
+        color: var(--text);
         font-family: sans-serif;
       }
       .head {
@@ -20,17 +45,6 @@
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
-      }
-      .badge {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: #222;
-        flex: none;
       }
       h1 {
         margin: 0;
@@ -40,8 +54,8 @@
       .url {
         font-family: monospace;
         font-size: 11px;
-        color: #9aa4b2;
-        background: #2b3038;
+        color: var(--muted);
+        background: var(--chip);
         padding: 2px 6px;
         border-radius: 4px;
       }
@@ -52,89 +66,117 @@
         font-size: 12px;
         padding: 5px 12px;
         border-radius: 6px;
-        border: 1px solid #4a515b;
-        background: #2b3038;
-        color: #fff;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
         cursor: pointer;
       }
       button:disabled {
         opacity: 0.35;
         cursor: default;
       }
+      /* 図（SVG）は横幅に合わせて縮む。上に重ねるボタンや画面も同じ割合で
+         縮めないと、ノードとの位置がずれる。viewBox の 1 を --u として幅から作る。 */
+      #stage {
+        position: relative;
+        max-width: 620px;
+        margin: 6px auto 0;
+        container-type: inline-size;
+        --u: calc(100cqw / 620);
+      }
       svg {
         display: block;
         width: 100%;
-        max-width: 620px;
         height: auto;
-        margin: 6px auto 0;
+      }
+      /* ノードの下（above なら上）に置く HTML。位置は makeStage が % で入れる。 */
+      .pin {
+        position: absolute;
+        display: flex;
+        gap: calc(6 * var(--u));
+        white-space: nowrap;
+        transform: translateX(-50%);
+      }
+      .pin.above {
+        transform: translate(-50%, -100%);
+      }
+      .pin button {
+        font-size: calc(12 * var(--u));
+        padding: calc(5 * var(--u)) calc(12 * var(--u));
+        border-radius: calc(6 * var(--u));
       }
       .note {
         margin: 0;
         font-size: 12px;
-        color: #9aa4b2;
+        color: var(--muted);
         min-height: 1.5em;
         text-align: center;
       }
-      .screens {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin: 2px 0 8px;
-      }
+      /* 画面はブラウザの上、操作は下。縦に並べて、誰の画面で誰の操作かを
+         迷わせない。図と一緒に縮むよう、大きさは --u で持つ。 */
       .screen {
-        flex: 0 1 260px;
-        border: 1px solid #4a515b;
-        border-radius: 8px;
-        padding: 6px 10px 8px;
-        background: #2b3038;
-        text-align: center;
-      }
-      /* 書く / 読むを、その画面の持ち主の下に置く。どちらの操作かを迷わせない。 */
-      .acts {
-        display: flex;
-        gap: 6px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 6px;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        box-sizing: border-box;
+        width: calc(170 * var(--u));
+        border: 1px solid var(--border);
+        border-radius: calc(8 * var(--u));
+        padding: calc(6 * var(--u)) calc(10 * var(--u)) calc(8 * var(--u));
+        background: var(--surface);
       }
       .who {
-        display: block;
-        font-size: 11px;
-        color: #9aa4b2;
+        font-size: calc(11 * var(--u));
+        color: var(--muted);
       }
       .screen b {
-        display: block;
-        font-size: 14px;
-        margin-top: 2px;
+        font-size: calc(14 * var(--u));
+        margin-top: calc(2 * var(--u));
       }
       .stale {
-        color: #f5a524;
+        color: var(--stale);
       }
     </style>
+    <script>
+      // 明暗は教材ページに合わせる。埋め込み先の <html data-theme>（Starlight が
+      // 入れる）を読む。開いたあとの切り替えは、教材ページの preview-client.js が
+      // こちらの data-theme を書き換えて届ける。単体で開いたときは OS の設定に従う。
+      (function () {
+        let theme = null;
+        try {
+          if (window.parent !== window) {
+            theme = window.parent.document.documentElement.dataset.theme;
+          }
+        } catch (e) {
+          // 別オリジンに埋め込まれていると親は読めない。OS の設定に落とす。
+        }
+        document.documentElement.dataset.theme =
+          theme ||
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      })();
+    </script>
   </head>
   <body>
     <div class="head">
-      <span class="badge" style="background: #22c55e">2</span>
       <h1>DB に入れても、リロードするまで見えない</h1>
       <span class="url">https:// + DB</span>
     </div>
-    <div id="stage"></div>
-    <div class="screens">
-      <div class="screen">
+    <div id="stage">
+      <div class="pin above screen" data-node="a">
         <span class="who">A に見えているもの</span>
         <b id="screen-a">（空）</b>
-        <div class="acts">
-          <button id="write-a">A が書きこむ</button>
-          <button id="reload-a">A がリロードする</button>
-        </div>
       </div>
-      <div class="screen">
+      <div class="pin above screen" data-node="b">
         <span class="who">B に見えているもの</span>
         <b id="screen-b">（空）</b>
-        <div class="acts">
-          <button id="write-b">B が書きこむ</button>
-          <button id="reload-b">B がリロードする</button>
-        </div>
+      </div>
+      <div class="pin" data-node="a">
+        <button id="write-a">書きこむ</button>
+        <button id="reload-a">リロードする</button>
+      </div>
+      <div class="pin" data-node="b">
+        <button id="write-b">書きこむ</button>
+        <button id="reload-b">リロードする</button>
       </div>
     </div>
     <p class="note" id="note">
@@ -144,11 +186,16 @@
     <script>
       const SVG_NS = 'http://www.w3.org/2000/svg';
 
-      const SERVER = '#f5a524';
+      const SERVER = 'var(--server)';
 
+      // 色は CSS 変数（var(--server) など）で渡す。確実に CSS として解釈させる
+      // ため、fill / stroke だけは属性ではなく style に入れる。
       function svgEl(name, attrs) {
         const node = document.createElementNS(SVG_NS, name);
-        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        for (const key in attrs) {
+          if (key === 'fill' || key === 'stroke') node.style[key] = attrs[key];
+          else node.setAttribute(key, attrs[key]);
+        }
         return node;
       }
 
@@ -187,13 +234,23 @@
             y: n.y + 32,
             'text-anchor': 'middle',
             'font-size': 11,
-            fill: '#c7ced8',
+            fill: 'var(--label)',
           });
           label.textContent = n.label;
           group.appendChild(face);
           group.appendChild(label);
           layers.node.appendChild(group);
           nodes[n.id] = { x: n.x, y: n.y, group: group };
+        });
+
+        // 図の上に重ねる HTML（ボタンや画面）を、data-node で指したノードの
+        // 下（above なら上）に置く。図は横幅に合わせて伸び縮みするので、位置は
+        // viewBox に対する % で持つ。
+        host.querySelectorAll('[data-node]').forEach(function (el) {
+          const n = nodes[el.dataset.node];
+          const y = el.classList.contains('above') ? n.y - 26 : n.y + 44;
+          el.style.left = (n.x / 620) * 100 + '%';
+          el.style.top = (y / spec.height) * 100 + '%';
         });
 
         // 線の端点。ノードの絵文字に重ならないよう、中心から 24px 離す。
@@ -316,11 +373,11 @@
       }
 
       const stage = makeStage(document.querySelector('#stage'), {
-        height: 120,
+        height: 200,
         nodes: [
-          { id: 'a', x: 90, y: 56, emoji: '🌐', label: 'ブラウザ A' },
-          { id: 's', x: 310, y: 56, emoji: '🗄️', label: 'サーバー + DB' },
-          { id: 'b', x: 530, y: 56, emoji: '🌐', label: 'ブラウザ B' },
+          { id: 'a', x: 120, y: 110, emoji: '💻', label: 'ブラウザ A' },
+          { id: 's', x: 310, y: 110, emoji: '🗄️', label: 'サーバー + DB' },
+          { id: 'b', x: 500, y: 110, emoji: '💻', label: 'ブラウザ B' },
         ],
       });
 

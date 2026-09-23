@@ -3,16 +3,43 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>① サーバーに置いたファイルを開く</title>
+    <title>サーバーに置いたファイルを開く</title>
     <style>
+      /* 明暗の 2 組。どちらを使うかは <html data-theme> で決まる（下の script）。
+         線や玉の色も JS からこの変数を指すので、切り替えると描いてあるものまで
+         変わる。明るい側のアクセントは暗い側より濃くする。白地では、細い線や
+         小さな文字が元の明るさのままだと読めない。 */
       :root {
+        color-scheme: light;
+        --bg: #f6f7f9;
+        --text: #1b1f24;
+        --muted: #5b6472;
+        --label: #3a4048;
+        --faint: #6b7480;
+        --surface: #ffffff;
+        --chip: #e6e9ee;
+        --border: #c9ced6;
+        --server: #b45309;
+        --blocked: #dc2626;
+      }
+      :root[data-theme='dark'] {
         color-scheme: dark;
+        --bg: #222;
+        --text: #fff;
+        --muted: #9aa4b2;
+        --label: #c7ced8;
+        --faint: #78828f;
+        --surface: #2b3038;
+        --chip: #2b3038;
+        --border: #4a515b;
+        --server: #f5a524;
+        --blocked: #ef4444;
       }
       body {
         margin: 0;
         padding: 16px 18px 18px;
-        background: #222;
-        color: #fff;
+        background: var(--bg);
+        color: var(--text);
         font-family: sans-serif;
       }
       .head {
@@ -20,17 +47,6 @@
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
-      }
-      .badge {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: #222;
-        flex: none;
       }
       h1 {
         margin: 0;
@@ -40,53 +56,94 @@
       .url {
         font-family: monospace;
         font-size: 11px;
-        color: #9aa4b2;
-        background: #2b3038;
+        color: var(--muted);
+        background: var(--chip);
         padding: 2px 6px;
         border-radius: 4px;
-      }
-      .spacer {
-        flex: 1;
       }
       button {
         font-size: 12px;
         padding: 5px 12px;
         border-radius: 6px;
-        border: 1px solid #4a515b;
-        background: #2b3038;
-        color: #fff;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
         cursor: pointer;
       }
       button:disabled {
         opacity: 0.35;
         cursor: default;
       }
+      /* 図（SVG）は横幅に合わせて縮む。上に重ねるボタンや画面も同じ割合で
+         縮めないと、ノードとの位置がずれる。viewBox の 1 を --u として幅から作る。 */
+      #stage {
+        position: relative;
+        max-width: 620px;
+        margin: 6px auto 0;
+        container-type: inline-size;
+        --u: calc(100cqw / 620);
+      }
       svg {
         display: block;
         width: 100%;
-        max-width: 620px;
         height: auto;
-        margin: 6px auto 0;
+      }
+      /* ノードの下（above なら上）に置く HTML。位置は makeStage が % で入れる。 */
+      .pin {
+        position: absolute;
+        display: flex;
+        gap: calc(6 * var(--u));
+        white-space: nowrap;
+        transform: translateX(-50%);
+      }
+      .pin.above {
+        transform: translate(-50%, -100%);
+      }
+      .pin button {
+        font-size: calc(12 * var(--u));
+        padding: calc(5 * var(--u)) calc(12 * var(--u));
+        border-radius: calc(6 * var(--u));
       }
       .note {
         margin: 0;
         font-size: 12px;
-        color: #9aa4b2;
+        color: var(--muted);
         min-height: 1.5em;
         text-align: center;
       }
     </style>
+    <script>
+      // 明暗は教材ページに合わせる。埋め込み先の <html data-theme>（Starlight が
+      // 入れる）を読む。開いたあとの切り替えは、教材ページの preview-client.js が
+      // こちらの data-theme を書き換えて届ける。単体で開いたときは OS の設定に従う。
+      (function () {
+        let theme = null;
+        try {
+          if (window.parent !== window) {
+            theme = window.parent.document.documentElement.dataset.theme;
+          }
+        } catch (e) {
+          // 別オリジンに埋め込まれていると親は読めない。OS の設定に落とす。
+        }
+        document.documentElement.dataset.theme =
+          theme ||
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      })();
+    </script>
   </head>
   <body>
     <div class="head">
-      <span class="badge" style="background: #60a5fa">1</span>
       <h1>サーバーに置いたファイルを開く</h1>
       <span class="url">https://</span>
-      <span class="spacer"></span>
-      <button id="open-a">A からアクセスする</button>
-      <button id="open-b">B からアクセスする</button>
     </div>
-    <div id="stage"></div>
+    <div id="stage">
+      <div class="pin" data-node="a">
+        <button id="open-a">アクセスする</button>
+      </div>
+      <div class="pin" data-node="b">
+        <button id="open-b">アクセスする</button>
+      </div>
+    </div>
     <p class="note" id="note">
       どちらから押してもかまいません。押した側だけが 1 往復します
     </p>
@@ -94,11 +151,16 @@
     <script>
       const SVG_NS = 'http://www.w3.org/2000/svg';
 
-      const SERVER = '#f5a524';
+      const SERVER = 'var(--server)';
 
+      // 色は CSS 変数（var(--server) など）で渡す。確実に CSS として解釈させる
+      // ため、fill / stroke だけは属性ではなく style に入れる。
       function svgEl(name, attrs) {
         const node = document.createElementNS(SVG_NS, name);
-        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        for (const key in attrs) {
+          if (key === 'fill' || key === 'stroke') node.style[key] = attrs[key];
+          else node.setAttribute(key, attrs[key]);
+        }
         return node;
       }
 
@@ -143,13 +205,23 @@
             y: n.y + 32,
             'text-anchor': 'middle',
             'font-size': 11,
-            fill: '#c7ced8',
+            fill: 'var(--label)',
           });
           label.textContent = n.label;
           group.appendChild(face);
           group.appendChild(label);
           layers.node.appendChild(group);
           nodes[n.id] = { x: n.x, y: n.y, group: group };
+        });
+
+        // 図の上に重ねる HTML（ボタンや画面）を、data-node で指したノードの
+        // 下（above なら上）に置く。図は横幅に合わせて伸び縮みするので、位置は
+        // viewBox に対する % で持つ。
+        host.querySelectorAll('[data-node]').forEach(function (el) {
+          const n = nodes[el.dataset.node];
+          const y = el.classList.contains('above') ? n.y - 26 : n.y + 44;
+          el.style.left = (n.x / 620) * 100 + '%';
+          el.style.top = (y / spec.height) * 100 + '%';
         });
 
         // 線の端点。ノードの絵文字に重ならないよう、中心から 24px 離す。
@@ -196,7 +268,7 @@
                 y1: y,
                 x2: x2,
                 y2: y,
-                stroke: '#4a515b',
+                stroke: 'var(--border)',
                 'stroke-width': 2,
                 'stroke-dasharray': '5 5',
               }),
@@ -206,7 +278,7 @@
               y: y + 5,
               'text-anchor': 'middle',
               'font-size': 16,
-              fill: '#ef4444',
+              fill: 'var(--blocked)',
             });
             mark.textContent = '✕';
             layers.box.appendChild(mark);
@@ -216,7 +288,7 @@
                 y: y + 22,
                 'text-anchor': 'middle',
                 'font-size': 11,
-                fill: '#78828f',
+                fill: 'var(--faint)',
               });
               caption.textContent = text;
               layers.box.appendChild(caption);
@@ -305,11 +377,11 @@
       }
 
       const stage = makeStage(document.querySelector('#stage'), {
-        height: 170,
+        height: 190,
         nodes: [
-          { id: 'a', x: 90, y: 56, emoji: '🌐', label: 'ブラウザ A' },
-          { id: 's', x: 310, y: 56, emoji: '🖥️', label: 'サーバー' },
-          { id: 'b', x: 530, y: 56, emoji: '🌐', label: 'ブラウザ B' },
+          { id: 'a', x: 90, y: 56, emoji: '💻', label: 'ブラウザ A' },
+          { id: 's', x: 310, y: 56, emoji: '🗄️', label: 'サーバー' },
+          { id: 'b', x: 530, y: 56, emoji: '💻', label: 'ブラウザ B' },
         ],
       });
 
@@ -341,7 +413,7 @@
         if (opened.a && opened.b) {
           await sleep(600);
           if (!blockedShown) {
-            stage.blocked(130, 490, 134, 'A と B のあいだには何も無い');
+            stage.blocked(130, 490, 150, 'A と B のあいだには何も無い');
             blockedShown = true;
           }
           note('2 台とも同じページを持っている。でも、つながってはいない');

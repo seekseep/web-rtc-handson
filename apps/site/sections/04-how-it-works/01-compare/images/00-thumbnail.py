@@ -13,10 +13,10 @@ DEVICE = "1f4bb"
 SERVER = "1f5c4"
 
 cols = [
-    (123, "gray", "① 静的サイト", "同じものが配られるだけ"),
-    (361, "blue", "② 動的サイト", "聞けば、変更も届く"),
-    (599, "orange", "③ WebSocket", "聞かなくても届く"),
-    (837, "green", "④ WebRTC", "誰も経由せずに届く"),
+    (123, "gray", "静的サイト", "同じものが配られるだけ"),
+    (361, "blue", "動的サイト", "聞けば、変更も届く"),
+    (599, "orange", "WebSocket", "聞かなくても届く"),
+    (837, "green", "WebRTC", "誰も経由せずに届く"),
 ]
 
 for cx, color, head, foot in cols:
@@ -29,26 +29,26 @@ def devices(cx):
     b = c.node(cx + 64, 230, "", emoji_cp=DEVICE, w=52, h=44)
     return a, b
 
-# ① サーバーが同じファイルを配るだけ。A と B のあいだに線は無い
+# 静的サイト: サーバーが同じファイルを配るだけ。A と B のあいだに線は無い
 a, b = devices(123)
 s = c.node(123, 160, "", emoji_cp=SERVER, w=52, h=44)
 c.link(s, a, primary=False)
 c.link(s, b, primary=False)
 
-# ② DB にためる。ただし線はどちらも自分と相手の側から
+# 動的サイト: DB にためる。ただし線はどちらも自分と相手の側から
 a, b = devices(361)
 db = c.node(361, 160, "DB", shape="cylinder", color="blue", w=66, h=50,
             label_scale="sm")
 c.link(a, db, both=True, primary=False)
 c.link(b, db, both=True, primary=False)
 
-# ③ サーバーがつなぎっぱなしで、向こうから流し込んでくる
+# WebSocket: サーバーがつなぎっぱなしで、向こうから流し込んでくる
 a, b = devices(599)
 s = c.node(599, 160, "", emoji_cp=SERVER, w=52, h=44)
 c.link(a, s)
 c.link(s, b)
 
-# ④ あいだに誰も居ない
+# WebRTC: あいだに誰も居ない
 a, b = devices(837)
 c.text(837, 166, "あいだに\n誰も居ない", scale="sm")
 c.link(a, b, both=True)
