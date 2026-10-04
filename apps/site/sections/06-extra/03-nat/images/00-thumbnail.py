@@ -9,8 +9,8 @@ from genfig import Canvas, PALETTE
 c = Canvas(900, 300)
 c.text(450, 50, "出ていくときに書き換え、帰りに書き戻す", scale="xl")
 
-home = c.node(160, 165, "家の中の PC", emoji_cp="1f4bb", color="blue")
-router = c.node(450, 165, "ルーター", emoji_cp="1f4e1", color="yellow")
+home = c.node(160, 165, "自分", emoji_cp="1f4bb", color="blue")
+router = c.node(450, 165, "ルーター", emoji_cp="1f4f6", color="yellow")
 net = c.node(760, 165, "インターネット", shape="cloud", color="gray", w=190, h=116)
 
 c.link(home, router, label="192.168.1.5", label_scale="sm", offset=22)

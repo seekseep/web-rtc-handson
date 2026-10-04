@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="440" fill="#ffffff"/>
+<text x="480" y="48" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">ルーターが書き換えて、覚えておく</text>
+<svg x="110.0" y="115.3" width="80.0" height="80.0" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M34 29.096c-.417-.963-.896-2.008-2-2.008h-1c1.104 0 2-.899 2-2.008V8.008C33 6.899 32.104 6 31 6H5c-1.104 0-2 .899-2 2.008V25.08c0 1.109.896 2.008 2 2.008H4c-1.104 0-1.667 1.004-2 2.008l-2 4.895C0 35.101.896 36 2 36h32c1.104 0 2-.899 2-2.008l-2-4.896z"/><path fill="#9AAAB4" d="M.008 34.075l.006.057.17.692C.5 35.516 1.192 36 2 36h32c1.076 0 1.947-.855 1.992-1.925H.008z"/><path fill="#5DADEC" d="M31 24.075c0 .555-.447 1.004-1 1.004H6c-.552 0-1-.449-1-1.004V9.013c0-.555.448-1.004 1-1.004h24c.553 0 1 .45 1 1.004v15.062z"/><path fill="#AEBBC1" d="M32.906 31.042l-.76-2.175c-.239-.46-.635-.837-1.188-.837H5.11c-.552 0-.906.408-1.156 1.036l-.688 1.977c-.219.596.448 1.004 1 1.004h7.578s.937-.047 1.103-.608c.192-.648.415-1.624.463-1.796.074-.264.388-.531.856-.531h8.578c.5 0 .746.253.811.566.042.204.312 1.141.438 1.782.111.571 1.221.586 1.221.586h6.594c.551 0 1.217-.471.998-1.004z"/><path fill="#9AAAB4" d="M22.375 33.113h-7.781c-.375 0-.538-.343-.484-.675.054-.331.359-1.793.383-1.963.023-.171.274-.375.524-.375h7.015c.297 0 .49.163.55.489.059.327.302 1.641.321 1.941.019.301-.169.583-.528.583z"/></svg>
+<text x="150" y="222.14" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">自分</text>
+<svg x="440.0" y="115.3" width="80.0" height="80.0" viewBox="0 0 36 36"><path fill="#3B88C3" d="M0 4c0-4 4-4 4-4h28s4 0 4 4v28s0 4-4 4H4s-4 0-4-4V4z"/><path fill="#FFF" d="M28 8h4v20h-4zm-6 4h4v16h-4zm-6 4h4v12h-4zm-6 4h4v8h-4zm-6 4h4v4H4z"/></svg>
+<text x="480" y="222.14" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">ルーター</text>
+<g transform="translate(715.0,112.0) scale(1.9,1.65714)"><path d="M25,60 a20,20 0 0 1 -4,-39 a23,23 0 0 1 44,-7 a17,17 0 0 1 16,13 a16,16 0 0 1 -5,33 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/></g>
+<text x="810" y="177.35" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">インターネット</text>
+<path d="M196.00 146.00 L251.08 146.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M375.24 146.00 L430.32 146.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="313.16" y="150.55" text-anchor="middle" font-size="13" fill="#0f172a" font-weight="400">192.168.1.5:51000</text>
+<path d="M529.68 146.00 L557.88 146.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M689.32 146.00 L717.51 146.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="623.597" y="150.55" text-anchor="middle" font-size="13" fill="#0f172a" font-weight="400">203.0.113.42:60123</text>
+<path d="M717.51 194.00 L529.68 194.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<path d="M430.32 194.00 L196.00 194.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<rect x="270" y="300" width="420" height="86" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="480" y="332" text-anchor="middle" font-size="13" fill="#b45309" font-weight="400">覚えておく表</text>
+<text x="480" y="366" text-anchor="middle" font-size="13" fill="#475569" font-weight="400" font-family="'SFMono-Regular','Consolas','Noto Sans Mono','Courier New',monospace">192.168.1.5:51000 → 203.0.113.42:60123</text>
+<path d="M480.00 230.66 L480.00 294.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 6" marker-end="url(#aRsub)"/>
+<text x="480" y="424" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">帰りはこの表を逆に引いて、家の中の機器へ渡す</text>
+</svg>
