@@ -17,21 +17,15 @@
 import { glob, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import {
+  lecturesWithExample,
+  readCodeviewBase,
+  resolveBaseLecture,
+} from './libs/lecture-base.mjs';
 import { ROOT } from './libs/paths.mjs';
 
 const BLOCK =
   /^:::code(?:\[[^\]]*\])?\{([^}]*)\}\s*\n\n?```(\w+)\n([\s\S]*?)```\s*\n\n?:::/gm;
-
-/** example/ を持つレクチャー（sections/<sec>/<lec>）を、教材の順に並べて返す。 */
-async function lecturesWithExample() {
-  const found = [];
-  for await (const hit of glob('sections/*/*/example/index.html', {
-    cwd: ROOT,
-  })) {
-    found.push(path.dirname(path.dirname(hit)));
-  }
-  return found.sort();
-}
 
 /** すべての LECTURE.md（sections/<sec>/<lec>）を教材の順に並べて返す。 */
 async function allLectures() {
@@ -72,18 +66,31 @@ let checked = 0;
 for (const lectureRel of await allLectures()) {
   const md = await readLines(path.join(lectureRel, 'LECTURE.md'));
   if (!md) continue;
+  const body = md.join('\n');
 
-  // 差分の「旧」側は、example を持つ節のうち 1 つ前のもの（章はまたぐ）
-  const index = withExample.indexOf(lectureRel);
-  const previousRel = index > 0 ? withExample[index - 1] : null;
+  // 差分の「旧」側。既定は example を持つ節のうち 1 つ前のもの（章はまたぐ）で、
+  // LECTURE.md の `::codeview{base="..."}` があればそちらを使う（`::codeview` の
+  // 差分ビューと同じ相手を見る）。
+  const previousRel = resolveBaseLecture(
+    withExample,
+    lectureRel,
+    readCodeviewBase(body),
+    lectureRel,
+  );
 
-  for (const m of md.join('\n').matchAll(BLOCK)) {
+  for (const m of body.matchAll(BLOCK)) {
     const attrs = Object.fromEntries(
       [...m[1].matchAll(/(\w+)=([^\s}]+)/g)].map(([, k, v]) => [k, v]),
     );
     if (!attrs.filepath || !attrs.offset) continue;
 
     const code = m[3].replace(/\n$/, '').split('\n');
+    if (m[2] === 'diff' && !previousRel) {
+      console.warn(
+        `[check-lectures] ${lectureRel} ${attrs.filepath} は差分ブロックだが、` +
+          '比べる前の節が無い（旧側は未検査）',
+      );
+    }
     const targets =
       m[2] === 'diff'
         ? [

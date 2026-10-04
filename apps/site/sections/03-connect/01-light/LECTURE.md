@@ -163,4 +163,4 @@ lightButton.addEventListener('click', function () {
 
 次の節で、**押すたびに違う色**になるようにします。
 
-::codeview{defaultFile="index.html"}
+::codeview{defaultFile="index.html" base="none"}

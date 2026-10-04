@@ -280,4 +280,4 @@ clearCanvas();
 ここまでは、いつもの Web ページと何も変わりません。
 次の節で、03 章で書いたつなぐコードを持ってきて、**相手とつなぎます**。
 
-::codeview{defaultFile="main.js"}
+::codeview{defaultFile="main.js" base="none"}

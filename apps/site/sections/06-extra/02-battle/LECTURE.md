@@ -232,4 +232,4 @@ if (last === null || inkEmpty === true) {
 - `takeCells` で「相手の色のマスは 2 マスぶんのインクを使う」ことにすると、
   攻めるより自陣を広げるほうが得になって、動きが変わる
 
-::codeview{defaultFile="main.js"}
+::codeview{defaultFile="main.js" base="none"}

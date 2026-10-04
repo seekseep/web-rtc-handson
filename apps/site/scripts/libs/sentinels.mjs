@@ -13,6 +13,10 @@
  *   ::codeview{defaultFile="main.js"}     最初に開くファイル（既定は先頭）。
  *   ::codeview[見出し]{...}                ヘッダの文言を上書きする（既定は example なら
  *                                         「このステップの完成例」、それ以外は「このデモのコード」）。
+ *   ::codeview{base="none"}               「前の節との差分」ビューを出さない（章の起点）。
+ *   ::codeview{base="03-connect/06-deploy"}  差分の相手を明示する。省略時は example を持つ
+ *                                         1 つ前の節（libs/lecture-base.mjs が決める）。
+ *                                         差分は example のときだけ。デモでは無視する。
  *
  *   ::assets                … 画像・音などの素材だけを配った ZIP のダウンロードボタンを置く。
  *                             対象は現在レクチャーの example/assets/（build-downloads.mjs が
@@ -34,11 +38,15 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { walkFiles } from './fs-walk.mjs';
+import { resolveBaseLecture } from './lecture-base.mjs';
+import { diffLines } from './line-diff.mjs';
 import {
   assetsDownloadUrlFor,
   downloadUrlFor,
+  exampleDirOf,
   previewUrlFor,
 } from './naming.mjs';
+import { ROOT } from './paths.mjs';
 
 const CODEVIEW_RE = /^::codeview(?:\[([^\]]*)\])?(?:\{([^}]*)\})?\s*$/;
 const PREVIEW_RE = /^::preview(?:\[([^\]]*)\])?(?:\{([^}]*)\})?\s*$/;
@@ -97,12 +105,71 @@ function normalizeCodePath(input) {
   return rel;
 }
 
+/** 読めなければ null を返す readFile（差分の旧側は無いことがある）。 */
+async function readIfExists(abs) {
+  try {
+    return await readFile(abs, 'utf8');
+  } catch (e) {
+    if (e.code === 'ENOENT') return null;
+    throw e;
+  }
+}
+
+/**
+ * 1 ファイル分のコードフェンスを out に積む。「完成例」と「前の節との差分」の 2 本を出し、
+ * remark-editor.mjs が data-file / data-view を見てペインに振り分ける。
+ *
+ * meta に付ける Expressive Code 向けの指定:
+ *   frame="none"        … EC が「先頭付近のファイル名っぽいコメント」を拾って
+ *                         その行を消してしまうのを止める（行番号が 1 行ずれる）。
+ *   lang=<元の言語>      … text-markers が useDiffSyntax を立て、元の言語の
+ *                         ハイライトを保ったまま `+` / `-` 行に色が付く。
+ *   startLineNumber / startNewLineNumber … ec-line-numbers.mjs の旧/新 2 列のガター。
+ */
+async function pushFileFences(out, { rel, lang, content, baseAbs, where }) {
+  out.push(
+    '```' + lang + ' data-file="' + rel + '" data-view="code" frame="none"',
+  );
+  out.push(content);
+  out.push('```');
+
+  if (!baseAbs) return;
+  const before = await readIfExists(path.join(baseAbs, ...rel.split('/')));
+  const { lines, added, removed } = diffLines(
+    before === null ? [] : before.replace(/\n+$/, '').split('\n'),
+    content.split('\n'),
+  );
+  // 前の節から変えていないファイルは差分フェンスを出さない。
+  // remark-editor.mjs が「変えていません」の一言に差し替える。
+  if (added === 0 && removed === 0) return;
+  if (before === null) {
+    console.log(`[sentinels] ${where}/${rel} is new in this lecture`);
+  }
+  out.push(
+    '```diff data-file="' +
+      rel +
+      '" data-view="diff" frame="none"' +
+      ` lang=${lang} startLineNumber=1 startNewLineNumber=1`,
+  );
+  out.push(lines.join('\n'));
+  out.push('```');
+}
+
 /**
  * コードのあるディレクトリから、簡易エディタ UI ブロック（Markdown）を作る。
  * ディレクトリが無い／コードファイルが 1 つも無ければ null。
  * zipUrl は配布 ZIP がある場合だけ渡す（デモには無い）。
+ * baseAbs / baseLabel は差分ビューを出すときだけ渡す。
  */
-async function buildEditorBlock({ srcAbs, zipUrl, defaultFile, title }) {
+async function buildEditorBlock({
+  srcAbs,
+  baseAbs,
+  baseLabel,
+  zipUrl,
+  defaultFile,
+  title,
+  where,
+}) {
   let all;
   try {
     all = await walkFiles(srcAbs, {
@@ -118,18 +185,33 @@ async function buildEditorBlock({ srcAbs, zipUrl, defaultFile, title }) {
   );
   if (codeFiles.length === 0) return null;
 
+  // base 側にしか無いファイル（この節で消したファイル）はタブが無いので差分に出せない。
+  // 黙って落とすと気づけないので警告だけ出す。
+  if (baseAbs) {
+    const baseFiles = await walkFiles(baseAbs, {
+      ignoreDirs: IGNORE_DIRS,
+      ignoreNames: IGNORE_NAMES,
+    });
+    for (const rel of baseFiles) {
+      if (!CODE_EXT.has(path.extname(rel).toLowerCase())) continue;
+      if (codeFiles.includes(rel)) continue;
+      console.warn(
+        `[sentinels] ${baseLabel} has ${rel} but ${where} does not (dropped from the diff)`,
+      );
+    }
+  }
+
   const out = [];
   const zipAttr = zipUrl ? ` zip="${zipUrl}"` : '';
   const openAttr = defaultFile ? ` open="${defaultFile}"` : '';
-  out.push(`::::editor{title="${title}"${zipAttr}${openAttr}}`);
+  const diffAttr = baseAbs ? ` diff="${baseLabel}"` : '';
+  out.push(`::::editor{title="${title}"${zipAttr}${openAttr}${diffAttr}}`);
   for (const rel of codeFiles) {
     const lang = CODE_EXT.get(path.extname(rel).toLowerCase());
     const content = (
       await readFile(path.join(srcAbs, ...rel.split('/')), 'utf8')
     ).replace(/\n+$/, '');
-    out.push('```' + lang + ' data-file="' + rel + '"');
-    out.push(content);
-    out.push('```');
+    await pushFileFences(out, { rel, lang, content, baseAbs, where });
   }
   out.push('::::');
   return out.join('\n');
@@ -194,8 +276,15 @@ function buildPreviewBlock({ base, sec, lec, demo, caption, height }) {
 /**
  * 本文中の `::codeview` / `::assets` / `::preview` センチネルを展開する。
  * current = { sec, lec }（このレクチャー）。lecture 以外の docs では素通しする。
+ *
+ * base はサイトの公開パス接頭辞（`/web-rtc-handson`）。差分の相手のレクチャーは
+ * baseLectureRel と呼んで区別する（名前が紛らわしいので混同しないこと）。
+ * lectureRel / exampleLectures は差分ビューの相手を決めるために使う。
  */
-export async function expandSentinels(body, { lectureAbsDir, sec, lec, base }) {
+export async function expandSentinels(
+  body,
+  { lectureAbsDir, lectureRel, exampleLectures = [], sec, lec, base },
+) {
   if (!sec || !lec) return body;
   const exampleAbs = path.join(lectureAbsDir, EXAMPLE_DIR);
   const where = `sections/${sec}/${lec}`;
@@ -214,8 +303,28 @@ export async function expandSentinels(body, { lectureAbsDir, sec, lec, base }) {
         continue;
       }
       const isExample = rel === EXAMPLE_DIR;
+      // 差分ビューを出すのは完成例だけ。デモには「前の節」が無い。
+      let baseLectureRel = null;
+      if (isExample) {
+        baseLectureRel = resolveBaseLecture(
+          exampleLectures,
+          lectureRel,
+          attrs.base,
+          where,
+        );
+      } else if (attrs.base) {
+        console.warn(
+          `[sentinels] ::codeview{path="${rel}"} ignores base="${attrs.base}" in ${where}`,
+        );
+      }
       const block = await buildEditorBlock({
         srcAbs: path.join(lectureAbsDir, ...rel.split('/')),
+        baseAbs: baseLectureRel
+          ? path.join(ROOT, ...exampleDirOf(baseLectureRel).split('/'))
+          : null,
+        baseLabel: baseLectureRel
+          ? baseLectureRel.replace(/^sections\//, '')
+          : null,
         // 配布 ZIP があるのは example/ だけ（build-downloads.mjs の対象）。
         zipUrl: isExample ? downloadUrlFor(base, sec, lec) : null,
         defaultFile: attrs.defaultFile,
@@ -224,6 +333,7 @@ export async function expandSentinels(body, { lectureAbsDir, sec, lec, base }) {
           : isExample
             ? 'このステップの完成例'
             : 'このデモのコード',
+        where,
       });
       if (block) {
         out.push(block);

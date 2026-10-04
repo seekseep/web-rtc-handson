@@ -32,6 +32,7 @@ import { pathToFileURL } from 'node:url';
 
 import { loadAstroConfig } from './libs/astro-config.mjs';
 import { parseFrontmatter } from './libs/frontmatter.mjs';
+import { lecturesWithExample } from './libs/lecture-base.mjs';
 import {
   PUBLIC_ASSETS,
   publicTargetFor,
@@ -75,6 +76,7 @@ async function syncFile({
   defaultSidebarOrder,
   editPath,
   config,
+  exampleLectures,
 }) {
   const stats = await stat(sourceFile);
   if (stats.size > MAX_FILE_BYTES) {
@@ -102,6 +104,8 @@ async function syncFile({
   if (lecture) {
     body = await expandSentinels(body, {
       lectureAbsDir: path.join(ROOT, ...sourceDir.split('/')),
+      lectureRel: sourceDir,
+      exampleLectures,
       sec: lecture.sec,
       lec: lecture.lec,
       base: config.base,
@@ -291,6 +295,8 @@ async function findPublishableMarkdown() {
  */
 export async function syncLectures() {
   const config = await loadAstroConfig();
+  // `::codeview` の差分ビューが「前の節」を決めるのに使う（libs/lecture-base.mjs）。
+  const exampleLectures = await lecturesWithExample();
   await cleanDocsDir();
   await mkdir(DOCS_DIR, { recursive: true });
   await copyPublicAssets(config.base);
@@ -315,6 +321,7 @@ export async function syncLectures() {
       // editUrl は実ファイルのリポジトリ相対パスを指すので REPO_SUBDIR を前置する。
       editPath: path.posix.join(REPO_SUBDIR, srcRel),
       config,
+      exampleLectures,
     });
     await syncSiblingDocsDir(sourceDir, outputFile);
   }
