@@ -42,15 +42,8 @@ _図: 「まずこれを入れてください」というお願いが、丸ご�
 少し前まで、ブラウザでビデオ通話をするには **Flash などのプラグイン**や、
 **専用ソフト**を入れてもらう必要がありました。
 
-「まずこれをインストールしてください」の一言が、どれだけの人を止めるか。
 WebRTC がやったのは、**その機能をブラウザの側に最初から持たせる**ことです。
 いまは主要なブラウザすべてに入っていて、使う人に追加で入れてもらうものはありません。
-
-:::notice
-WebRTC は W3C と IETF で標準化されていて、特定の会社の持ち物ではありません。
-03 章で書いたコードが PC でもスマートフォンでも同じように動いたのは、
-「ブラウザに最初から入っている、共通の機能」を使っていたからです。
-:::
 
 ## サーバーを用意するコスト
 
@@ -96,6 +89,14 @@ _図: 3 つとも使う必要はない。お絵かきが使うのは右の 1 つ
 今回のお絵かきが使うのは、**RTCDataChannel だけ**です。単に**データチャネル**とも呼びます。
 カメラもマイクも触りません。送っているのは、線の座標と色です。
 
+この 3 つは、どれも MDN に日本語の解説があります。
+この節では名前と役割だけ押さえれば十分ですが、中身まで見たくなったらこちらへ。
+
+- WebRTC API（3 つをまとめた入口）: https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API
+- MediaStream: https://developer.mozilla.org/ja/docs/Web/API/MediaStream
+- RTCPeerConnection: https://developer.mozilla.org/ja/docs/Web/API/RTCPeerConnection
+- RTCDataChannel: https://developer.mozilla.org/ja/docs/Web/API/RTCDataChannel
+
 ## PeerJS
 
 ![自分のコードの下に PeerJS があり、さらに下にブラウザの WebRTC がある](./images/05-peerjs.svg)
@@ -118,9 +119,9 @@ const conn = peer.connect('あいことば'); // つなぐ
 
 ## P2P
 
-![いつもの Web は頼む人と答える人。P2P は対等な 2 人](./images/06-p2p.svg)
+![サーバー経由は自分とサーバーと相手の 3 台。P2P は自分と相手が直接](./images/06-p2p.svg)
 
-_図: サーバーが「配る人」ではなくなり、お互いが相手になる。_
+_図: 真ん中のサーバーが消えて、相手と直接つながる。_
 
 **P2P（ピア・ツー・ピア）** は、端末同士がサーバーを介さずに直接やりとりする仕組みのことです。
 WebRTC は、それを**ブラウザの上で**実現するための技術のひとつ、という関係になります。

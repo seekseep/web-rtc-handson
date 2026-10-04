@@ -125,7 +125,9 @@
         }
         document.documentElement.dataset.theme =
           theme ||
-          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          (matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light');
       })();
     </script>
   </head>
@@ -260,8 +262,11 @@
             return line;
           },
 
-
-          /** a から b へ玉を 1 つ走らせる。届いたら解決する Promise を返す。 */
+          /**
+           * a から b へ玉を 1 区間走らせる。届いたら解決する Promise を返す。
+           * サーバーを経由する道は区間ごとに呼び分け、最初の区間だけ grow、
+           * 最後の区間だけ shrink を効かせる（既定はどちらも効く）。
+           */
           travel: function (a, b, options) {
             return new Promise(function (resolve) {
               // 玉は線の端ではなくノードの中心から出し入れする。端から出すと
@@ -296,11 +301,15 @@
                 'stroke-width': 2,
                 opacity: 0,
               });
-              layers.flash.appendChild(ripple);
+              if (options.grow !== false) layers.flash.appendChild(ripple);
               layers.packet.appendChild(dot);
               if (options.label) layers.packet.appendChild(label);
 
-              const duration = options.duration || 800;
+              // 長い区間ほど時間をかける。一定だと、短い区間だけ玉がゆっくりに
+              // 見える。この図だとサーバーへの道（233px）と A・B の直接の道
+              // （440px）で 2 倍近く違うので、一定にすると差が出てしまう。
+              const duration =
+                260 + Math.hypot(to.x - from.x, to.y - from.y) * 1.3;
               const started = performance.now();
               function step(now) {
                 // rAF が渡す now は「このフレームが始まった時刻」なので、
@@ -315,18 +324,32 @@
                 dot.setAttribute('cy', y);
                 label.setAttribute('x', x);
                 label.setAttribute('y', y - 14);
-                // 最初と最後の 15%（800ms なら 120ms ずつ）で半径を 0 ↔ 7 に動かし、
-                // ノードから生まれて、ノードに吸い込まれて消えるように見せる。
-                // 位置の e ではなく t で測るのは、e が端でわざと遅いから。e で 15%
-                // は t の 27%（219ms）にあたり、出足がもたついて見える。
-                const scale = Math.min(1, t / 0.15, (1 - t) / 0.15);
+                // 最初と最後の 15% で半径を 0 ↔ 7 に動かし、ノードから生まれて、
+                // ノードに吸い込まれて消えるように見せる。位置の e ではなく t で
+                // 測るのは、e が端でわざと遅いから。e で 15% は t の 27% にあたり、
+                // 出足がもたついて見える。
+                // サーバーを経由する道は区間ごとに呼び分けるので、途中の区間では
+                // 大きさを変えない（grow / shrink）。ここで消すと、乗り継ぎのたびに
+                // 玉がいない時間ができて、そのぶん長く待たされて見える。
+                let scale = 1;
+                if (options.grow !== false) scale = Math.min(scale, t / 0.15);
+                if (options.shrink !== false) {
+                  scale = Math.min(scale, (1 - t) / 0.15);
+                }
                 dot.setAttribute('r', 7 * scale);
-                // 波紋とラベルは 0.3 で測る。t=0.3 は中心から約 40px、絵文字（14）
-                // も線の始点（24）も越えた先。ラベルが絵文字と喧嘩しない。
-                const away = Math.min(1, t / 0.3);
-                ripple.setAttribute('r', 12 + 14 * away);
-                ripple.setAttribute('opacity', 0.7 * (1 - away));
-                label.setAttribute('opacity', Math.min(away, (1 - t) / 0.3));
+                // 波紋は 0.3 で測る。t=0.3 は中心から約 40px、絵文字（14）も線の
+                // 始点（24）も越えた先。
+                if (options.grow !== false) {
+                  const away = Math.min(1, t / 0.3);
+                  ripple.setAttribute('r', 12 + 14 * away);
+                  ripple.setAttribute('opacity', 0.7 * (1 - away));
+                }
+                // ラベルだけは玉と違って、区間ごとに出し入れする。2 つの玉が
+                // サーバーで行き合うとき、同じ言葉が重なって二重に見えるのを避ける。
+                label.setAttribute(
+                  'opacity',
+                  Math.min(1, t / 0.3, (1 - t) / 0.45),
+                );
                 if (t < 1) {
                   requestAnimationFrame(step);
                 } else {
@@ -400,7 +423,26 @@
       }
 
       function waitAtServer(who) {
-        serverLines[who] = stage.wire(who, 's', { color: SERVER, dashed: true });
+        serverLines[who] = stage.wire(who, 's', {
+          color: SERVER,
+          dashed: true,
+        });
+      }
+
+      /**
+       * from の居場所を、サーバー経由で to へ届ける。サーバーでは玉を消さない
+       * （shrink / grow を切る）ので、乗り継ぎでも 1 つの玉が通り抜けて見える。
+       */
+      function tell(from, to) {
+        return stage
+          .travel(from, 's', { color: SERVER, label: '居場所', shrink: false })
+          .then(function () {
+            return stage.travel('s', to, {
+              color: SERVER,
+              label: '居場所',
+              grow: false,
+            });
+          });
       }
 
       /** 2 台そろったら、サーバー経由で居場所を教え合い、直接の線に張り替える。 */
@@ -413,12 +455,11 @@
           return;
         }
 
-        // あとから来た側が、先に待っていた側へ声をかける。
+        // 2 台ぶんを同時に走らせる。1 本ずつ順に走らせると、同じ V 字を 4 回
+        // なぞるだけで待ち時間が倍以上になり、待たせたわりに分かることが増えない。
+        // 同時なら、玉がサーバーに集まって散っていく形がそのまま「教え合う」に見える。
         note('そろった。サーバー経由で、お互いの居場所を教え合う');
-        await stage.travel(who, 's', { color: SERVER, label: '居場所' });
-        await stage.travel('s', peer, { color: SERVER, label: '居場所' });
-        await stage.travel(peer, 's', { color: SERVER, label: '居場所' });
-        await stage.travel('s', who, { color: SERVER, label: '居場所' });
+        await Promise.all([tell(who, peer), tell(peer, who)]);
 
         serverLines.a.remove();
         serverLines.b.remove();
@@ -451,11 +492,7 @@
         setBusy(true);
         const target = other(who);
         note(name(who) + ' → ' + name(target));
-        await stage.travel(who, target, {
-          color: DIRECT,
-          label: 'こんにちは',
-          duration: 1000,
-        });
+        await stage.travel(who, target, { color: DIRECT, label: 'こんにちは' });
         note('サーバーを通らずに届いた。これが今回作るもの');
         setBusy(false);
       }

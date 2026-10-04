@@ -1,6 +1,6 @@
 # 06-p2p.svg
-# スキーマ: SPLITTING（2 つの関係を左右に並べる）+ BALANCE（右は対等）
-# 「頼む人と答える人」から「対等な 2 人」へ、役割の非対称が消えることを見せる
+# スキーマ: SPLITTING（2 つの経路を左右に並べる）+ SOURCE-PATH-GOAL
+# 同じ「自分 → 相手」でも、真ん中にサーバーが居るか居ないかだけが違うことを見せる
 
 import sys
 
@@ -9,21 +9,23 @@ from genfig import Canvas, PALETTE
 
 c = Canvas(960, 320)
 
-c.text(480, 50, "頼む人と答える人か、対等な 2 人か", scale="xl")
+c.text(480, 50, "サーバーを通すか、直接つなぐか", scale="xl")
 
-# --- いつもの Web -------------------------------------------------------
+# --- サーバー経由 -------------------------------------------------------
 c.sticky(48, 86, 404, 192, color="gray")
-c.text(250, 126, "いつもの Web", scale="lg", fill=PALETTE["gray"]["text"])
+c.text(250, 126, "サーバー経由", scale="lg", fill=PALETTE["gray"]["text"])
 
-br = c.node(158, 192, "", emoji_cp="1f4bb", w=64, h=56)
-c.text(158, 234, "自分", scale="sm")
-sv = c.node(346, 192, "", emoji_cp="1f5c4", w=64, h=56)
-c.text(346, 234, "サーバー", scale="sm")
+a1 = c.node(130, 192, "", emoji_cp="1f4bb", w=60, h=52)
+c.text(130, 234, "自分", scale="sm")
+sv = c.node(250, 192, "", emoji_cp="1f5c4", w=64, h=56)
+c.text(250, 234, "サーバー", scale="sm")
+b1 = c.node(370, 192, "", emoji_cp="1f4bb", w=60, h=52)
+c.text(370, 234, "相手", scale="sm")
 
-c.link(br, sv, label="お願い", label_scale="sm", offset=20)
-c.link(sv, br, label="返事", label_scale="sm", offset=20, primary=False)
+c.link(a1, sv)
+c.link(sv, b1)
 
-c.text(250, 262, "始めるのは、いつも自分の側", scale="sm")
+c.text(250, 262, "相手に届くまでに、真ん中を通る", scale="sm")
 
 c.raw('<line x1="480" y1="96" x2="480" y2="268" '
       'stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 6"/>')
@@ -39,7 +41,8 @@ c.text(804, 234, "相手", scale="sm")
 
 c.link(p1, p2, both=True)
 
-c.text(710, 262, "どちらも同じ立場（ピア）", scale="sm", fill=PALETTE["green"]["text"])
+c.text(710, 262, "サーバーを介さず、直接つながる", scale="sm",
+       fill=PALETTE["green"]["text"])
 
 c.text(480, 306, "WebRTC は、右を Web の上でやるための技術", scale="sm")
 

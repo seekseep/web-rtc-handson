@@ -83,12 +83,6 @@ peerLightButton.addEventListener('click', function () {
 `myCircle` を `peerCircle` に、`lightButton` を `peerLightButton` に置き換えただけで、
 形はまったく同じです。
 
-:::notice[同じ行が 2 か所に出てくるけれど]
-`const color = 'hsl(...` の行は、いま 2 か所に同じものが並んでいます。
-ふつうなら関数にまとめたくなるところですが、
-**次の節でこの練習用ボタンごと消える**ので、ここではそのままにしておきます。
-:::
-
 ## 動かす
 
 `index.html` を開くと、灰色の丸が 2 つ並んでいます。

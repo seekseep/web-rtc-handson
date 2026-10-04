@@ -229,20 +229,22 @@
             align: 'right',
           },
         ],
+        // 上のサーバーは、左から STUN・シグナリング・TURN の順。いちばん出番の
+        // 多いシグナリングを真ん中に置くと、A と B から伸びる線が左右対称になる。
         nodes: [
           {
-            id: 'sig',
+            id: 'stun',
             x: 110,
             y: 52,
             emoji: 'server',
-            label: 'シグナリングサーバー',
+            label: 'STUN サーバー',
           },
           {
-            id: 'stun',
+            id: 'sig',
             x: 310,
             y: 52,
             emoji: 'server',
-            label: 'STUN サーバー',
+            label: 'シグナリングサーバー',
           },
           {
             id: 'turn',
@@ -397,11 +399,23 @@
           },
           {
             phase: 'つながった',
-            text: 'つながった。ここからはサーバーを通らず、直接届く',
-            packets: [{ path: ['a', 'net', 'b'], label: '色', color: DIRECT }],
+            text: 'つながった。2 人のあいだに道ができたので、シグナリングサーバーはここで用済みになる',
             drop: ['sa', 'sb'],
             dim: ['sig', 'stun'],
             lines: [{ key: 'data', path: ['a', 'net', 'b'], color: DIRECT }],
+          },
+          {
+            phase: 'やりとり',
+            text: 'ボタンを押すたびに、色がこの道を通る。インターネットは通るが、サーバーは通らない',
+            packets: [
+              { path: ['a', 'net', 'b'], label: '色', color: DIRECT },
+              {
+                path: ['b', 'net', 'a'],
+                label: '色',
+                color: DIRECT,
+                delay: 1300,
+              },
+            ],
           },
         ],
       };
