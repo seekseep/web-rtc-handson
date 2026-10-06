@@ -1,5 +1,5 @@
 // 画面の部品を取っておく
-const wordInput = document.querySelector('#word');
+const peerIdInput = document.querySelector('#peer-id');
 const hostButton = document.querySelector('#host');
 const guestButton = document.querySelector('#guest');
 const statusText = document.querySelector('#status');
@@ -13,16 +13,16 @@ let conn = null;
 let tool = 'pen';
 let stamp = '🐱';
 
-// あいことばから、PeerJS Cloud で名乗る名前を作る。
+// 画面の「あいことば」＝ ピア ID。ここから PeerJS Cloud で名乗る名前を作る。
 // PeerJS Cloud は世界中の人と共有しているので「test」のような短い名前は
 // すでに誰かに使われている。長めの前置きを付けてぶつかりにくくする。
-function roomId(word) {
-  return 'webrtc-handson-' + word;
+function roomId(peerId) {
+  return 'webrtc-handson-' + peerId;
 }
 
-// へやをつくる側（ホスト）。あいことばを自分の名前として名乗り、誰かが来るのを待つ。
+// へやをつくる側（ホスト）。ピア ID を自分の名前として名乗り、誰かが来るのを待つ。
 hostButton.addEventListener('click', function () {
-  const peer = new Peer(roomId(wordInput.value));
+  const peer = new Peer(roomId(peerIdInput.value));
 
   peer.on('open', function () {
     statusText.textContent = 'あいてを待っています…';
@@ -36,12 +36,12 @@ hostButton.addEventListener('click', function () {
   peer.on('error', showError);
 });
 
-// へやにはいる側（ゲスト）。名前は名乗らず、あいことばの相手に向かってつなぎに行く。
+// へやにはいる側（ゲスト）。名前は名乗らず、ピア ID の相手に向かってつなぎに行く。
 guestButton.addEventListener('click', function () {
   const peer = new Peer();
 
   peer.on('open', function () {
-    conn = peer.connect(roomId(wordInput.value));
+    conn = peer.connect(roomId(peerIdInput.value));
     conn.on('open', ready);
   });
 

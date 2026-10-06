@@ -145,8 +145,8 @@ PC で線を引くと、スマホに同じ線が出ます。
 振り返ると、通信のためのコードは驚くほど少なかったはずです。
 
 ```js
-new Peer(あいことば); // 名乗る
-peer.connect(あいことば); // 呼び出す
+new Peer(ピア ID); // 名乗る
+peer.connect(ピア ID); // 呼び出す
 conn.send(指示); // 送る
 conn.on('data', apply); // 受け取る
 ```

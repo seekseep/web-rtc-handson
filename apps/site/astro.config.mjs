@@ -6,6 +6,7 @@ import starlight from '@astrojs/starlight';
 import rehypeExternalLinks from 'rehype-external-links';
 import remarkCallout from './src/plugins/remark-callout.mjs';
 import remarkQuestions from './src/plugins/remark-questions.mjs';
+import remarkFaq from './src/plugins/remark-faq.mjs';
 import remarkDownload from './src/plugins/remark-download.mjs';
 import remarkEditor from './src/plugins/remark-editor.mjs';
 import remarkScript from './src/plugins/remark-script.mjs';
@@ -59,6 +60,8 @@ function calloutIntegration() {
         config.markdown.processor?.options.remarkPlugins.push(remarkCallout);
         // `:::questions` の変換。名前衝突は無いので順序は問わない。
         config.markdown.processor?.options.remarkPlugins.push(remarkQuestions);
+        // `:::faq` を開いて読む「よくある質問」（<details>）に変換。名前衝突なし。
+        config.markdown.processor?.options.remarkPlugins.push(remarkFaq);
         // `:::download` を大きなダウンロードボタンに変換。名前衝突なし。
         config.markdown.processor?.options.remarkPlugins.push(remarkDownload);
         // `::::editor` を簡易エディタ UI（<section class="editor">）に変換。
@@ -103,6 +106,7 @@ export default defineConfig({
         './src/styles/external-links.css',
         './src/styles/callouts.css',
         './src/styles/quiz.css',
+        './src/styles/faq.css',
         './src/styles/download.css',
         './src/styles/editor.css',
         './src/styles/code.css',

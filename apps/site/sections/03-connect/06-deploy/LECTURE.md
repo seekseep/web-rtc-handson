@@ -25,13 +25,15 @@ title: Netlify に公開して 2 台で動かす
 PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は `unavailable-id` で弾かれます。
 
 そこで、あいことばを画面から入れられるようにします。
+画面に出す言葉は「あいことば」ですが、入れているのは [04 節](../04-peer/LECTURE.md) で出てきた
+**ピア ID** です。コードの中では `peerId` と呼びます。
 
 ## 入力欄を足す
 
 :::code[`index.html` の `<header>` の中（ボタンの上）]{filepath=index.html offset=13}
 
 ```html
-<input id="word" placeholder="あいことば" value="test" />
+<input id="peer-id" placeholder="あいことば" value="test" />
 ```
 
 :::
@@ -44,7 +46,7 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 
 ```diff
   // 画面の部品を取っておく
-+ const wordInput = document.querySelector('#word');
++ const peerIdInput = document.querySelector('#peer-id');
   const hostButton = document.querySelector('#host');
   const guestButton = document.querySelector('#guest');
 ```
@@ -60,11 +62,11 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 - // PeerJS Cloud は世界中の人と共有しているので、'test' のままだと
 - // 同じことをしている人とぶつかる。自分の名前などに書き換えて使うこと。
 - const ROOM = 'webrtc-handson-test';
-+ // あいことばから、PeerJS Cloud で名乗る名前を作る。
++ // 画面の「あいことば」＝ ピア ID。ここから PeerJS Cloud で名乗る名前を作る。
 + // PeerJS Cloud は世界中の人と共有しているので「test」のような短い名前は
 + // すでに誰かに使われている。長めの前置きを付けてぶつかりにくくする。
-+ function roomId(word) {
-+   return 'webrtc-handson-' + word;
++ function roomId(peerId) {
++   return 'webrtc-handson-' + peerId;
 + }
 ```
 
@@ -77,7 +79,7 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 ```diff
   hostButton.addEventListener('click', function () {
 -   const peer = new Peer(ROOM);
-+   const peer = new Peer(roomId(wordInput.value));
++   const peer = new Peer(roomId(peerIdInput.value));
 
     peer.on('open', function () {
       statusText.textContent = 'あいてを待っています…';
@@ -102,7 +104,7 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 
     peer.on('open', function () {
 -     conn = peer.connect(ROOM);
-+     conn = peer.connect(roomId(wordInput.value));
++     conn = peer.connect(roomId(peerIdInput.value));
       conn.on('open', ready);
     });
 
@@ -112,7 +114,7 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 
 :::
 
-`wordInput.value` を**ボタンが押された瞬間に**読んでいるのがポイントです。
+`peerIdInput.value` を**ボタンが押された瞬間に**読んでいるのがポイントです。
 ページを開いた時点で読んでしまうと、あとから入力欄を書き換えても反映されません。
 
 `webrtc-handson-` という前置きを外から見えないところで付けているので、
