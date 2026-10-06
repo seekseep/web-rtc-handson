@@ -155,6 +155,11 @@ WebRTC が選ばれるのは、通話や画面共有のように**遅れが致�
 サーバーからブラウザへ**一方向だけ**流しっぱなしにする仕組みです。
 通知や進捗の表示に向いていて、WebSocket より簡単に始められます。
 こちらから送る必要があるものには使えません。
+MDN に日本語の解説があります。
+
+- サーバー送信イベント（入口）: https://developer.mozilla.org/ja/docs/Web/API/Server-sent_events
+- サーバー送信イベントの使用（書き方とサンプル）: https://developer.mozilla.org/ja/docs/Web/API/Server-sent_events/Using_server-sent_events
+- `EventSource`（ブラウザ側の受け口）: https://developer.mozilla.org/ja/docs/Web/API/EventSource
 
 ### WebRTC にアドレスが無いなら、相手はどうやって決まるのですか
 

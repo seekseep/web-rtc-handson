@@ -117,6 +117,58 @@ const peer = new Peer('ピア ID'); // 名乗る
 const conn = peer.connect('ピア ID'); // つなぐ
 ```
 
+短いのは**書く量だけ**で、やっていることが少ないわけではありません。
+[03 章 04 節](../../03-connect/04-peer/LECTURE.md) で少しだけ見せた「生の WebRTC」で
+同じところまで書くと、こうなります。
+
+```js
+// 上の 2 行と同じことを、PeerJS なしで書いた場合（呼ぶ側だけ）
+
+// ① 名乗る先と、相手に届けてもらう道を自分で用意する。
+//    やり取りの形に決まりは無いので、送る中身も自分で決める。
+const signaling = new WebSocket('wss://自分で動かすサーバー');
+signaling.addEventListener('open', function () {
+  signaling.send(JSON.stringify({ type: 'register', id: 'ピア ID' }));
+});
+
+// ② 通り道を作って、データを流すチャネルを開く
+const pc = new RTCPeerConnection({
+  iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+});
+const channel = pc.createDataChannel('draw');
+
+// ③ 自己紹介（SDP）を書いて、① の道で相手に届けてもらう
+const offer = await pc.createOffer();
+await pc.setLocalDescription(offer);
+signaling.send(JSON.stringify({ to: '相手のピア ID', offer: offer }));
+
+// ④ 自分の居場所の候補は、あとから見つかるものもある。出てくるたびに届けてもらう
+pc.addEventListener('icecandidate', function (event) {
+  if (event.candidate) {
+    signaling.send(
+      JSON.stringify({ to: '相手のピア ID', candidate: event.candidate }),
+    );
+  }
+});
+
+// ⑤ 相手から返ってきたものを、種類ごとに入れ直す
+signaling.addEventListener('message', async function (event) {
+  const message = JSON.parse(event.data);
+  if (message.answer) await pc.setRemoteDescription(message.answer);
+  if (message.candidate) await pc.addIceCandidate(message.candidate);
+});
+
+// ⑥ ここまでやって、やっと送れるようになる
+channel.addEventListener('open', function () {
+  channel.send('…');
+});
+```
+
+しかもこれは**呼ぶ側だけ**です。
+呼ばれる側（offer を受けて answer を返し、`datachannel` イベントでチャネルを受け取る側）と、
+`wss://` のサーバーそのものは、まだ 1 行も書いていません。
+上の 2 行が引き受けているのは、この量です。
+
 ## P2P
 
 ![サーバー経由は自分とサーバーと相手の 3 台。P2P は自分と相手が直接](./images/06-p2p.svg)
