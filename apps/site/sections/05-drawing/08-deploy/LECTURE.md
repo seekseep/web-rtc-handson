@@ -39,11 +39,11 @@ _図: 指示を順に送り直せば、相手の画面に同じ絵ができあ�
 
 ## 覚えておく場所を作る
 
-:::code[`main.js`（道具の状態の下）]{filepath=main.js offset=18}
+:::code[`main.js`（道具の状態の下）]{filepath=main.js offset=17 newOffset=18}
 
-```js
-// これまでに描いた指示をぜんぶ覚えておく
-const history = [];
+```diff
++ // これまでに描いた指示をぜんぶ覚えておく
++ const history = [];
 ```
 
 :::

@@ -20,10 +20,11 @@ title: ぜんぶ消す
 けしごむと違って、こちらは道具ではありません。
 「選んで使うもの」ではなく「押したら即座に効くもの」なので、`class="tool"` は付けません。
 
-:::code[`index.html` の `.tools` の最後（スタンプの下）]{filepath=index.html offset=32}
+:::code[`index.html` の `.tools` の最後（スタンプの下）]{filepath=index.html offset=31 newOffset=32}
 
-```html
-<button id="clear">ぜんぶ消す</button>
+```diff
++   <button id="clear">ぜんぶ消す</button>
+  </div>
 ```
 
 :::
@@ -69,12 +70,12 @@ title: ぜんぶ消す
 
 ## ボタンを押せるようにする
 
-:::code[`main.js`（`.color` のループの下、`select` の上）]{filepath=main.js offset=203}
+:::code[`main.js`（`.color` のループの下、`select` の上）]{filepath=main.js offset=199 newOffset=203}
 
-```js
-clearButton.addEventListener('click', function () {
-  draw({ type: 'clear' });
-});
+```diff
++ clearButton.addEventListener('click', function () {
++   draw({ type: 'clear' });
++ });
 ```
 
 :::

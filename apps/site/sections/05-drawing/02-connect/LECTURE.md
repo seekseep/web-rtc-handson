@@ -41,10 +41,12 @@ _図: つなぐところは、上に載るアプリが何であるかを知ら�
 `index.html` の `<head>` に、PeerJS 本体を読み込む行を足します。
 `main.js` より**先**に書いてください。`main.js` の中で `Peer` を使うからです。
 
-:::code[`index.html` の `<head>`（`main.js` の行のすぐ上）]{filepath=index.html offset=8}
+:::code[`index.html` の `<head>`（`main.js` の行のすぐ上）]{filepath=index.html offset=7 newOffset=7}
 
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.5/peerjs.min.js"></script>
+```diff
+  <link rel="stylesheet" href="style.css" />
++ <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.5/peerjs.min.js"></script>
+  <script src="main.js" defer></script>
 ```
 
 :::
@@ -54,15 +56,16 @@ _図: つなぐところは、上に載るアプリが何であるかを知ら�
 `<body>` の先頭、`.tools` の上にヘッダーを足します。
 中身は 03 章の完成形とまったく同じです。
 
-:::code[`index.html` の `<body>` の先頭（`.tools` の上）]{filepath=index.html offset=12}
+:::code[`index.html` の `<body>` の先頭（`.tools` の上）]{filepath=index.html offset=10 newOffset=11}
 
-```html
-<header>
-  <input id="peer-id" placeholder="あいことば" value="test" />
-  <button id="host">へやをつくる</button>
-  <button id="guest">へやにはいる</button>
-  <span id="status">まだつながっていません</span>
-</header>
+```diff
+  <body>
++   <header>
++     <input id="peer-id" placeholder="あいことば" value="test" />
++     <button id="host">へやをつくる</button>
++     <button id="guest">へやにはいる</button>
++     <span id="status">まだつながっていません</span>
++   </header>
 ```
 
 :::
@@ -123,11 +126,11 @@ _図: つなぐところは、上に載るアプリが何であるかを知ら�
 
 相手との通り道を入れておく変数も足します。
 
-:::code[`main.js`（部品の下、`let stamp` の上）]{filepath=main.js offset=9}
+:::code[`main.js`（部品の下、`let stamp` の上）]{filepath=main.js offset=5 newOffset=9}
 
-```js
-// つながった相手との通り道。まだつながっていないので null。
-let conn = null;
+```diff
++ // つながった相手との通り道。まだつながっていないので null。
++ let conn = null;
 ```
 
 :::
@@ -137,66 +140,66 @@ let conn = null;
 `let stamp = '🐱';` の下、`drawStamp` の**上**に、まとめて書き足します。
 [03 章の完成コード](../../03-connect/06-deploy/LECTURE.md)からのコピーで構いません。
 
-:::code[`main.js`（`let stamp` の下、`drawStamp` の上）]{filepath=main.js offset=15}
+:::code[`main.js`（`let stamp` の下、`drawStamp` の上）]{filepath=main.js offset=7 newOffset=15}
 
-```js
-// 画面の「あいことば」＝ ピア ID。ここから PeerJS Cloud で名乗る名前を作る。
-// PeerJS Cloud は世界中の人と共有しているので「test」のような短い名前は
-// すでに誰かに使われている。長めの前置きを付けてぶつかりにくくする。
-function roomId(peerId) {
-  return 'webrtc-handson-' + peerId;
-}
-
-// へやをつくる側（ホスト）。ピア ID を自分の名前として名乗り、誰かが来るのを待つ。
-hostButton.addEventListener('click', function () {
-  const peer = new Peer(roomId(peerIdInput.value));
-
-  peer.on('open', function () {
-    statusText.textContent = 'あいてを待っています…';
-  });
-
-  peer.on('connection', function (newConn) {
-    conn = newConn;
-    conn.on('open', ready);
-  });
-
-  peer.on('error', showError);
-});
-
-// へやにはいる側（ゲスト）。名前は名乗らず、ピア ID の相手に向かってつなぎに行く。
-guestButton.addEventListener('click', function () {
-  const peer = new Peer();
-
-  peer.on('open', function () {
-    conn = peer.connect(roomId(peerIdInput.value));
-    conn.on('open', ready);
-  });
-
-  peer.on('error', showError);
-});
-
-// PeerJS から届くエラーを、日本語のことばにして出す。
-// err.type にどんなエラーかが入っている。
-function showError(err) {
-  if (err.type === 'unavailable-id') {
-    statusText.textContent =
-      'そのあいことばは使われています。別のあいことばにするか「へやにはいる」を押してください';
-  } else if (err.type === 'peer-unavailable') {
-    statusText.textContent =
-      'そのあいことばのへやが見つかりません。相手が「へやをつくる」を押したか確かめてください';
-  } else {
-    statusText.textContent = 'つながりませんでした（' + err.type + '）';
-  }
-}
-
-// ホストでもゲストでも、つながったあとにやることは同じ。
-function ready() {
-  statusText.textContent = 'つながりました';
-
-  conn.on('close', function () {
-    statusText.textContent = 'せつだんされました';
-  });
-}
+```diff
++ // 画面の「あいことば」＝ ピア ID。ここから PeerJS Cloud で名乗る名前を作る。
++ // PeerJS Cloud は世界中の人と共有しているので「test」のような短い名前は
++ // すでに誰かに使われている。長めの前置きを付けてぶつかりにくくする。
++ function roomId(peerId) {
++   return 'webrtc-handson-' + peerId;
++ }
++
++ // へやをつくる側（ホスト）。ピア ID を自分の名前として名乗り、誰かが来るのを待つ。
++ hostButton.addEventListener('click', function () {
++   const peer = new Peer(roomId(peerIdInput.value));
++
++   peer.on('open', function () {
++     statusText.textContent = 'あいてを待っています…';
++   });
++
++   peer.on('connection', function (newConn) {
++     conn = newConn;
++     conn.on('open', ready);
++   });
++
++   peer.on('error', showError);
++ });
++
++ // へやにはいる側（ゲスト）。名前は名乗らず、ピア ID の相手に向かってつなぎに行く。
++ guestButton.addEventListener('click', function () {
++   const peer = new Peer();
++
++   peer.on('open', function () {
++     conn = peer.connect(roomId(peerIdInput.value));
++     conn.on('open', ready);
++   });
++
++   peer.on('error', showError);
++ });
++
++ // PeerJS から届くエラーを、日本語のことばにして出す。
++ // err.type にどんなエラーかが入っている。
++ function showError(err) {
++   if (err.type === 'unavailable-id') {
++     statusText.textContent =
++       'そのあいことばは使われています。別のあいことばにするか「へやにはいる」を押してください';
++   } else if (err.type === 'peer-unavailable') {
++     statusText.textContent =
++       'そのあいことばのへやが見つかりません。相手が「へやをつくる」を押したか確かめてください';
++   } else {
++     statusText.textContent = 'つながりませんでした（' + err.type + '）';
++   }
++ }
++
++ // ホストでもゲストでも、つながったあとにやることは同じ。
++ function ready() {
++   statusText.textContent = 'つながりました';
++
++   conn.on('close', function () {
++     statusText.textContent = 'せつだんされました';
++   });
++ }
 ```
 
 :::

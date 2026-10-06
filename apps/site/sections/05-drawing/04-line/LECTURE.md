@@ -86,18 +86,18 @@ _図: なめらかな線に見えるが、実際は短い直線の集まり。_
 
 ## 線を描く関数
 
-:::code[`main.js`（`draw` の下、`drawStamp` の上）]{filepath=main.js offset=98}
+:::code[`main.js`（`draw` の下、`drawStamp` の上）]{filepath=main.js offset=92 newOffset=98}
 
-```js
-function drawLine(x1, y1, x2, y2, lineColor, lineWidth) {
-  ctx.strokeStyle = lineColor;
-  ctx.lineWidth = lineWidth;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
-}
+```diff
++ function drawLine(x1, y1, x2, y2, lineColor, lineWidth) {
++   ctx.strokeStyle = lineColor;
++   ctx.lineWidth = lineWidth;
++   ctx.lineCap = 'round';
++   ctx.beginPath();
++   ctx.moveTo(x1, y1);
++   ctx.lineTo(x2, y2);
++   ctx.stroke();
+  }
 ```
 
 :::
@@ -133,48 +133,49 @@ function drawLine(x1, y1, x2, y2, lineColor, lineWidth) {
 
 `pointerdown` を書き換え、`pointermove` と `pointerup` を足します。
 
-:::code[`main.js`（`positionOf` の下をまるごと置き換え）]{filepath=main.js offset=132}
+:::code[`main.js`（`positionOf` の下をまるごと置き換え）]{filepath=main.js offset=118 newOffset=132}
 
-```js
-// 直前のペン先の位置。線は「前の点から今の点まで」をつなげて描く。
-let last = null;
+```diff
++ // 直前のペン先の位置。線は「前の点から今の点まで」をつなげて描く。
++ let last = null;
++
+  canvas.addEventListener('pointerdown', function (event) {
+    const pos = positionOf(event);
 
-canvas.addEventListener('pointerdown', function (event) {
-  const pos = positionOf(event);
-
-  if (tool === 'stamp') {
-    draw({ type: 'stamp', x: pos.x, y: pos.y, emoji: stamp });
-    return;
-  }
-
-  last = pos;
-});
-
-canvas.addEventListener('pointermove', function (event) {
-  if (last === null) return;
-
-  const pos = positionOf(event);
-
-  draw({
-    type: 'line',
-    x1: last.x,
-    y1: last.y,
-    x2: pos.x,
-    y2: pos.y,
-    color: '#333333',
-    width: 4,
-  });
-
-  last = pos;
-});
-
-canvas.addEventListener('pointerup', function () {
-  last = null;
-});
-
-canvas.addEventListener('pointerleave', function () {
-  last = null;
-});
+-   draw({ type: 'stamp', x: pos.x, y: pos.y, emoji: stamp });
++   if (tool === 'stamp') {
++     draw({ type: 'stamp', x: pos.x, y: pos.y, emoji: stamp });
++     return;
++   }
++
++   last = pos;
++ });
++
++ canvas.addEventListener('pointermove', function (event) {
++   if (last === null) return;
++
++   const pos = positionOf(event);
++
++   draw({
++     type: 'line',
++     x1: last.x,
++     y1: last.y,
++     x2: pos.x,
++     y2: pos.y,
++     color: '#333333',
++     width: 4,
++   });
++
++   last = pos;
++ });
++
++ canvas.addEventListener('pointerup', function () {
++   last = null;
++ });
++
++ canvas.addEventListener('pointerleave', function () {
++   last = null;
++ });
 ```
 
 :::

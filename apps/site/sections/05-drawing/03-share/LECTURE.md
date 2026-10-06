@@ -33,26 +33,26 @@ canvas.addEventListener('pointerdown', function (event) {
 
 そこで、**必ずセットで行う関数**を 1 つ用意します。
 
-:::code[`main.js`（`ready` の下）]{filepath=main.js offset=76}
+:::code[`main.js`（`ready` の下）]{filepath=main.js offset=71 newOffset=76}
 
-```js
-// 指示のとおりにキャンバスへ描く。
-// 自分が出した指示も、相手から届いた指示も、かならずここを通る。
-function apply(data) {
-  if (data.type === 'stamp') {
-    drawStamp(data.x, data.y, data.emoji);
+```diff
++ // 指示のとおりにキャンバスへ描く。
++ // 自分が出した指示も、相手から届いた指示も、かならずここを通る。
++ function apply(data) {
++   if (data.type === 'stamp') {
++     drawStamp(data.x, data.y, data.emoji);
++   }
++ }
++
++ // 自分のキャンバスに描いてから、同じ指示を相手にも送る。
++ // 「描く」と「送る」を必ずセットにするので、2 つの画面が同じ絵になる。
++ function draw(data) {
++   apply(data);
++
++   if (conn) {
++     conn.send(data);
++   }
   }
-}
-
-// 自分のキャンバスに描いてから、同じ指示を相手にも送る。
-// 「描く」と「送る」を必ずセットにするので、2 つの画面が同じ絵になる。
-function draw(data) {
-  apply(data);
-
-  if (conn) {
-    conn.send(data);
-  }
-}
 ```
 
 :::

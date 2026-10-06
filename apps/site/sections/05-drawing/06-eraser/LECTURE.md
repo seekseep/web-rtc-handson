@@ -35,10 +35,11 @@ _図: 実際には「消して」いない。白で上塗りしている。_
 
 ## ボタンを足す
 
-:::code[`index.html` の `.tools` の中（ペンの下）]{filepath=index.html offset=21}
+:::code[`index.html` の `.tools` の中（ペンの下）]{filepath=index.html offset=20 newOffset=20}
 
-```html
-<button class="tool" data-tool="eraser">🧽 けしごむ</button>
+```diff
+  <button class="tool selected" data-tool="pen">🖊 ペン</button>
++ <button class="tool" data-tool="eraser">🧽 けしごむ</button>
 ```
 
 :::

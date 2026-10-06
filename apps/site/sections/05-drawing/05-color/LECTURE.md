@@ -17,14 +17,15 @@ title: 色を変える
 
 ## 色ボタンを足す
 
-:::code[`index.html` の `.tools` の中（ペンとスタンプのあいだ）]{filepath=index.html offset=22}
+:::code[`index.html` の `.tools` の中（ペンとスタンプのあいだ）]{filepath=index.html offset=21 newOffset=22}
 
-```html
-<button class="color selected" data-color="#333333"></button>
-<button class="color" data-color="#e5484d"></button>
-<button class="color" data-color="#f5a524"></button>
-<button class="color" data-color="#17c964"></button>
-<button class="color" data-color="#006fee"></button>
+```diff
++ <button class="color selected" data-color="#333333"></button>
++ <button class="color" data-color="#e5484d"></button>
++ <button class="color" data-color="#f5a524"></button>
++ <button class="color" data-color="#17c964"></button>
++ <button class="color" data-color="#006fee"></button>
+  <button class="stamp" data-stamp="🐱">🐱</button>
 ```
 
 :::
@@ -35,17 +36,17 @@ CSS に `.color-red { background: ... }` のような定義を増やす必要が
 
 ## 色ボタンの形を整える
 
-:::code[`style.css`（`input, button { ... }` の下）]{filepath=style.css offset=29}
+:::code[`style.css`（`input, button { ... }` の下）]{filepath=style.css offset=29 newOffset=29}
 
-```css
-.color {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  /* 色そのものは data-color から JavaScript で流し込む */
-}
+```diff
++ .color {
++   width: 32px;
++   height: 32px;
++   padding: 0;
++   border: 2px solid #fff;
++   border-radius: 50%;
++   /* 色そのものは data-color から JavaScript で流し込む */
++ }
 ```
 
 :::
@@ -85,18 +86,18 @@ CSS に `.color-red { background: ... }` のような定義を増やす必要が
 
 ## 色ボタンを押せるようにする
 
-:::code[`main.js`（`.stamp` のループの下、`select` の上）]{filepath=main.js offset=188}
+:::code[`main.js`（`.stamp` のループの下、`select` の上）]{filepath=main.js offset=187 newOffset=188}
 
-```js
-document.querySelectorAll('.color').forEach(function (button) {
-  // ボタンの見た目の色を data-color から流し込む
-  button.style.background = button.dataset.color;
-
-  button.addEventListener('click', function () {
-    color = button.dataset.color;
-    select(button, '.color');
-  });
-});
+```diff
++ document.querySelectorAll('.color').forEach(function (button) {
++   // ボタンの見た目の色を data-color から流し込む
++   button.style.background = button.dataset.color;
++
++   button.addEventListener('click', function () {
++     color = button.dataset.color;
++     select(button, '.color');
++   });
++ });
 ```
 
 :::

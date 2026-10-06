@@ -26,3 +26,35 @@
 .lecture-code-note code {
   font-size: var(--sl-text-xs);
 }
+
+/* 差分（```diff ＝ `:::code` に newOffset が付いたブロック）の色。
+
+   Expressive Code の既定は濃い緑・濃い赤のベタ塗りで、下地が強すぎて
+   コードの文字（シンタックスハイライト）と競り合い、どちらも読みにくい。
+   そこで「下地は薄く・左の線は太くはっきり・+/- の記号は濃く」に組み替える。
+   変数は EC が :root 側に置いているので、詳細度を 1 つ上げて上書きする
+   （`:root:root` は `:root` と同じ要素を指すが、クラス 2 つぶんの重みになる）。 */
+:root:root {
+  /* ダーク（既定） */
+  --ec-tm-insBg: #3fb95030;
+  --ec-tm-insBrdCol: #3fb950;
+  --ec-tm-insDiffIndCol: #7ee787;
+  --ec-tm-delBg: #f8514930;
+  --ec-tm-delBrdCol: #f85149;
+  --ec-tm-delDiffIndCol: #ffa198;
+  --ec-tm-lineMarkerAccentWd: 0.25rem;
+}
+
+/* ライト。EC はライト用の値を `.expressive-code` 自身にも置いていて、
+   :root 側をいくら強くしても要素に近いほうが勝つ。同じ要素を、より強い
+   セレクタで指し直す。 */
+:root:root:not([data-theme='dark']),
+:root:root[data-theme='light'] .expressive-code:not([data-theme='dark']),
+:root:root:not([data-theme='dark']) .expressive-code:not([data-theme='dark']) {
+  --ec-tm-insBg: #2da44e26;
+  --ec-tm-insBrdCol: #1a7f37;
+  --ec-tm-insDiffIndCol: #116329;
+  --ec-tm-delBg: #cf222e20;
+  --ec-tm-delBrdCol: #cf222e;
+  --ec-tm-delDiffIndCol: #a40e26;
+}
