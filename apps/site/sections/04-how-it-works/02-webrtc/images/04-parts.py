@@ -1,6 +1,6 @@
 # 04-parts.svg
 # スキーマ: CONTAINER + PART-WHOLE（WebRTC という枠の中に部品が並ぶ）
-# 「WebRTC は総称」であること、今回使うのは右の 1 つだけであることを見せる
+# 「WebRTC は総称」であること、データを載せているのは右の 1 つであることを見せる
 
 import sys
 
@@ -28,7 +28,7 @@ for cx, cp, name, desc, color in parts:
            fill=PALETTE[color]["text"] if color else None)
     c.text(cx, 256, desc, scale="sm")
 
-c.text(767, 284, "今回使うのはこれだけ", scale="sm",
+c.text(767, 284, "データはここを流れる", scale="sm",
        fill=PALETTE["green"]["text"])
 
 c.text(490, 330, "3 つとも使う必要はない。お絵かきが送るのは、線の座標と色だけ", scale="sm")

@@ -171,7 +171,7 @@ _図: つなぐところは、上に載るアプリが何であるかを知ら�
 +   const peer = new Peer();
 +
 +   peer.on('open', function () {
-+     conn = peer.connect(roomId(peerIdInput.value));
++     conn = peer.connect(roomId(peerIdInput.value), { reliable: true });
 +     conn.on('open', ready);
 +   });
 +

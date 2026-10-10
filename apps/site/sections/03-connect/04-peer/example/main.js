@@ -35,7 +35,7 @@ guestButton.addEventListener('click', function () {
   const peer = new Peer();
 
   peer.on('open', function () {
-    conn = peer.connect(ROOM);
+    conn = peer.connect(ROOM, { reliable: true });
     conn.on('open', ready);
   });
 

@@ -1,4 +1,14 @@
 body {
+  box-sizing: border-box;
+  /* 画面（iframe やスマホ）の高さぴったりに収めて、ページごと縦スクロールしないようにする */
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  /* 中身を縦のまんなかに置く。すきまは残りの高さから自動で取る */
+  justify-content: center;
+  /* 横は中身の大きさのまま、まんなかに並べる */
+  align-items: center;
+  gap: 24px;
   margin: 0;
   padding: 24px;
   font-family: sans-serif;
@@ -13,11 +23,15 @@ button {
   padding: 8px 12px;
 }
 
+/* 状態表示の上下の余白を消して、せまい画面でもはみ出さないようにする */
+#status {
+  margin: 0;
+}
+
 main {
   display: flex;
   justify-content: center;
   gap: 48px;
-  margin: 48px 0;
 }
 
 .circle {
