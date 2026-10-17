@@ -148,7 +148,8 @@
           });
 
           guest.on('open', function () {
-            const conn = guest.connect(name);
+            // 届いた順に突き合わせるので、送った順に届けてもらう。
+            const conn = guest.connect(name, { reliable: true });
             conn.on('open', function () {
               const failed = [];
               CASES.forEach(function (c) {

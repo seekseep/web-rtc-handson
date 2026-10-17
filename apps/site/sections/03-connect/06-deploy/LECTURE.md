@@ -14,7 +14,7 @@ title: Netlify に公開して 2 台で動かす
 1. あいことばを**決め打ちから入力欄に変える**（人ごとに違うへやを使えるようにする）
 2. `app/` フォルダを **Netlify に公開する**
 
-> **今回さわる `app/`:** `index.html` に入力欄を追加、`main.js` の `ROOM` を関数に変える
+> **今回さわる `app/`:** `index.html` に入力欄を追加、`main.js` の `ROOM` を関数に変え、エラーの文言を直す
 
 ## なぜ入力欄が必要か
 
@@ -119,6 +119,28 @@ PeerJS Cloud の名簿は世界で 1 つなので、最初のひとり以外は 
 
 `webrtc-handson-` という前置きを外から見えないところで付けているので、
 利用者は短いあいことば（`neko` など）を入れるだけで済みます。
+
+エラーの文言も、`ROOM` ではなく画面のあいことばを指すように変えておきます。
+
+:::code[`main.js` の `showError`]{filepath=main.js offset=47 newOffset=50}
+
+```diff
+  function showError(err) {
+    if (err.type === 'unavailable-id') {
+      statusText.textContent =
+-       'その名前はもう使われています。main.js の ROOM を書き換えるか「へやにはいる」を押してください';
++       'そのあいことばは使われています。別のあいことばにするか「へやにはいる」を押してください';
+    } else if (err.type === 'peer-unavailable') {
+      statusText.textContent =
+-       'その名前のへやが見つかりません。相手が「へやをつくる」を押したか確かめてください';
++       'そのあいことばのへやが見つかりません。相手が「へやをつくる」を押したか確かめてください';
+    } else {
+      statusText.textContent = 'つながりませんでした（' + err.type + '）';
+    }
+  }
+```
+
+:::
 
 :::danger[あいことばは書き換えてください]
 入力欄の初期値は `test` です。これは 04・05 節で決め打ちにしていた `webrtc-handson-test` と

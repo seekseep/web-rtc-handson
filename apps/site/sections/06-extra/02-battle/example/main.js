@@ -23,9 +23,10 @@ let joined = false;
 
 // 盤面のマス目。800x600 を 20px 四方で割ると 40x30 = 1200 マスになる。
 // 1 マスが全体の 0.083%、ペン 1 回（3x3 マス）で 0.75% 取れる、という細かさ。
+// COLS / ROWS は CELL から出す。CELL だけ変えても盤面の端まで塗れるようにするため。
 const CELL = 20;
-const COLS = 40;
-const ROWS = 30;
+const COLS = 800 / CELL;
+const ROWS = 600 / CELL;
 const COUNT = COLS * ROWS;
 
 // マスには色ではなく「だれのものか」を入れる。こうすると数えるのが楽になる。
@@ -444,7 +445,7 @@ function showHud() {
     inkBar.style.background = colorOf(me);
   }
 
-  timeText.textContent = phase === 'play' ? secondsLeft() : '60';
+  timeText.textContent = phase === 'play' ? secondsLeft() : MATCH_MS / 1000;
 }
 
 // 盤面にかぶせる案内を、いまの状態のとおりに出し分ける。
@@ -488,7 +489,7 @@ function showOverlay() {
   if (me === EMPTY) {
     overlayNote.textContent = joined
       ? 'あいてを待っています…'
-      : 'ピア ID を決めて、ふたりでつないでください';
+      : 'あいことばを決めて、ふたりでつないでください';
     readyButton.hidden = true;
     return;
   }

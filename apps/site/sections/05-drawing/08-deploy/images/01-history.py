@@ -17,8 +17,8 @@ c.text(215, 225, "{ type: 'stamp', ... }", scale="sm", font="technical", fill=PA
 c.sticky(80, 250, 270, 42, color="green")
 c.text(215, 277, "{ type: 'line', ... }", scale="sm", font="technical", fill=PALETTE["green"]["text"])
 c.node(740, 200, "あとから来た人", emoji_cp="1f6b6", w=180, h=100)
-c.connector(392, 200, 650, 200, label="貯めた順に送る", label_scale="sm")
+c.link((392, 200), (650, 200), label="貯めた順に送る", label_scale="sm")
 c.text(740, 282, "同じ絵ができあがる", scale="sm")
-c.text(450, 356, "データチャネルは送った順に届くので、並べ直す必要がない", scale="sm")
+c.text(450, 356, "reliable: true でつないだので、送った順に届く。並べ直す必要がない", scale="sm")
 
 c.save("01-history.svg")

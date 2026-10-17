@@ -47,10 +47,10 @@ guestButton.addEventListener('click', function () {
 function showError(err) {
   if (err.type === 'unavailable-id') {
     statusText.textContent =
-      'そのあいことばは使われています。別のあいことばにするか「へやにはいる」を押してください';
+      'その名前はもう使われています。main.js の ROOM を書き換えるか「へやにはいる」を押してください';
   } else if (err.type === 'peer-unavailable') {
     statusText.textContent =
-      'そのあいことばのへやが見つかりません。相手が「へやをつくる」を押したか確かめてください';
+      'その名前のへやが見つかりません。相手が「へやをつくる」を押したか確かめてください';
   } else {
     statusText.textContent = 'つながりませんでした（' + err.type + '）';
   }

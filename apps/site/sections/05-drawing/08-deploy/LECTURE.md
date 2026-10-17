@@ -153,7 +153,7 @@ Netlify のアカウント（無料）を作って紐づけてください。
 
 ```js
 new Peer(ピア ID); // 名乗る
-peer.connect(ピア ID); // 呼び出す
+peer.connect(ピア ID, { reliable: true }); // 呼び出す（送った順に届ける）
 conn.send(指示); // 送る
 conn.on('data', apply); // 受け取る
 ```

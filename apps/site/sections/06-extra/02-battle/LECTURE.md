@@ -60,8 +60,11 @@ title: 色塗りバトル
 
 ## お絵かきアプリと、どこが違うのか
 
-つなぎ方（`roomId` / `showError` / `ready` / `apply` / `draw`）は 05 章のままです。
-変えたのは 4 か所だけで、そこがそのまま「ゲームを作るとき何が増えるか」になっています。
+つなぎ方の骨組み（へやをつくる／へやにはいる、`showError`、`apply` と `draw` に分ける形）は 05 章のままです。
+`roomId` の前置きは `webrtc-handson-battle-` に変えてあるので、お絵かきと同じあいことばを使ってもぶつかりません。
+ふたりちょうどで遊ぶゲームなので、3 人目がつないできたら断るようにもしています。
+
+中身で大きく変えたのは次の 4 か所で、そこがそのまま「ゲームを作るとき何が増えるか」になっています。
 
 ### 送るのは「マスの番号」
 
@@ -80,7 +83,7 @@ title: 色塗りバトル
 
 ### `history` を持たない
 
-:::code[`main.js`（盤面の持ち方）]{filepath=main.js offset=36}
+:::code[`main.js`（盤面の持ち方）]{filepath=main.js offset=37}
 
 ```js
 // 盤面そのもの。お絵かきアプリの history（指示の記録）の代わりに、
@@ -96,7 +99,7 @@ const grid = new Array(COUNT).fill(EMPTY);
 試合の途中から入ってくる人もいないので、指示を取っておく理由がありません。
 `draw` は、お絵かきから `history.push` を削るだけになります。
 
-:::code[`main.js` の `draw`]{filepath=main.js offset=197}
+:::code[`main.js` の `draw`]{filepath=main.js offset=198}
 
 ```js
 // 自分の画面に当ててから、同じ指示を相手にも送る。
@@ -125,7 +128,7 @@ function draw(data) {
 
 そろったかどうかはふたりとも分かりますが、**開始を宣言するのはホストだけ**です。
 
-:::code[`main.js` の `startIfBothReady`]{filepath=main.js offset=209}
+:::code[`main.js` の `startIfBothReady`]{filepath=main.js offset=210}
 
 ```js
 // 開始を決めるのはホストだけ。ふたりが別々に「そろった」と判断すると、
@@ -163,7 +166,7 @@ function startIfBothReady() {
 だから最後にホストの盤面をまるごと配って、ゲストは自分のを捨てて置きかえます。
 数字だけを配るのではなく盤面ごと渡すので、**絵と数字の両方**がそろいます。
 
-:::code[`main.js` の `finishMatch`]{filepath=main.js offset=232}
+:::code[`main.js` の `finishMatch`]{filepath=main.js offset=233}
 
 ```js
 // 試合を終わらせる。board はホストの盤面。
@@ -185,14 +188,14 @@ function finishMatch(board) {
 :::
 
 勝ち負けは、置きかえたあとの盤面から各自が**自分の視点**で出します。
-同じ盤面を見ているので、2 つの画面は必ず逆の結論になります。
+同じ盤面を見ているので、2 つの画面は必ず逆の結論になります（同じ数なら、どちらも「ひきわけ」）。
 
 ## 時間とインクは、時計から計る
 
 インクの回復とのこり時間は、0.1 秒ごとの `setInterval` で見直しています。
 ただし「何回呼ばれたか」では数えません。
 
-:::code[`main.js` の `tick`（回復のところ）]{filepath=main.js offset=394}
+:::code[`main.js` の `tick`（回復のところ）]{filepath=main.js offset=395}
 
 ```js
 // 裏にまわったタブでは setInterval が間引かれる。
