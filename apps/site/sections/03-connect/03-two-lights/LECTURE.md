@@ -79,7 +79,7 @@ peerLightButton.addEventListener('click', function () {
 
 :::
 
-前の節で書いた処理と、**丸の変数が違うだけ**です。
+前の節で書いた処理と、**丸とボタンの変数が違うだけ**です。
 `myCircle` を `peerCircle` に、`lightButton` を `peerLightButton` に置き換えただけで、
 形はまったく同じです。
 

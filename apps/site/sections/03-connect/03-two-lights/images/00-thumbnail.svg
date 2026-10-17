@@ -3,9 +3,9 @@
 <rect x="0" y="0" width="900" height="322" fill="#ffffff"/>
 <text x="450" y="50" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">ライトを 2 つ、ボタンも 2 つ</text>
 <ellipse cx="300" cy="125" rx="52" ry="52" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
-<text x="300" y="198" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">自分</text>
+<text x="300" y="198" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">じぶん</text>
 <ellipse cx="620" cy="125" rx="52" ry="52" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
-<text x="620" y="198" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">相手</text>
+<text x="620" y="198" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">あいて</text>
 <rect x="215" y="220" width="170" height="54" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
 <text x="300" y="254" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">ひからせる</text>
 <rect x="505" y="220" width="230" height="54" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>

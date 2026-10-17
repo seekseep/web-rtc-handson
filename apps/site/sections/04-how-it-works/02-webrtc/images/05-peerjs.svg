@@ -11,5 +11,5 @@
 <rect x="60" y="240" width="460" height="62" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
 <text x="290" y="280" text-anchor="middle" font-size="21" fill="#475569" font-weight="700">WebRTC（ブラウザの中）</text>
 <text x="548" y="278" text-anchor="start" font-size="13" fill="#475569" font-weight="400">実際に通信しているのはここ</text>
-<text x="440" y="334" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">書き足したのは上の 1 枚だけ。下の 2 枚は最初からそこにある</text>
+<text x="440" y="334" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">書き足したのは上の 1 枚だけ。PeerJS は読み込むだけ、WebRTC はブラウザに入っている</text>
 </svg>

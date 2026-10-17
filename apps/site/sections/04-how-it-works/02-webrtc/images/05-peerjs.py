@@ -22,6 +22,6 @@ for y, color, name, note, font in layers:
     c.text(290, y + 40, name, scale="lg", fill=PALETTE[color]["text"])
     c.text(548, y + 38, note, scale="sm", align="left", font=font)
 
-c.text(440, 334, "書き足したのは上の 1 枚だけ。下の 2 枚は最初からそこにある", scale="sm")
+c.text(440, 334, "書き足したのは上の 1 枚だけ。PeerJS は読み込むだけ、WebRTC はブラウザに入っている", scale="sm")
 
 c.save("05-peerjs.svg")

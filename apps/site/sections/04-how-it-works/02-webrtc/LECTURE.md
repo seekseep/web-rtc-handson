@@ -128,9 +128,6 @@ const conn = peer.connect('ピア ID'); // つなぐ
 // ① 名乗る先と、相手に届けてもらう道を自分で用意する。
 //    やり取りの形に決まりは無いので、送る中身も自分で決める。
 const signaling = new WebSocket('wss://自分で動かすサーバー');
-signaling.addEventListener('open', function () {
-  signaling.send(JSON.stringify({ type: 'register', id: 'ピア ID' }));
-});
 
 // ② 通り道を作って、データを流すチャネルを開く
 const pc = new RTCPeerConnection({
@@ -138,10 +135,13 @@ const pc = new RTCPeerConnection({
 });
 const channel = pc.createDataChannel('draw');
 
-// ③ 自己紹介（SDP）を書いて、① の道で相手に届けてもらう
-const offer = await pc.createOffer();
-await pc.setLocalDescription(offer);
-signaling.send(JSON.stringify({ to: '相手のピア ID', offer: offer }));
+// ③ ① の道がつながったら名乗り、自己紹介（SDP）を書いて相手に届けてもらう
+signaling.addEventListener('open', async function () {
+  signaling.send(JSON.stringify({ type: 'register', id: 'ピア ID' }));
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+  signaling.send(JSON.stringify({ to: '相手のピア ID', offer: offer }));
+});
 
 // ④ 自分の居場所の候補は、あとから見つかるものもある。出てくるたびに届けてもらう
 pc.addEventListener('icecandidate', function (event) {
@@ -243,8 +243,9 @@ _図: 直接つながるのは、つながったあとの話。_
 ### データチャネルで送れるのは、文字だけですか
 
 文字列のほか、`ArrayBuffer` や `Blob` のようなバイナリも送れます。
-ただし 1 回に送れる大きさには上限があり（[次の節](../03-signaling/LECTURE.md) の SDP に出てくる
-`a=max-message-size` がそれです）、大きなファイルは自分で分けて送ることになります。
+ただし 1 回に送れる大きさには上限があります（[次の節](../03-signaling/LECTURE.md) の SDP に出てくる
+`a=max-message-size` がそれです）。素の WebRTC では、大きなファイルは自分で分けて送ります。
+PeerJS は、大きなデータを自動で分けて送り、受け取る側で組み立て直してくれます。
 今回送っているのは、座標と色を入れた小さなオブジェクトです。
 
 ### 直接つながっているなら、通信の中身は誰にも見られませんか

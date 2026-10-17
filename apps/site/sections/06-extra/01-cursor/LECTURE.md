@@ -36,7 +36,7 @@ _図: 同じ通り道（`conn`）を使うが、通す前の扱いが違う。_
 
 キャンバスの上に重ねるので、両方を包む枠を用意します。
 
-:::code[`index.html`（`<canvas>` を置きかえる）]{filepath=index.html offset=35}
+:::code[`index.html` の `.stage`（`<canvas>` の下に 1 行足す）]{filepath=index.html offset=35}
 
 ```html
 <div class="stage">
@@ -236,7 +236,7 @@ canvas.addEventListener('pointerleave', function () {
 
 :::notice
 指の端末（スマホ・タブレット）では、`pointermove` は**画面に触れている間しか**呼ばれません。
-なぞっている間だけ相手に丸が出て、離すと止まります。マウスのようにずっと追いかけては来ません。
+なぞっている間だけ相手に丸が出て、離すと消えます（指が画面から離れると `pointerleave` も起きるからです）。マウスのようにずっと追いかけては来ません。
 :::
 
 ## 送りすぎに注意
