@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="440" viewBox="0 0 1000 440" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="1000" height="440" fill="#ffffff"/>
+<text x="500" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">「通れない」を、どこに置くか</text>
+<rect x="40" y="86" width="440" height="280" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="2.0"/>
+<text x="260" y="126" text-anchor="middle" font-size="21" fill="#b91c1c" font-weight="700">通れないマス</text>
+<polygon points="140.48,160 187.52,160 206,196 187.52,232 140.48,232 122,196" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<polygon points="206,196 253.04,196 271.52,232 253.04,268 206,268 187.52,232" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<polygon points="271.52,160 318.56,160 337.04,196 318.56,232 271.52,232 253.04,196" fill="#1e293b" stroke="#1e293b" stroke-width="3.5" stroke-linejoin="round"/>
+<line x1="280.04" y1="181" x2="310.04" y2="211" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+<line x1="280.04" y1="211" x2="310.04" y2="181" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+<polygon points="337.04,196 384.08,196 402.56,232 384.08,268 337.04,268 318.56,232" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="260" y="318" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">見た目が 1 種類増える</text>
+<text x="260" y="346" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">「全マスで ★」が言い直しになる</text>
+<rect x="520" y="86" width="440" height="280" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="2.0"/>
+<text x="740" y="126" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">マスの間の壁</text>
+<polygon points="620.48,160 667.52,160 686,196 667.52,232 620.48,232 602,196" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<polygon points="686,196 733.04,196 751.52,232 733.04,268 686,268 667.52,232" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<polygon points="751.52,160 798.56,160 817.04,196 798.56,232 751.52,232 733.04,196" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<polygon points="817.04,196 864.08,196 882.56,232 864.08,268 817.04,268 798.56,232" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<line x1="733.04" y1="196" x2="751.52" y2="232" stroke="#ef4444" stroke-width="9" stroke-linecap="round"/>
+<text x="740" y="318" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">マスはどれも同じ見た目</text>
+<text x="740" y="346" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">「全マスで ★」はそのまま</text>
+<text x="500" y="410" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">同じ「通れない」でも、置く場所で増えるものが変わる</text>
+</svg>

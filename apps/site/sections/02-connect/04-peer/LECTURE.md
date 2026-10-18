@@ -60,7 +60,7 @@ await pc.setRemoteDescription(answer);
 「`offer` を相手に届ける」ところに注目してください。
 **相手とまだつながっていないのに、相手に何かを届けなければいけない**のです。
 これが P2P の一番の難所で、この章のあとの
-[04 章 02 節](../../04-how-it-works/02-webrtc/LECTURE.md)で扱います。
+[03 章 02 節](../../03-how-it-works/02-webrtc/LECTURE.md)で扱います。
 
 ### PeerJS が包んでくれる
 
@@ -73,7 +73,7 @@ await pc.setRemoteDescription(answer);
 PeerJS は WebRTC を**隠している**わけではありません。
 つながったあとに `conn.peerConnection` と書けば、中の `RTCPeerConnection` を触れます。
 PeerJS がその裏でどんな手続きを進めているかは、
-[04 章 03 節](../../04-how-it-works/03-signaling/LECTURE.md) で 1 ステップずつ見ます。
+[03 章 03 節](../../03-how-it-works/03-signaling/LECTURE.md) で 1 ステップずつ見ます。
 :::
 
 ### 相手を見つける係 — PeerJS Cloud

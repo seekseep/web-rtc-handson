@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="450" viewBox="0 0 1340 450" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="1340" height="450" fill="#ffffff"/>
+<text x="670" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">つなぐ順番で、壁が開く</text>
+<rect x="40" y="86" width="300" height="270" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0"/>
+<text x="68" y="122" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">1</text>
+<polygon points="80.9,172.0 105.1,186.0 105.1,214.0 80.9,228.0 56.6,214.0 56.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="129.4,172.0 153.6,186.0 153.6,214.0 129.4,228.0 105.1,214.0 105.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="177.9,172.0 202.1,186.0 202.1,214.0 177.9,228.0 153.6,214.0 153.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="226.4,172.0 250.6,186.0 250.6,214.0 226.4,228.0 202.1,214.0 202.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="274.9,172.0 299.1,186.0 299.1,214.0 274.9,228.0 250.6,214.0 250.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="105.1,214.0 129.4,228.0 129.4,256.0 105.1,270.0 80.9,256.0 80.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="153.6,214.0 177.9,228.0 177.9,256.0 153.6,270.0 129.4,256.0 129.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="202.1,214.0 226.4,228.0 226.4,256.0 202.1,270.0 177.9,256.0 177.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="250.6,214.0 274.9,228.0 274.9,256.0 250.6,270.0 226.4,256.0 226.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="299.1,214.0 323.4,228.0 323.4,256.0 299.1,270.0 274.9,256.0 274.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polyline points="105.1,242.0 153.6,242.0" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<line x1="177.9" y1="226.0" x2="177.9" y2="258.0" stroke="#8b5cf6" stroke-width="8" stroke-linecap="round"/>
+<polygon points="177.9,266.0 183.9,272.0 177.9,278.0 171.9,272.0" fill="#8b5cf6"/>
+<circle cx="177.9" cy="200.0" r="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+<polygon points="177.9,193.0 184.9,200.0 177.9,207.0 170.9,200.0" fill="#8b5cf6"/>
+<circle cx="80.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="105.1" cy="242.0" r="11" fill="#3b82f6"/>
+<circle cx="274.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="299.1" cy="242.0" r="11" fill="#3b82f6"/>
+<text x="190" y="318" text-anchor="middle" font-size="17" fill="#475569" font-weight="600"><tspan x="190" dy="0">青は ◆ の壁で</tspan><tspan x="190" dy="24.65">通れない</tspan></text>
+<rect x="360" y="86" width="300" height="270" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0"/>
+<text x="388" y="122" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">2</text>
+<polygon points="400.9,172.0 425.1,186.0 425.1,214.0 400.9,228.0 376.6,214.0 376.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="449.4,172.0 473.6,186.0 473.6,214.0 449.4,228.0 425.1,214.0 425.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="497.9,172.0 522.1,186.0 522.1,214.0 497.9,228.0 473.6,214.0 473.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="546.4,172.0 570.6,186.0 570.6,214.0 546.4,228.0 522.1,214.0 522.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="594.9,172.0 619.1,186.0 619.1,214.0 594.9,228.0 570.6,214.0 570.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="425.1,214.0 449.4,228.0 449.4,256.0 425.1,270.0 400.9,256.0 400.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="473.6,214.0 497.9,228.0 497.9,256.0 473.6,270.0 449.4,256.0 449.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="522.1,214.0 546.4,228.0 546.4,256.0 522.1,270.0 497.9,256.0 497.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="570.6,214.0 594.9,228.0 594.9,256.0 570.6,270.0 546.4,256.0 546.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="619.1,214.0 643.4,228.0 643.4,256.0 619.1,270.0 594.9,256.0 594.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polyline points="400.9,200.0 449.4,200.0 497.9,200.0 546.4,200.0 594.9,200.0" fill="none" stroke="#ef4444" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<polyline points="425.1,242.0 473.6,242.0" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<line x1="497.9" y1="226.0" x2="497.9" y2="258.0" stroke="#8b5cf6" stroke-width="8" stroke-linecap="round"/>
+<polygon points="497.9,266.0 503.9,272.0 497.9,278.0 491.9,272.0" fill="#8b5cf6"/>
+<circle cx="497.9" cy="200.0" r="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+<polygon points="497.9,193.0 504.9,200.0 497.9,207.0 490.9,200.0" fill="#8b5cf6"/>
+<circle cx="400.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="425.1" cy="242.0" r="11" fill="#3b82f6"/>
+<circle cx="594.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="619.1" cy="242.0" r="11" fill="#3b82f6"/>
+<text x="510" y="318" text-anchor="middle" font-size="17" fill="#475569" font-weight="600"><tspan x="510" dy="0">先に赤をつなぐ。</tspan><tspan x="510" dy="24.65">赤は ◆ のスイッチを通る</tspan></text>
+<rect x="680" y="86" width="300" height="270" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0"/>
+<text x="708" y="122" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">3</text>
+<polygon points="720.9,172.0 745.1,186.0 745.1,214.0 720.9,228.0 696.6,214.0 696.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="769.4,172.0 793.6,186.0 793.6,214.0 769.4,228.0 745.1,214.0 745.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="817.9,172.0 842.1,186.0 842.1,214.0 817.9,228.0 793.6,214.0 793.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="866.4,172.0 890.6,186.0 890.6,214.0 866.4,228.0 842.1,214.0 842.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="914.9,172.0 939.1,186.0 939.1,214.0 914.9,228.0 890.6,214.0 890.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="745.1,214.0 769.4,228.0 769.4,256.0 745.1,270.0 720.9,256.0 720.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="793.6,214.0 817.9,228.0 817.9,256.0 793.6,270.0 769.4,256.0 769.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="842.1,214.0 866.4,228.0 866.4,256.0 842.1,270.0 817.9,256.0 817.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="890.6,214.0 914.9,228.0 914.9,256.0 890.6,270.0 866.4,256.0 866.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="939.1,214.0 963.4,228.0 963.4,256.0 939.1,270.0 914.9,256.0 914.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polyline points="720.9,200.0 769.4,200.0 817.9,200.0 866.4,200.0 914.9,200.0" fill="none" stroke="#ef4444" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<polyline points="745.1,242.0 793.6,242.0" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<line x1="817.9" y1="228.0" x2="817.9" y2="256.0" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="4 4" opacity="0.6"/>
+<polygon points="817.9,266.0 823.9,272.0 817.9,278.0 811.9,272.0" fill="#8b5cf6"/>
+<circle cx="817.9" cy="200.0" r="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+<polygon points="817.9,193.0 824.9,200.0 817.9,207.0 810.9,200.0" fill="#8b5cf6"/>
+<circle cx="720.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="745.1" cy="242.0" r="11" fill="#3b82f6"/>
+<circle cx="914.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="939.1" cy="242.0" r="11" fill="#3b82f6"/>
+<text x="830" y="318" text-anchor="middle" font-size="17" fill="#475569" font-weight="600"><tspan x="830" dy="0">赤がつながると、</tspan><tspan x="830" dy="24.65">◆ の壁が開く</tspan></text>
+<rect x="1000" y="86" width="300" height="270" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0"/>
+<text x="1028" y="122" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">4</text>
+<polygon points="1040.9,172.0 1065.1,186.0 1065.1,214.0 1040.9,228.0 1016.6,214.0 1016.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1089.4,172.0 1113.6,186.0 1113.6,214.0 1089.4,228.0 1065.1,214.0 1065.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1137.9,172.0 1162.1,186.0 1162.1,214.0 1137.9,228.0 1113.6,214.0 1113.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1186.4,172.0 1210.6,186.0 1210.6,214.0 1186.4,228.0 1162.1,214.0 1162.1,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1234.9,172.0 1259.1,186.0 1259.1,214.0 1234.9,228.0 1210.6,214.0 1210.6,186.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1065.1,214.0 1089.4,228.0 1089.4,256.0 1065.1,270.0 1040.9,256.0 1040.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1113.6,214.0 1137.9,228.0 1137.9,256.0 1113.6,270.0 1089.4,256.0 1089.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1162.1,214.0 1186.4,228.0 1186.4,256.0 1162.1,270.0 1137.9,256.0 1137.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1210.6,214.0 1234.9,228.0 1234.9,256.0 1210.6,270.0 1186.4,256.0 1186.4,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polygon points="1259.1,214.0 1283.4,228.0 1283.4,256.0 1259.1,270.0 1234.9,256.0 1234.9,228.0" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+<polyline points="1040.9,200.0 1089.4,200.0 1137.9,200.0 1186.4,200.0 1234.9,200.0" fill="none" stroke="#ef4444" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<polyline points="1065.1,242.0 1113.6,242.0 1162.1,242.0 1210.6,242.0 1259.1,242.0" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<line x1="1137.9" y1="228.0" x2="1137.9" y2="256.0" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="4 4" opacity="0.6"/>
+<polygon points="1137.9,266.0 1143.9,272.0 1137.9,278.0 1131.9,272.0" fill="#8b5cf6"/>
+<circle cx="1137.9" cy="200.0" r="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+<polygon points="1137.9,193.0 1144.9,200.0 1137.9,207.0 1130.9,200.0" fill="#8b5cf6"/>
+<circle cx="1040.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="1065.1" cy="242.0" r="11" fill="#3b82f6"/>
+<circle cx="1234.9" cy="200.0" r="11" fill="#ef4444"/>
+<circle cx="1259.1" cy="242.0" r="11" fill="#3b82f6"/>
+<text x="1150" y="318" text-anchor="middle" font-size="17" fill="#475569" font-weight="600"><tspan x="1150" dy="0">青も通れるように</tspan><tspan x="1150" dy="24.65">なって、つながる</tspan></text>
+<text x="670" y="410" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">どの色を先につなぐかを考えるパズルになる。時間に急かされずに、じっくり考えられる</text>
+</svg>

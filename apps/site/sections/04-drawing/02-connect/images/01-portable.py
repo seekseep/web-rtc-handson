@@ -9,8 +9,8 @@ from genfig import Canvas
 c = Canvas(900, 340)
 c.text(450, 46, "つなぐところは、上に載るアプリを知らない", scale="xl")
 
-c.text(200, 96, "03 章 ライト", scale="sm")
-c.text(700, 96, "05 章 お絵かき", scale="sm")
+c.text(200, 96, "02 章 ライト", scale="sm")
+c.text(700, 96, "04 章 お絵かき", scale="sm")
 
 c.node(200, 152, "丸を光らせる", shape="sticky", color="blue", w=300, h=76)
 c.node(700, 152, "スタンプを置く", shape="sticky", color="green", w=300, h=76)

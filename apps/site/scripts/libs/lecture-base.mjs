@@ -3,11 +3,11 @@
  *
  * 差分の旧側（`::codeview` の差分ビュー、`:::code{... newOffset=N}` の `-` 行）は、
  * 既定では「example を持つ節を教材順に並べたときの 1 つ前」＝章をまたぐ。
- * ただし章の切り替わりではアプリが別物になる（05-drawing/01-canvas の 1 つ前は
- * 03-connect/06-deploy のライトアプリ）ので、LECTURE.md 側で上書きできるようにする:
+ * ただし章の切り替わりではアプリが別物になる（04-drawing/01-canvas の 1 つ前は
+ * 02-connect/06-deploy のライトアプリ）ので、LECTURE.md 側で上書きできるようにする:
  *
  *   ::codeview{base="none"}                  … 差分を出さない（章の起点）
- *   ::codeview{base="03-connect/06-deploy"}  … 明示指定
+ *   ::codeview{base="02-connect/06-deploy"}  … 明示指定
  *
  * sync-lectures（libs/sentinels.mjs）と check-lectures.mjs が同じ答えを見るために、
  * 解決はこのモジュールに一本化する。

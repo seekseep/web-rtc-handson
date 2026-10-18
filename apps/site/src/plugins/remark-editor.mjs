@@ -1,5 +1,5 @@
 /**
- * `::::editor{title="..." zip="URL" open="main.js" diff="03-connect/01-light"}` コンテナ
+ * `::::editor{title="..." zip="URL" open="main.js" diff="02-connect/01-light"}` コンテナ
  * ディレクティブを、簡易エディタ UI `<section class="editor">`（左=ファイル一覧・右=コード）
  * に変換する remark プラグイン。
  *

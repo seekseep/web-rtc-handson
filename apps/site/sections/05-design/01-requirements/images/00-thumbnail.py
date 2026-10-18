@@ -1,6 +1,6 @@
 # 00-thumbnail.svg
-# スキーマ: SOURCE-PATH-GOAL（ばらばらの材料が、1 枚の要件に集まる）
-# 章の入口。まだ作るものは決まっておらず、まず条件を並べる段階だと見せる
+# スキーマ: SOURCE-PATH-GOAL（作りたい気持ちと手持ちの条件が、1 枚の要件に集まる）
+# 節の入口。まだルールは決まっておらず、まず満たすべきことを並べる段階だと見せる
 
 import sys
 
@@ -10,13 +10,13 @@ from genfig import Canvas
 c = Canvas(900, 400)
 c.text(450, 46, "まず、要件をまとめる", scale="xl")
 
-past = c.node(160, 150, "これまでの勉強会", emoji_cp="1f4dd", w=220, h=88)  # 📝
-limit = c.node(160, 290, "3 時間・2 台", emoji_cp="23f0", w=220, h=88)  # ⏰
+want = c.node(160, 150, "iOS アプリを作りたい", emoji_cp="1f4f1", w=230, h=88)  # 📱
+alone = c.node(160, 290, "1 人で作る", emoji_cp="1f9d1", w=230, h=88)  # 🧑
 req = c.node(660, 220, "要件", shape="sticky", color="yellow", w=230, h=110)
 
-c.link(past, req, label="振り返る")
-c.link(limit, req, label="制約")
+c.link(want, req, label="動機")
+c.link(alone, req, label="制約")
 
-c.text(450, 378, "作るものを決める前に、満たすべきことを並べる", scale="sm")
+c.text(450, 378, "ルールを決める前に、満たすべきことを並べる", scale="sm")
 
 c.save("00-thumbnail.svg")

@@ -15,7 +15,7 @@ title: Netlify Drop
 `https://....netlify.app` という URL がその場でもらえます。
 
 **この節では、おためし用のページを使って最後まで公開します。**
-自分で作ったアプリを公開するのは [03 章の最後](../../03-connect/06-deploy/LECTURE.md) ですが、
+自分で作ったアプリを公開するのは [02 章の最後](../../02-connect/06-deploy/LECTURE.md) ですが、
 そのとき初めて触るより、いま一度通しておくほうが速いからです。
 
 ## Netlify Drop とは

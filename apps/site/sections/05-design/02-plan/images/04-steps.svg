@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="420" viewBox="0 0 1120 420" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="1120" height="420" fill="#ffffff"/>
+<text x="560" y="46" text-anchor="middle" font-size="26" fill="#0f172a" font-weight="700">遊びの芯から、4 段で育てる</text>
+<rect x="45" y="135" width="210" height="110" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="150" y="197.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700"><tspan x="150" dy="0">線を引いて</tspan><tspan x="150" dy="30.45">判定する</tspan></text>
+<rect x="315" y="135" width="210" height="110" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="420" y="197.35" text-anchor="middle" font-size="21" fill="#1d4ed8" font-weight="700"><tspan x="420" dy="0">壁と</tspan><tspan x="420" dy="30.45">スイッチ</tspan></text>
+<rect x="585" y="135" width="210" height="110" rx="16" fill="#fef9c3" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="690" y="197.35" text-anchor="middle" font-size="21" fill="#b45309" font-weight="700"><tspan x="690" dy="0">ステージ選択と</tspan><tspan x="690" dy="30.45">進み具合</tspan></text>
+<rect x="855" y="135" width="210" height="110" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="960" y="197.35" text-anchor="middle" font-size="21" fill="#15803d" font-weight="700">100 ステージ</text>
+<path d="M261.00 190.00 L309.00 190.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M531.00 190.00 L579.00 190.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M801.00 190.00 L849.00 190.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="285" y="112" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">ゲームのロジック</text>
+<rect x="60" y="290" width="1000" height="62" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0" stroke-dasharray="7 6"/>
+<text x="560" y="328" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">装飾（色・効果音・振動・画面の演出）は、ロジックが動いてからあとで足す</text>
+<text x="560" y="396" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">どの段でも、いったん遊べるところまで作ってから次に進む</text>
+</svg>

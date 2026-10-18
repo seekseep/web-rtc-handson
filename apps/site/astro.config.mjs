@@ -139,20 +139,20 @@ export default defineConfig({
           items: [{ autogenerate: { directory: '01-introduction' } }],
         },
         {
-          label: '02. ハンズオンの設計',
-          items: [{ autogenerate: { directory: '02-design' } }],
+          label: '02. 簡単なリアルタイム通信',
+          items: [{ autogenerate: { directory: '02-connect' } }],
         },
         {
-          label: '03. 簡単なリアルタイム通信',
-          items: [{ autogenerate: { directory: '03-connect' } }],
+          label: '03. リアルタイム通信の仕組み',
+          items: [{ autogenerate: { directory: '03-how-it-works' } }],
         },
         {
-          label: '04. リアルタイム通信の仕組み',
-          items: [{ autogenerate: { directory: '04-how-it-works' } }],
+          label: '04. お絵描きアプリを作る',
+          items: [{ autogenerate: { directory: '04-drawing' } }],
         },
         {
-          label: '05. お絵描きアプリを作る',
-          items: [{ autogenerate: { directory: '05-drawing' } }],
+          label: '05. アプリの設計',
+          items: [{ autogenerate: { directory: '05-design' } }],
         },
         {
           label: '06. 付録',

@@ -14,7 +14,7 @@
  *   ::codeview[見出し]{...}                ヘッダの文言を上書きする（既定は example なら
  *                                         「このステップの完成例」、それ以外は「このデモのコード」）。
  *   ::codeview{base="none"}               「前の節との差分」ビューを出さない（章の起点）。
- *   ::codeview{base="03-connect/06-deploy"}  差分の相手を明示する。省略時は example を持つ
+ *   ::codeview{base="02-connect/06-deploy"}  差分の相手を明示する。省略時は example を持つ
  *                                         1 つ前の節（libs/lecture-base.mjs が決める）。
  *                                         差分は example のときだけ。デモでは無視する。
  *
